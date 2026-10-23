@@ -1,0 +1,2033 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f5c45">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Our Nest">
+<title>Our Nest</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f5efe4; --surface: #fffcf6; --surface-2: #f3ecdf; --line: #e6dccb;
+  --ink: #1e2a24; --ink-2: #56615b; --ink-3: #6f7872;
+  --brand: #1f5c45; --brand-ink: #ffffff; --brand-soft: #dcebe1;
+  --accent: #b86a12; --accent-soft: #fbead2;
+  --good: #1b7a50; --bad: #b8382f; --warn: #94600d;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4; --neutral: #b4ada0;
+  --p1: #1f5c45; --p2: #5d8f72;
+  --shadow: 0 1px 2px rgba(60, 45, 20, .06), 0 6px 20px rgba(60, 45, 20, .06);
+  --radius: 16px;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121614; --surface: #1a201d; --surface-2: #222a26; --line: #2e3833;
+    --ink: #eef1ec; --ink-2: #b8c1bb; --ink-3: #8e9891;
+    --brand: #6cc79a; --brand-ink: #0b1a12; --brand-soft: #1f3529;
+    --accent: #f0b35a; --accent-soft: #3a2a12;
+    --good: #5fcf96; --bad: #f07a70; --warn: #e5b45a;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --neutral: #5f6660;
+    --p1: #6cc79a; --p2: #3f8a64;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121614; --surface: #1a201d; --surface-2: #222a26; --line: #2e3833;
+  --ink: #eef1ec; --ink-2: #b8c1bb; --ink-3: #8e9891;
+  --brand: #6cc79a; --brand-ink: #0b1a12; --brand-soft: #1f3529;
+  --accent: #f0b35a; --accent-soft: #3a2a12;
+  --good: #5fcf96; --bad: #f07a70; --warn: #e5b45a;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --neutral: #5f6660;
+  --p1: #6cc79a; --p2: #3f8a64;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--sans); -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; letter-spacing: -.01em; margin: 0; line-height: 1.2; }
+h1 { font-size: 30px; } h3 { font-size: 18px; } h4 { font-size: 15px; margin: 14px 0 6px; font-family: var(--sans); }
+a { color: var(--brand); }
+.muted { color: var(--ink-2); } .small { font-size: 13px; } .center { text-align: center; }
+.good { color: var(--good); } .bad { color: var(--bad); }
+.pre { white-space: pre-wrap; }
+b, .stat-v, .tbl td, .big-num, .row-v { font-variant-numeric: tabular-nums; }
+
+/* ---------- layout ---------- */
+#app { display: block; min-height: 100vh; }
+.side { position: fixed; inset: 0 auto 0 0; width: 228px; background: var(--surface); border-right: 1px solid var(--line); padding: 20px 12px; display: flex; flex-direction: column; gap: 14px; z-index: 5; }
+.brand { display: flex; align-items: center; gap: 10px; padding: 4px 10px 10px; font-family: var(--serif); font-size: 19px; }
+.logo { font-size: 26px; }
+.side nav { display: flex; flex-direction: column; gap: 2px; }
+.side nav a { display: flex; gap: 10px; align-items: center; padding: 9px 12px; border-radius: 10px; color: var(--ink-2); text-decoration: none; font-weight: 500; }
+.side nav a:hover { background: var(--surface-2); color: var(--ink); }
+.side nav a.on { background: var(--brand-soft); color: var(--brand); }
+.ni { width: 20px; text-align: center; font-size: 15px; }
+.side-foot { margin-top: auto; }
+main { margin-left: 228px; padding: 28px clamp(16px, 3vw, 40px) 60px; max-width: 1240px; display: grid; grid-template-columns: 1fr; gap: 18px; }
+.bottom, .more-sheet { display: none; }
+
+@media (max-width: 860px) {
+  .side { display: none; }
+  main { margin-left: 0; padding: 18px 16px 100px; }
+  h1 { font-size: 25px; }
+  .bottom { display: flex; position: fixed; left: 0; right: 0; bottom: 0; background: var(--surface); border-top: 1px solid var(--line); padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); z-index: 20; }
+  .bottom a, .bottom button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 1px; font: 500 11px var(--sans); color: var(--ink-2); text-decoration: none; background: none; border: 0; padding: 6px 0; border-radius: 10px; }
+  .bottom .ni { font-size: 18px; }
+  .bottom .on { color: var(--brand); background: var(--brand-soft); }
+  .more-sheet { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 19; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .more-sheet.open { opacity: 1; pointer-events: auto; }
+  .more-inner { position: absolute; left: 10px; right: 10px; bottom: calc(76px + env(safe-area-inset-bottom)); background: var(--surface); border-radius: 18px; padding: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; box-shadow: var(--shadow); }
+  .more-inner a { display: flex; gap: 10px; padding: 14px; border-radius: 12px; color: var(--ink); text-decoration: none; font-weight: 500; }
+  .more-inner a.on { background: var(--brand-soft); color: var(--brand); }
+}
+
+/* ---------- building blocks ---------- */
+.page-h { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.page-h p { margin: 4px 0 0; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); min-width: 0; }
+.card-h { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+.h-sub { font: 500 13px var(--sans); color: var(--ink-3); margin-left: 6px; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 18px; }
+.sec { font-size: 20px; margin-top: 8px; }
+.btn { appearance: none; border: 1px solid transparent; border-radius: 999px; padding: 9px 16px; font: 600 14px var(--sans); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; color: var(--ink); background: var(--surface-2); }
+.btn.primary { background: var(--brand); color: var(--brand-ink); }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.ghost { background: transparent; border-color: var(--line); }
+.btn.ghost:hover { background: var(--surface-2); }
+.btn.danger { color: var(--bad); }
+.btn.sm { padding: 6px 12px; font-size: 13px; }
+.btn.big { padding: 14px 20px; font-size: 16px; width: 100%; }
+.btn.block { width: 100%; }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.icon-btn { background: none; border: 0; color: var(--ink-3); font-size: 15px; cursor: pointer; padding: 6px 8px; border-radius: 8px; }
+.icon-btn:hover { background: var(--surface-2); color: var(--ink); }
+.icon-btn.danger { color: var(--bad); }
+.link { font-size: 13px; font-weight: 600; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.tag { display: inline-block; font: 600 11px var(--sans); padding: 2px 8px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); margin-right: 4px; white-space: nowrap; }
+.tag.warn { background: var(--accent-soft); color: var(--warn); }
+.tag.good { background: var(--brand-soft); color: var(--good); }
+.tag.sub { background: color-mix(in srgb, var(--s5) 18%, transparent); color: var(--ink); }
+.empty { text-align: center; padding: 18px 8px; color: var(--ink-2); }
+.empty p { margin: 0 0 12px; }
+.banner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); padding: 12px 16px; border-radius: 14px; font-weight: 500; }
+.inline-age { display: inline-flex; align-items: center; gap: 6px; } .inline-age input[type=number] { width: 80px; }
+.callout { background: var(--brand-soft); border-radius: 12px; padding: 10px 14px; margin: 8px 0; }
+.warn-text { color: var(--bad); font-weight: 600; }
+.pill-note { display: inline-block; background: var(--surface-2); border-radius: 999px; padding: 4px 12px; font-size: 13px; margin: 0 0 8px; }
+
+/* ---------- hero & stats ---------- */
+.hero { background: linear-gradient(135deg, var(--brand) 0%, color-mix(in srgb, var(--brand) 70%, #0b2e21) 100%); color: #fff; border-radius: 22px; padding: 26px 28px; display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; align-items: center; box-shadow: var(--shadow); }
+:root[data-theme="dark"] .hero { background: linear-gradient(135deg, #1d4a37, #10271d); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hero { background: linear-gradient(135deg, #1d4a37, #10271d); } }
+.hero h1 { font-size: clamp(24px, 3.4vw, 34px); color: #fff; }
+.hero em { font-style: normal; color: #ffd690; }
+.eyebrow { margin: 0 0 6px; opacity: .85; font-weight: 500; }
+.hero-sub { margin: 10px 0 0; opacity: .9; }
+.hero-goal { background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .18); border-radius: 16px; padding: 16px; display: flex; gap: 14px; align-items: center; }
+.hero-goal > div { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.hero-goal span { font-size: 13px; opacity: .9; }
+.hg-emoji { font-size: 36px; }
+.hero-goal .bar { background: rgba(255, 255, 255, .2); margin-top: 6px; }
+.hero-goal .bar span { background: #ffd690; }
+@media (max-width: 860px) { .hero { grid-template-columns: 1fr; padding: 20px; } }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 12px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; box-shadow: var(--shadow); }
+.stat-l { font-size: 13px; color: var(--ink-2); font-weight: 500; }
+.stat-v { font: 600 24px var(--serif); }
+.stat-s { font-size: 12px; color: var(--ink-3); }
+.stat.good { border-top: 3px solid var(--good); } .stat.accent { border-top: 3px solid var(--accent); } .stat.bad { border-top: 3px solid var(--bad); }
+.stat.bad .stat-v { color: var(--bad); }
+.big-num { font: 600 28px var(--serif); margin: 4px 0; }
+.big-num small { font: 500 13px var(--sans); color: var(--ink-2); margin-left: 6px; }
+
+/* ---------- bars ---------- */
+.bar { height: 8px; background: var(--surface-2); border-radius: 999px; overflow: hidden; position: relative; }
+.bar > span:first-child { display: block; height: 100%; background: var(--brand); border-radius: 999px; transition: width .6s cubic-bezier(.2, .8, .2, 1); }
+.bar.big { height: 14px; overflow: visible; }
+.bar.big > span:first-child { border-radius: 999px; }
+.ms { position: absolute; top: -3px; width: 2px; height: 20px; background: var(--line); transform: translateX(-1px); }
+.ms.hit { background: var(--brand); }
+.ms:last-child { display: none; }
+
+/* ---------- charts ---------- */
+.chart { width: 100%; height: auto; display: block; overflow: visible; }
+.chart text { fill: var(--ink-2); font: 12px var(--sans); }
+.chart .axis { fill: var(--ink-3); font-size: 11px; }
+.chart .grid { stroke: var(--line); stroke-width: 1; }
+.chart .xhair { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 3 3; }
+.flow { opacity: .5; transition: opacity .15s; }
+.flow:hover { opacity: .85; }
+.fl-l { fill: var(--ink) !important; font-weight: 600; font-size: 13px !important; }
+.fl-v { fill: var(--ink-2) !important; font-size: 12px !important; }
+.fl-mid { fill: var(--ink-3); }
+.donut-wrap { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.donut { max-width: 200px; flex: 0 0 200px; }
+.donut path { stroke: none; }
+.donut-big { font: 600 28px var(--serif) !important; fill: var(--ink) !important; }
+.donut-small { font-size: 12px; }
+.legend { list-style: none; margin: 0; padding: 0; flex: 1; min-width: 180px; display: flex; flex-direction: column; gap: 6px; }
+.legend li { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.lg-l { flex: 1; } .lg-v { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.sw { width: 12px; height: 12px; border-radius: 4px; display: inline-block; flex: none; }
+.tooltip .sw { width: 9px; height: 9px; margin-right: 5px; }
+.tooltip { position: fixed; display: none; z-index: 100; background: var(--ink); color: var(--bg); padding: 8px 11px; border-radius: 10px; font-size: 13px; pointer-events: none; box-shadow: var(--shadow); max-width: 260px; line-height: 1.45; }
+.tooltip .muted { color: color-mix(in srgb, var(--bg) 75%, transparent); }
+.hbars { display: flex; flex-direction: column; gap: 8px; }
+.hb-row { display: grid; grid-template-columns: minmax(90px, 140px) 1fr 70px; align-items: center; gap: 10px; font-size: 13px; }
+.hb-l { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hb-track { height: 12px; background: var(--surface-2); border-radius: 0 4px 4px 0; }
+.hb-fill { display: block; height: 100%; border-radius: 0 4px 4px 0; min-width: 2px; }
+.hb-v { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.ring-track { fill: none; stroke: var(--surface-2); stroke-width: 10; }
+.tbl-toggle summary { cursor: pointer; font-size: 13px; color: var(--brand); font-weight: 600; margin-top: 6px; }
+
+/* ---------- tables & rows ---------- */
+.tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tbl th { text-align: left; font: 600 12px var(--sans); color: var(--ink-3); text-transform: uppercase; letter-spacing: .04em; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.tbl td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tbl .r { text-align: right; white-space: nowrap; }
+.tbl tr.tot td { font-weight: 700; border-top: 2px solid var(--ink-3); border-bottom: 0; }
+.tbl tr.muted td { color: var(--ink-2); border-bottom: 0; }
+.tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.rows { list-style: none; margin: 0; padding: 0; }
+.row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 6px; border-bottom: 1px solid var(--line); cursor: pointer; border-radius: 8px; }
+.row:last-child { border-bottom: 0; }
+.row:hover { background: var(--surface-2); }
+.row-m { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.row-v { display: flex; flex-direction: column; align-items: flex-end; flex: none; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); border-radius: 999px; padding: 7px 14px; font: 600 13px var(--sans); cursor: pointer; }
+.chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* ---------- home bits ---------- */
+.mini-goals { display: flex; flex-direction: column; gap: 14px; }
+.mg { display: flex; gap: 12px; align-items: center; cursor: pointer; }
+.mg-i { font-size: 24px; width: 36px; height: 36px; display: grid; place-items: center; background: var(--surface-2); border-radius: 12px; flex: none; }
+.mg-b { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.mg-t { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; }
+.mg-t span { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.xp { list-style: none; margin: 0 0 8px; padding: 0; }
+.xp li { display: grid; grid-template-columns: 90px 1fr auto; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.reality { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; background: var(--surface-2); border-radius: 12px; padding: 10px 12px; margin-top: 10px; font-size: 14px; }
+.reality-line { font-size: 14px; background: var(--surface-2); padding: 8px 12px; border-radius: 10px; }
+
+/* ---------- income ---------- */
+.inc-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 22px; align-items: start; }
+@media (max-width: 960px) { .inc-grid { grid-template-columns: 1fr; } }
+.explorer { background: var(--surface-2); border-radius: 14px; padding: 16px; }
+.explorer h4 { margin-top: 0; }
+.slider { display: grid; grid-template-columns: 1fr 64px; gap: 2px 10px; align-items: center; margin: 12px 0; font-size: 14px; }
+.slider > span { grid-column: 1 / -1; }
+.slider.wide { grid-template-columns: 1fr; }
+.slider output { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-2); font-size: 13px; }
+input[type=range] { width: 100%; accent-color: var(--brand); height: 28px; }
+.ex-out { display: flex; flex-direction: column; background: var(--surface); border-radius: 12px; padding: 12px; margin: 12px 0; }
+.ex-out b { font: 600 26px var(--serif); }
+.ex-out span:first-child { font-size: 13px; color: var(--ink-2); }
+
+/* ---------- goals ---------- */
+.goal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.goal { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); cursor: pointer; display: flex; flex-direction: column; gap: 12px; transition: transform .15s; }
+.goal:hover { transform: translateY(-2px); }
+.goal-h { display: flex; gap: 12px; align-items: center; }
+.goal-h > div { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.g-i { font-size: 28px; width: 46px; height: 46px; display: grid; place-items: center; background: var(--surface-2); border-radius: 14px; flex: none; }
+.g-amt { display: flex; align-items: baseline; gap: 8px; }
+.g-amt b { font: 600 26px var(--serif); }
+.g-amt span { color: var(--ink-2); font-size: 14px; }
+.g-pct { margin-left: auto; font-weight: 700; color: var(--brand) !important; }
+.g-f { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 14px; }
+.goal p { margin: 0; }
+
+/* ---------- retirement ---------- */
+.controls { display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px; }
+.limits { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.limits li { display: flex; justify-content: space-between; gap: 14px; align-items: flex-end; font-size: 14px; }
+.limits li > div { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+
+/* ---------- accounts ---------- */
+.acct-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 14px; }
+.acct { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 4px; cursor: pointer; box-shadow: var(--shadow); }
+.acct:hover { border-color: var(--brand); }
+.acct-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.acct-n { font-size: 16px; }
+.acct-b { font: 600 24px var(--serif); margin-top: 6px; }
+.acct p { margin: 4px 0 0; }
+
+/* ---------- forms ---------- */
+.form-inline, .form-body { display: flex; flex-wrap: wrap; gap: 14px; }
+.field { display: flex; flex-direction: column; gap: 5px; flex: 1 1 100%; min-width: 0; border: 0; padding: 0; margin: 0; }
+.field.half { flex: 1 1 calc(50% - 7px); min-width: 140px; }
+.field > span, .field legend, .field .lbl { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.help { color: var(--ink-3); font-size: 12px; }
+input[type=text], input[type=number], input[type=date], input[type=password], select, textarea { font: 15px var(--sans); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100%; min-width: 0; }
+textarea { resize: vertical; }
+input:focus, select:focus, textarea:focus { outline: 2px solid color-mix(in srgb, var(--brand) 50%, transparent); border-color: var(--brand); }
+.inp { display: flex; align-items: center; position: relative; }
+.inp i { font-style: normal; color: var(--ink-3); position: absolute; font-size: 14px; pointer-events: none; }
+.inp.pre i:first-child { left: 12px; } .inp.pre input { padding-left: 26px; }
+.inp.post i:last-child { right: 12px; } .inp.post input { padding-right: 30px; }
+.check { flex-direction: row !important; align-items: center; gap: 10px !important; cursor: pointer; }
+.check > span { font-size: 14px !important; color: var(--ink) !important; font-weight: 500 !important; }
+.check.inline { display: inline-flex; margin-right: 16px; }
+.check input { width: 18px; height: 18px; accent-color: var(--brand); }
+.field.list { gap: 8px; }
+.lrow { display: flex; gap: 8px; align-items: flex-end; background: var(--surface-2); padding: 10px; border-radius: 12px; flex-wrap: wrap; }
+.lrow label { display: flex; flex-direction: column; gap: 3px; flex: 1 1 90px; font-size: 11px; color: var(--ink-3); font-weight: 600; }
+.lrow label:first-child { flex: 2 1 150px; }
+.lrow input, .lrow select { padding: 8px 10px; font-size: 14px; }
+
+#modal { position: fixed; inset: 0; z-index: 50; display: none; background: rgba(10, 15, 12, .45); align-items: center; justify-content: center; padding: 16px; }
+#modal.open { display: flex; }
+.sheet { background: var(--surface); border-radius: 20px; width: min(560px, 100%); max-height: calc(100vh - 32px); overflow-y: auto; padding: 20px; box-shadow: 0 20px 60px rgba(0, 0, 0, .3); display: flex; flex-direction: column; gap: 14px; animation: pop .18s ease-out; }
+.sheet header { display: flex; justify-content: space-between; align-items: center; }
+.sheet h2 { font-size: 22px; }
+.sheet .muted { margin: 0; }
+.sheet footer { display: flex; justify-content: space-between; align-items: center; gap: 10px; position: sticky; bottom: -20px; background: var(--surface); padding: 12px 0 0; border-top: 1px solid var(--line); flex-wrap: wrap; }
+.form-preview { background: var(--brand-soft); border-radius: 12px; padding: 10px 14px; font-size: 14px; }
+@keyframes pop { from { transform: translateY(12px) scale(.98); opacity: 0; } }
+@media (max-width: 600px) { #modal { align-items: flex-end; padding: 0; } .sheet { border-radius: 20px 20px 0 0; max-height: 92vh; padding-bottom: calc(20px + env(safe-area-inset-bottom)); } }
+
+/* ---------- check-in ---------- */
+.stepper { list-style: none; display: flex; gap: 6px; padding: 0; margin: 0 0 16px; counter-reset: s; }
+.stepper li { flex: 1; text-align: center; font-size: 12px; font-weight: 600; color: var(--ink-3); padding-top: 10px; border-top: 4px solid var(--surface-2); }
+.stepper li.on { color: var(--brand); border-color: var(--brand); }
+.stepper li.done { color: var(--ink-2); border-color: color-mix(in srgb, var(--brand) 45%, transparent); }
+.ci-list { display: flex; flex-direction: column; gap: 10px; }
+.ci-row { display: grid; grid-template-columns: 1fr minmax(120px, 180px); gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.ci-row span { display: flex; flex-direction: column; }
+.ci-row small { color: var(--ink-3); }
+.ci-pay { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+.ci-nav { display: flex; justify-content: space-between; margin-top: 18px; }
+.wrap-up { display: flex; flex-direction: column; gap: 14px; }
+.wrap-up p { margin: 0; }
+
+/* ---------- binder ---------- */
+.letter { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 30%, transparent); font-family: var(--serif); font-size: 17px; line-height: 1.6; }
+.letter p { margin: 0 0 8px; } .sig { text-align: right; font-style: italic; }
+.checklist { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
+.contacts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.contacts li { background: var(--surface-2); padding: 12px 14px; border-radius: 12px; display: flex; flex-direction: column; gap: 2px; cursor: pointer; }
+.contacts span { color: var(--ink-2); font-size: 13px; }
+.plain { margin: 0 0 6px; padding-left: 20px; font-size: 14px; }
+
+/* ---------- welcome / misc ---------- */
+.welcome { min-height: 100vh; display: grid; place-items: center; padding: 20px; }
+.welcome-card { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 32px; max-width: 420px; text-align: center; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow); }
+.logo-big { font-size: 56px; }
+.pin { text-align: center; font-size: 24px !important; letter-spacing: .4em; }
+.toast { position: fixed; left: 50%; bottom: 90px; transform: translate(-50%, 20px); background: var(--ink); color: var(--bg); padding: 12px 18px; border-radius: 999px; font-weight: 600; opacity: 0; transition: .25s; z-index: 200; max-width: calc(100vw - 32px); text-align: center; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast.bad { background: var(--bad); color: #fff; }
+.toast.good { background: var(--brand); color: var(--brand-ink); }
+.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 150; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* ---------- print (binder) ---------- */
+@media print {
+  .side, .bottom, .more-sheet, .no-print, .banner, .btn { display: none !important; }
+  main { margin: 0; padding: 0; max-width: none; }
+  body { background: #fff; color: #000; }
+  .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+}
+
+.bills-grid { align-items: start; }
+
+/* ---------- quick-hide eye ---------- */
+.brand { justify-content: flex-start; }
+.brand .eye-btn { margin-left: auto; }
+.eye-btn { background: none; border: 1px solid transparent; color: var(--ink-2); width: 38px; height: 38px; border-radius: 12px; display: inline-grid; place-items: center; cursor: pointer; flex: none; }
+.eye-btn:hover { background: var(--surface-2); color: var(--ink); }
+.eye-btn.on { background: var(--brand-soft); color: var(--brand); border-color: color-mix(in srgb, var(--brand) 30%, transparent); }
+.topbar { display: none; }
+@media (max-width: 860px) {
+  .topbar { display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 15; padding: calc(8px + env(safe-area-inset-top)) 16px 8px; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); font-family: var(--serif); font-size: 18px; }
+  .topbar .logo { font-size: 22px; }
+  .topbar .eye-btn { margin-left: auto; }
+}
+.hide-money .inp.pre input, .hide-money input[data-c="amount"], .hide-money .lrow input[data-num] { -webkit-text-security: disc; }
+
+/* ---------- giving log ---------- */
+.good-banner { background: var(--brand-soft); border-color: color-mix(in srgb, var(--brand) 30%, transparent); }
+.pending { background: var(--accent-soft); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; }
+.pend-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.tbl.log a { font-weight: 600; text-decoration: none; }
+.pay-pill { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 5px 12px; font: 600 12px var(--sans); cursor: pointer; white-space: nowrap; }
+.pay-pill:hover { border-color: var(--brand); }
+.pay-pill.paid { background: var(--brand-soft); color: var(--good); border-color: transparent; }
+.ytd { display: flex; flex-direction: column; gap: 6px; margin: 14px 0 6px; font-size: 14px; }
+.how { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.card .btn-row { margin-top: 10px; }
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="modal"></div>
+<noscript>Our Nest needs JavaScript turned on.</noscript>
+<script>
+/* ===== Our Nest — data model & calculations ===== */
+'use strict';
+
+const PERIODS = { weekly: 52, biweekly: 26, semimonthly: 24, monthly: 12, quarterly: 4, yearly: 1 };
+const PERIOD_LABEL = { weekly: 'Weekly', biweekly: 'Every 2 weeks', semimonthly: 'Twice a month', monthly: 'Monthly', quarterly: 'Quarterly', yearly: 'Yearly' };
+const TWO_CHECK = { weekly: 4, biweekly: 2, semimonthly: 2, monthly: 1 };
+
+const ACCOUNT_TYPES = {
+  checking: { label: 'Checking', group: 'cash' },
+  savings: { label: 'Savings', group: 'cash' },
+  hysa: { label: 'High-yield savings', group: 'cash' },
+  '401k': { label: '401(k)', group: 'retire' },
+  '403b': { label: '403(b)', group: 'retire' },
+  'ira-roth': { label: 'Roth IRA', group: 'retire' },
+  'ira-trad': { label: 'Traditional IRA', group: 'retire' },
+  hsa: { label: 'HSA', group: 'invest' },
+  brokerage: { label: 'Brokerage', group: 'invest' },
+  credit: { label: 'Credit card', group: 'debt' },
+  loan: { label: 'Loan', group: 'debt' },
+  mortgage: { label: 'Mortgage', group: 'debt' },
+  other: { label: 'Other', group: 'cash' }
+};
+const isRetireType = t => ACCOUNT_TYPES[t] && ACCOUNT_TYPES[t].group === 'retire';
+const isDebtType = t => ACCOUNT_TYPES[t] && ACCOUNT_TYPES[t].group === 'debt';
+const isIraType = t => t === 'ira-roth' || t === 'ira-trad';
+
+const BILL_CATEGORIES = ['Housing', 'Utilities', 'Transportation', 'Insurance', 'Subscriptions', 'Phone & Internet', 'Debt payments', 'Health', 'Food', 'Kids & Pets', 'Personal', 'Other'];
+
+const uid = () => Math.random().toString(36).slice(2, 10);
+const num = v => { const n = parseFloat(v); return isFinite(n) ? n : 0; };
+const localISO = dt => dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0');
+const todayISO = () => localISO(new Date());
+
+function defaultBinder() {
+  return {
+    contacts: [],
+    notes: [
+      { id: uid(), title: 'Where our passwords are', body: '' , hint: 'Name the password manager or where the master list is kept. Do NOT type passwords here.' },
+      { id: uid(), title: 'Life insurance & beneficiaries', body: '', hint: 'Company, policy owner, who to call, and where the policy paperwork is.' },
+      { id: uid(), title: 'Will & important documents', body: '', hint: 'Where the will, deed, titles, birth/marriage certificates, and tax returns are kept.' },
+      { id: uid(), title: 'Work benefits', body: '', hint: 'Employer benefits worth claiming: group life insurance, final paycheck, unused PTO payout, 401(k)/403(b) beneficiary claims.' }
+    ],
+    checklist: [
+      'Breathe. Nothing on this list has to happen today. The bills below pay themselves automatically.',
+      'Order 8–10 certified copies of the death certificate (the funeral home can help).',
+      'Call the HR contact below about final pay, group life insurance, and retirement account beneficiary claims.',
+      'Call the life insurance company to start a claim.',
+      'Keep the main checking account open and funded so autopays keep working.',
+      'Notify Social Security (1-800-772-1213) and ask about survivor benefits.',
+      'Don\'t make big money decisions (selling the house, investing a payout) for at least a few months.',
+      'Talk to a fee-only financial advisor or estate attorney before moving retirement money.'
+    ]
+  };
+}
+
+function defaultData() {
+  return {
+    version: 1,
+    appName: 'Our Nest',
+    created: todayISO(),
+    settings: {
+      theme: 'auto',
+      budgetBasis: 'average', // 'average' (checks/yr ÷ 12) or 'two' (2 checks/month, extras are bonus)
+      returnLow: 4, returnMid: 6.5, returnHigh: 9,
+      inflation: 2.5,
+      defaultYears: 30,
+      limits: { year: 2026, k401: 24500, k401catch: 8000, ira: 7500, iraCatch: 1100 },
+      lastBackup: null,
+      pinHash: null,
+      onboarded: false
+    },
+    people: [],
+    accounts: [],
+    bills: [],
+    goals: [],
+    giving: { enabled: true, label: 'Tithe', percent: 10, basis: 'gross', personIds: [], extraMonthly: 0, accountId: '', hourlyPlan: 'auto' },
+    paylog: [],
+    snapshots: [],
+    binder: defaultBinder()
+  };
+}
+
+function newPerson(name) {
+  return {
+    id: uid(), name: name || 'New person', payType: 'salary', frequency: 'biweekly',
+    salary: 0, rate: 0, hours: 80, diffs: [], otHours: 0, otMult: 1.5, budgetOn: 'floor',
+    retirePct: 0, retireAccountId: '', matchPct: 0,
+    deductions: [], taxMode: 'percent', taxFixed: 0, taxPct: 22,
+    age: null, retireAge: 65, lastPayday: ''
+  };
+}
+
+/* Normalize/upgrade loaded data so missing fields never crash the UI */
+function normalize(d) {
+  const base = defaultData();
+  d = Object.assign({}, base, d || {});
+  d.settings = Object.assign({}, base.settings, d.settings || {});
+  d.settings.limits = Object.assign({}, base.settings.limits, (d.settings.limits || {}));
+  d.giving = Object.assign({}, base.giving, d.giving || {});
+  d.binder = Object.assign({}, base.binder, d.binder || {});
+  ['people', 'accounts', 'bills', 'goals', 'snapshots', 'paylog'].forEach(k => { if (!Array.isArray(d[k])) d[k] = []; });
+  d.people = d.people.map(p => Object.assign(newPerson(), p, { diffs: p.diffs || [], deductions: p.deductions || [] }));
+  d.goals.forEach(g => { g.celebrated = g.celebrated || []; });
+  return d;
+}
+
+/* ---------- Pay ---------- */
+function personName(d, id) {
+  if (id === 'joint') return 'Joint';
+  if (id === 'shared') return 'Shared';
+  const p = d.people.find(x => x.id === id); return p ? p.name : '';
+}
+
+function diffPay(p, df) {
+  const h = num(df.hours);
+  return df.mode === 'percent' ? num(p.rate) * num(df.amount) / 100 * h : num(df.amount) * h;
+}
+
+/* One paycheck, either the guaranteed floor or the expected (with differentials + OT). */
+function paycheck(p, mode) {
+  const freq = PERIODS[p.frequency] || 26;
+  let floor, extra = 0;
+  if (p.payType === 'hourly') {
+    floor = num(p.rate) * num(p.hours);
+    extra = p.diffs.reduce((s, df) => s + diffPay(p, df), 0) + num(p.otHours) * num(p.rate) * num(p.otMult || 1.5);
+  } else {
+    floor = num(p.salary) / freq;
+  }
+  const useExtra = mode === 'expected' || (mode === 'budget' && p.payType === 'hourly' && p.budgetOn === 'expected');
+  const gross = floor + (useExtra ? extra : 0);
+  const retire = gross * num(p.retirePct) / 100;
+  const match = gross * num(p.matchPct) / 100;
+  const fixedDed = p.deductions.reduce((s, x) => s + num(x.amount), 0);
+  const tax = p.taxMode === 'fixed' ? num(p.taxFixed) : Math.max(0, gross - retire - fixedDed) * num(p.taxPct) / 100;
+  const net = gross - retire - fixedDed - tax;
+  return { freq, floor, extra, gross, retire, match, fixedDed, tax, net };
+}
+
+function checksPerMonth(d, p) {
+  if (d.settings.budgetBasis === 'two' && TWO_CHECK[p.frequency]) return TWO_CHECK[p.frequency];
+  return (PERIODS[p.frequency] || 26) / 12;
+}
+
+/* ---------- Money out ---------- */
+const toMonthly = (amt, freq) => num(amt) * (PERIODS[freq] || 12) / 12;
+const billMonthly = b => toMonthly(b.amount, b.frequency);
+
+function monthsBetween(fromISO, toISO) {
+  const a = new Date(fromISO + 'T00:00:00'), b = new Date(toISO + 'T00:00:00');
+  return (b.getFullYear() - a.getFullYear()) * 12 + (b.getMonth() - a.getMonth()) + (b.getDate() - a.getDate()) / 30.44;
+}
+
+function goalTarget(d, g, ctx) {
+  if (g.targetSource === 'home') return num(g.homePrice) * num(g.downPct) / 100;
+  if (g.targetSource === 'emergency') return num(g.emMonths) * (ctx ? ctx.essentialM : 0);
+  if (g.targetSource === 'manual') return num(g.target);
+  return 0;
+}
+
+function goalSaved(d, g) {
+  if (g.accountId) {
+    const a = d.accounts.find(x => x.id === g.accountId);
+    if (a && isRetireType(a.type)) return num(a.balance);
+  }
+  return num(g.saved);
+}
+
+function goalMonthly(d, g, ctx) {
+  if (g.kind === 'target') {
+    const target = goalTarget(d, g, ctx);
+    const remaining = Math.max(0, target - goalSaved(d, g));
+    if (!g.targetDate) return 0;
+    const m = Math.max(1, monthsBetween(todayISO(), g.targetDate));
+    return remaining / m;
+  }
+  return toMonthly(g.amount, g.per === 'yearly' ? 'yearly' : 'monthly');
+}
+
+/* months until saved reaches target, with optional APY; null if never */
+function monthsToTarget(saved, monthly, target, apy) {
+  if (target <= 0) return null;
+  if (saved >= target) return 0;
+  const r = num(apy) / 100 / 12;
+  let bal = saved, m = 0;
+  while (bal < target && m < 1200) { bal = bal * (1 + r) + monthly; m++; }
+  return m >= 1200 ? null : m;
+}
+
+/* ---------- Household roll-up ---------- */
+function summarize(d) {
+  const s = { people: [], grossM: 0, netM: 0, retireM: 0, matchM: 0, taxM: 0, dedM: 0, expectedNetM: 0, floorNetM: 0 };
+  d.people.forEach(p => {
+    const cpm = checksPerMonth(d, p);
+    const b = paycheck(p, 'budget'), fl = paycheck(p, 'floor'), ex = paycheck(p, 'expected');
+    const avg = (PERIODS[p.frequency] || 26) / 12;
+    const row = { p, cpm, b, fl, ex,
+      grossM: b.gross * cpm, netM: b.net * cpm, retireM: b.retire * avg, matchM: b.match * avg,
+      retireYear: b.retire * (PERIODS[p.frequency] || 26),
+      floorNetM: fl.net * cpm, expectedNetM: ex.net * cpm };
+    s.people.push(row);
+    s.grossM += row.grossM; s.netM += row.netM; s.retireM += b.retire * cpm; s.matchM += row.matchM;
+    s.taxM += b.tax * cpm; s.dedM += b.fixedDed * cpm;
+    s.floorNetM += row.floorNetM; s.expectedNetM += row.expectedNetM;
+  });
+  s.upsideM = s.expectedNetM - s.netM; // money above what the budget assumes
+
+  s.billsM = d.bills.reduce((t, b) => t + billMonthly(b), 0);
+  s.subsM = d.bills.filter(b => b.isSub).reduce((t, b) => t + billMonthly(b), 0);
+
+  // giving
+  const gv = d.giving;
+  s.givingM = 0; s.givingExpectedM = 0;
+  s.givingPlan = {};
+  if (gv.enabled) {
+    s.people.forEach(r => {
+      if (!gv.personIds.includes(r.p.id)) return;
+      const plan = givingPlanFor(d, r);
+      s.givingPlan[r.p.id] = plan;
+      const baseEx = gv.basis === 'net' ? r.expectedNetM : r.ex.gross * r.cpm;
+      s.givingM += plan.perCheck * r.cpm;
+      s.givingExpectedM += baseEx * num(gv.percent) / 100;
+    });
+    s.givingM += num(gv.extraMonthly); s.givingExpectedM += num(gv.extraMonthly);
+  }
+  s.essentialM = s.billsM + s.givingM;
+  s.owed = givingOwed(d);
+
+  const ctx = { essentialM: s.essentialM };
+  s.goals = d.goals.map(g => {
+    const acct = d.accounts.find(a => a.id === g.accountId);
+    const retire = !!(acct && isRetireType(acct.type));
+    const monthly = goalMonthly(d, g, ctx);
+    const target = goalTarget(d, g, ctx);
+    const saved = goalSaved(d, g);
+    const pct = target > 0 ? Math.min(1, saved / target) : null;
+    const eta = target > 0 ? monthsToTarget(saved, monthly, target, g.apy) : null;
+    const etaNoGrowth = target > 0 ? monthsToTarget(saved, monthly, target, 0) : null;
+    return { g, acct, retire, monthly, target, saved, pct, eta, etaNoGrowth };
+  });
+  s.goalsM = s.goals.reduce((t, x) => t + x.monthly, 0);
+  s.goalsRetireM = s.goals.filter(x => x.retire).reduce((t, x) => t + x.monthly, 0);
+
+  s.leftoverM = s.netM - s.billsM - s.givingM - s.goalsM;
+  s.savedM = s.goalsM + s.retireM; // what goes toward the future from your own pay
+  s.savingsRate = s.grossM > 0 ? s.savedM / s.grossM : 0;
+
+  // net worth from current balances
+  s.assets = d.accounts.filter(a => !isDebtType(a.type)).reduce((t, a) => t + num(a.balance), 0);
+  s.debts = d.accounts.filter(a => isDebtType(a.type)).reduce((t, a) => t + Math.abs(num(a.balance)), 0);
+  s.netWorth = s.assets - s.debts;
+  s.retireBal = d.accounts.filter(a => isRetireType(a.type)).reduce((t, a) => t + num(a.balance), 0);
+  return s;
+}
+
+/* ---------- Retirement projection ---------- */
+function yearsToRetire(d, ownerId) {
+  const p = d.people.find(x => x.id === ownerId);
+  if (p && p.age && p.retireAge) return Math.max(0, num(p.retireAge) - num(p.age));
+  return null;
+}
+
+function retirementPlan(d, s) {
+  const accts = d.accounts.filter(a => isRetireType(a.type));
+  const rows = accts.map(a => {
+    let monthly = 0, fromPay = 0, match = 0;
+    s.people.forEach(r => {
+      if (r.p.retireAccountId === a.id) { fromPay += r.retireM; match += r.matchM; }
+    });
+    const fromGoals = s.goals.filter(x => x.g.accountId === a.id).reduce((t, x) => t + x.monthly, 0);
+    monthly = fromPay + match + fromGoals;
+    let years = yearsToRetire(d, a.owner);
+    const assumed = years === null;
+    if (assumed) years = num(d.settings.defaultYears) || 30;
+    return { a, fromPay, match, fromGoals, monthly, years, assumed };
+  });
+  return rows;
+}
+
+function fv(balance, monthly, ratePct, months) {
+  const r = ratePct / 100 / 12;
+  if (r === 0) return balance + monthly * months;
+  const g = Math.pow(1 + r, months);
+  return balance * g + monthly * (g - 1) / r;
+}
+
+/* Combined balance per year for a scenario; contributions stop at each owner's retirement */
+function projectSeries(rows, ratePct, horizonYears, extraMonthly, inflationPct, todaysDollars) {
+  const out = [];
+  for (let y = 0; y <= horizonYears; y++) {
+    let tot = 0;
+    rows.forEach((row, i) => {
+      const contribYears = Math.min(y, row.years);
+      const c = row.monthly + (i === 0 ? extraMonthly : 0);
+      let v = fv(num(row.a.balance), c, ratePct, contribYears * 12);
+      if (y > row.years) v = fv(v, 0, ratePct, (y - row.years) * 12);
+      tot += v;
+    });
+    if (todaysDollars) tot = tot / Math.pow(1 + inflationPct / 100, y);
+    out.push(tot);
+  }
+  return out;
+}
+
+/* ---------- Paydays / extra-paycheck months ---------- */
+function extraPaycheckMonths(p, monthsAhead) {
+  if (!p.lastPayday || !(p.frequency === 'biweekly' || p.frequency === 'weekly')) return [];
+  const step = p.frequency === 'weekly' ? 7 : 14;
+  const normal = p.frequency === 'weekly' ? 4 : 2;
+  const start = new Date(); start.setDate(1); start.setHours(0, 0, 0, 0);
+  const end = new Date(start); end.setMonth(end.getMonth() + monthsAhead);
+  let dt = new Date(p.lastPayday + 'T00:00:00');
+  while (dt > start) dt.setDate(dt.getDate() - step);
+  const counts = {};
+  while (dt < end) {
+    if (dt >= start) { const k = dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0'); counts[k] = (counts[k] || 0) + 1; }
+    dt.setDate(dt.getDate() + step);
+  }
+  return Object.keys(counts).filter(k => counts[k] > normal).map(k => ({ month: k, extra: counts[k] - normal }));
+}
+
+/* ---------- Giving on variable pay ----------
+   Hourly pay changes check to check, so the PLAN uses the best estimate we have
+   (recent real stubs → expected with differentials → base pay), while the LOG
+   settles the exact amount from each actual paystub. */
+function payLogFor(d, personId) {
+  return d.paylog.filter(e => e.personId === personId).sort((a, b) => a.date.localeCompare(b.date));
+}
+function recentAvg(entries, key, n) {
+  const v = entries.map(e => num(e[key])).filter(x => x > 0).slice(-n);
+  return v.length ? { avg: v.reduce((a, b) => a + b, 0) / v.length, count: v.length } : null;
+}
+function givingPlanFor(d, r) {
+  const gv = d.giving, key = gv.basis === 'net' ? 'net' : 'gross', pctg = num(gv.percent) / 100;
+  let source = 'budget', base = r.b[key];
+  if (r.p.payType === 'hourly') {
+    const mode = gv.hourlyPlan || 'auto';
+    const act = recentAvg(payLogFor(d, r.p.id), key, 6);
+    const hasExtra = r.ex.gross - r.fl.gross > 0.01;
+    if ((mode === 'actual' || mode === 'auto') && act && act.count >= (mode === 'auto' ? 3 : 1)) { source = 'actual'; base = act.avg; }
+    else if ((mode === 'expected' || mode === 'auto') && hasExtra) { source = 'expected'; base = r.ex[key]; }
+    else if (mode === 'floor' || mode === 'auto' || mode === 'actual' || mode === 'expected') { source = 'floor'; base = r.fl[key]; }
+  }
+  return { source, base, perCheck: base * pctg };
+}
+function titheFor(d, e) { return num(d.giving.basis === 'net' ? e.net : e.gross) * num(d.giving.percent) / 100; }
+function givingOwed(d) {
+  const ids = d.giving.enabled ? d.giving.personIds : [];
+  const open = d.paylog.filter(e => ids.includes(e.personId) && !e.paid && num(d.giving.basis === 'net' ? e.net : e.gross) > 0);
+  return { amount: open.reduce((t, e) => t + titheFor(d, e), 0), count: open.length };
+}
+/* Paydays since the anchor date that have no logged stub (±4 days) */
+function pendingPaydays(d, p) {
+  if (!p.lastPayday || !PERIODS[p.frequency]) return [];
+  const step = { weekly: 7, biweekly: 14 }[p.frequency];
+  const today = new Date(); today.setHours(23, 59, 59, 0);
+  const anchor = new Date(p.lastPayday + 'T00:00:00');
+  const log = payLogFor(d, p.id).map(e => new Date(e.date + 'T00:00:00').getTime());
+  const dates = [];
+  if (step) { for (let t = new Date(anchor); t <= today; t.setDate(t.getDate() + step)) dates.push(new Date(t)); }
+  else if (p.frequency === 'monthly') { for (let t = new Date(anchor); t <= today; t.setMonth(t.getMonth() + 1)) dates.push(new Date(t)); }
+  else if (p.frequency === 'semimonthly') { for (let t = new Date(anchor.getFullYear(), anchor.getMonth(), 1); t <= today; t.setMonth(t.getMonth() + 1)) { [15, new Date(t.getFullYear(), t.getMonth() + 1, 0).getDate()].forEach(dd => { const x = new Date(t.getFullYear(), t.getMonth(), dd); if (x >= anchor && x <= today) dates.push(x); }); } }
+  return dates.filter(x => !log.some(l => Math.abs(l - x.getTime()) <= 4 * 864e5)).map(localISO).slice(-6);
+}
+function nextPayday(p) {
+  if (!p.lastPayday) return null;
+  const step = { weekly: 7, biweekly: 14 }[p.frequency]; if (!step) return null;
+  const t = new Date(p.lastPayday + 'T00:00:00'), now = new Date(); now.setHours(0, 0, 0, 0);
+  while (t < now) t.setDate(t.getDate() + step);
+  return t;
+}
+
+/* ---------- Snapshots ---------- */
+function snapshotNetWorth(d, snap) {
+  let t = 0;
+  Object.keys(snap.balances || {}).forEach(id => {
+    const a = d.accounts.find(x => x.id === id);
+    const v = num(snap.balances[id]);
+    if (a && isDebtType(a.type)) t -= Math.abs(v); else t += v;
+  });
+  return t;
+}
+
+function actualPayStats(d, personId) {
+  const checks = [];
+  d.snapshots.forEach(sn => { ((sn.paychecks || {})[personId] || []).forEach(v => { if (num(v) > 0) checks.push(num(v)); }); });
+  payLogFor(d, personId).forEach(e => { if (num(e.net) > 0) checks.push(num(e.net)); });
+  if (!checks.length) return null;
+  const recent = checks.slice(-12);
+  return { count: recent.length, avg: recent.reduce((a, b) => a + b, 0) / recent.length, all: checks };
+}
+
+/* ---------- Backup crypto ---------- */
+async function deriveKey(pass, salt) {
+  const enc = new TextEncoder();
+  const km = await crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 250000, hash: 'SHA-256' }, km, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+}
+const b64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function encryptJSON(obj, pass) {
+  const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+  const key = await deriveKey(pass, salt);
+  const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(JSON.stringify(obj)));
+  return { ournestEncrypted: 1, salt: b64(salt), iv: b64(iv), data: b64(ct) };
+}
+async function decryptJSON(wrapper, pass) {
+  const key = await deriveKey(pass, unb64(wrapper.salt));
+  const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(wrapper.iv) }, key, unb64(wrapper.data));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+async function sha256(s) {
+  const h = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return b64(h);
+}
+
+if (typeof module !== 'undefined') module.exports = { givingPlanFor, givingOwed, pendingPaydays, PERIODS, normalize, defaultData, newPerson, paycheck, summarize, retirementPlan, projectSeries, fv, monthsToTarget, extraPaycheckMonths, goalTarget };
+
+/* ===== Our Nest — tiny SVG chart kit (no libraries, works offline) ===== */
+'use strict';
+
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const HIDDEN = { on: false };
+const MASK = '$•••••', MASK_SHORT = '$•••';
+const money = (n, cents) => {
+  if (HIDDEN.on) return MASK;
+  const v = Number(n) || 0;
+  const s = Math.abs(v).toLocaleString('en-US', { minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0 });
+  return (v < 0 ? '−$' : '$') + s;
+};
+const moneyShort = n => {
+  if (HIDDEN.on) return MASK_SHORT;
+  const v = Math.abs(n), sign = n < 0 ? '−' : '';
+  if (v >= 1e6) return sign + '$' + parseFloat((v / 1e6).toFixed(v >= 1e7 ? 1 : 2)) + 'M';
+  if (v >= 1e3) return sign + '$' + (v / 1e3).toFixed(v >= 1e5 ? 0 : 1).replace(/\.0$/, '') + 'k';
+  return sign + '$' + Math.round(v);
+};
+const pct = (n, d = 0) => (n * 100).toFixed(d) + '%';
+
+/* Charts register hover handlers keyed by id; one global tooltip element serves all. */
+const Charts = { hover: {} };
+
+function niceMax(v) {
+  if (v <= 0) return 1;
+  const p = Math.pow(10, Math.floor(Math.log10(v)));
+  const m = v / p;
+  const step = m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10;
+  return step * p;
+}
+
+/* Donut: segments [{label, value, color}] */
+function donutChart(segments, opts = {}) {
+  const size = opts.size || 220, r = size / 2 - 6, inner = r * 0.66, cx = size / 2, cy = size / 2;
+  const total = segments.reduce((s, x) => s + Math.max(0, x.value), 0) || 1;
+  let a0 = -Math.PI / 2;
+  const gapAngle = 2 / r; // 2px surface gap between fills
+  const paths = segments.filter(x => x.value > 0).map(seg => {
+    const frac = seg.value / total;
+    const a1 = a0 + frac * Math.PI * 2;
+    const s = a0 + gapAngle / 2, e = Math.max(s + 0.001, a1 - gapAngle / 2);
+    const large = e - s > Math.PI ? 1 : 0;
+    const p = (rad, ang) => [cx + rad * Math.cos(ang), cy + rad * Math.sin(ang)].map(n => n.toFixed(2)).join(' ');
+    const d = `M ${p(r, s)} A ${r} ${r} 0 ${large} 1 ${p(r, e)} L ${p(inner, e)} A ${inner} ${inner} 0 ${large} 0 ${p(inner, s)} Z`;
+    a0 = a1;
+    return `<path d="${d}" fill="${seg.color}" data-tip="${esc(seg.label)}|${money(seg.value)}/mo · ${pct(frac, 1)}"></path>`;
+  }).join('');
+  return `<svg class="chart donut" viewBox="0 0 ${size} ${size}" role="img" aria-label="${esc(opts.label || 'Breakdown')}">
+    ${paths}
+    <text x="${cx}" y="${cy - 4}" text-anchor="middle" class="donut-big">${esc(opts.center || '')}</text>
+    <text x="${cx}" y="${cy + 18}" text-anchor="middle" class="donut-small">${esc(opts.sub || '')}</text>
+  </svg>`;
+}
+
+function legend(items) {
+  return `<ul class="legend">${items.map(i => `<li><span class="sw" style="background:${i.color}"></span><span class="lg-l">${esc(i.label)}</span><span class="lg-v">${i.value}</span></li>`).join('')}</ul>`;
+}
+
+/* Sankey-ish flow: sources [{label,value,color}] -> targets [{label,value,color}] through one middle node */
+function flowChart(sources, targets, opts = {}) {
+  const cp = !!opts.compact;
+  const W = cp ? 400 : 860, H = opts.height || 300, nodeW = cp ? 10 : 12, gap = 10, padY = 8;
+  const total = Math.max(1, sources.reduce((s, x) => s + x.value, 0));
+  const tTotal = Math.max(1, targets.reduce((s, x) => s + Math.max(0, x.value), 0));
+  const avail = H - padY * 2;
+  const scaleS = (avail - gap * (sources.length - 1)) / total;
+  const tgts = targets.filter(t => t.value > 0);
+  const scaleT = (avail - gap * (tgts.length - 1)) / tTotal;
+  const xL = cp ? 64 : 150, xM = cp ? 168 : W / 2 - nodeW / 2, xR = cp ? W - 122 : W - 210;
+  let y = padY, out = '';
+  const midH = total * Math.min(scaleS, scaleT);
+  const midY = (H - midH) / 2;
+  let my = midY;
+  sources.forEach(s => {
+    const h = s.value * scaleS, mh = s.value * Math.min(scaleS, scaleT);
+    out += `<path class="flow" d="M${xL + nodeW},${y} C${(xL + xM) / 2},${y} ${(xL + xM) / 2},${my} ${xM},${my} L${xM},${my + mh} C${(xL + xM) / 2},${my + mh} ${(xL + xM) / 2},${y + h} ${xL + nodeW},${y + h} Z" fill="${s.color}" data-tip="${esc(s.label)}|${money(s.value)}/mo gross"></path>`;
+    out += `<rect x="${xL}" y="${y}" width="${nodeW}" height="${Math.max(2, h)}" rx="3" fill="${s.color}"></rect>`;
+    out += `<text x="${xL - 6}" y="${y + h / 2 - 7}" text-anchor="end" dominant-baseline="middle" class="fl-l">${esc(s.label)}</text>`;
+    out += `<text x="${xL - 6}" y="${y + h / 2 + 9}" text-anchor="end" dominant-baseline="middle" class="fl-v">${moneyShort(s.value)}</text>`;
+    y += h + gap; my += mh;
+  });
+  out += `<rect x="${xM}" y="${midY}" width="${nodeW}" height="${midH}" rx="3" class="fl-mid"></rect>`;
+  let ty = padY; my = midY;
+  const ms = midH / tTotal;
+  const labels = [];
+  tgts.forEach(t => {
+    const h = t.value * scaleT, mh = t.value * ms;
+    out += `<path class="flow" d="M${xM + nodeW},${my} C${(xM + xR) / 2},${my} ${(xM + xR) / 2},${ty} ${xR},${ty} L${xR},${ty + h} C${(xM + xR) / 2},${ty + h} ${(xM + xR) / 2},${my + mh} ${xM + nodeW},${my + mh} Z" fill="${t.color}" data-tip="${esc(t.label)}|${money(t.value)}/mo · ${pct(t.value / tTotal, 1)}"></path>`;
+    out += `<rect x="${xR}" y="${ty}" width="${nodeW}" height="${Math.max(2, h)}" rx="3" fill="${t.color}"></rect>`;
+    labels.push({ t, ly: ty + h / 2 });
+    ty += h + gap; my += mh;
+  });
+  // two-line labels, nudged apart so small bands never collide
+  const LH = 32;
+  for (let i = 1; i < labels.length; i++) labels[i].ly = Math.max(labels[i].ly, labels[i - 1].ly + LH);
+  const over = labels.length ? labels[labels.length - 1].ly - (H - 12) : 0;
+  if (over > 0) { labels.forEach(l => l.ly -= over); for (let i = labels.length - 2; i >= 0; i--) labels[i].ly = Math.min(labels[i].ly, labels[i + 1].ly - LH); }
+  labels.forEach(({ t, ly }) => {
+    out += `<text x="${xR + nodeW + 6}" y="${ly - 7}" dominant-baseline="middle" class="fl-l">${esc(t.label)}</text>`;
+    out += `<text x="${xR + nodeW + 6}" y="${ly + 9}" dominant-baseline="middle" class="fl-v">${moneyShort(t.value)} · ${pct(t.value / tTotal)}</text>`;
+  });
+  return `<svg class="chart flowchart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.label || 'Where the money goes')}">${out}</svg>`;
+}
+
+/* Line chart with optional band. series: [{name, values[], color, dash}], xLabels[] */
+function lineChart(id, cfg) {
+  const W = 640, H = cfg.height || 260, L = 56, R = 16, T = 14, B = 28;
+  const all = [];
+  cfg.series.forEach(s => all.push(...s.values));
+  if (cfg.band) all.push(...cfg.band.high);
+  const maxV = niceMax(Math.max(1, ...all));
+  const minV = cfg.minZero === false ? Math.min(0, ...all) : 0;
+  const n = cfg.xLabels.length;
+  const x = i => L + (n <= 1 ? 0 : i * (W - L - R) / (n - 1));
+  const yv = v => T + (H - T - B) * (1 - (v - minV) / (maxV - minV || 1));
+  let g = '';
+  for (let k = 0; k <= 4; k++) {
+    const v = minV + (maxV - minV) * k / 4, yy = yv(v);
+    g += `<line x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}" class="grid"></line><text x="${L - 8}" y="${yy}" text-anchor="end" dominant-baseline="middle" class="axis">${moneyShort(v)}</text>`;
+  }
+  const every = Math.max(1, Math.ceil(n / 7));
+  cfg.xLabels.forEach((lab, i) => { if (i % every === 0 || i === n - 1) g += `<text x="${x(i)}" y="${H - 8}" text-anchor="middle" class="axis">${esc(lab)}</text>`; });
+  if (cfg.band) {
+    const up = cfg.band.high.map((v, i) => `${x(i)},${yv(v)}`).join(' ');
+    const dn = cfg.band.low.map((v, i) => `${x(i)},${yv(v)}`).reverse().join(' ');
+    g += `<polygon points="${up} ${dn}" fill="${cfg.band.color}" opacity="0.16"></polygon>`;
+  }
+  cfg.series.forEach(s => {
+    const pts = s.values.map((v, i) => `${x(i)},${yv(v)}`).join(' ');
+    g += `<polyline points="${pts}" fill="none" stroke="${s.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" ${s.dash ? 'stroke-dasharray="5 5"' : ''}></polyline>`;
+    if (s.endLabel && s.values.length) {
+      const i = s.values.length - 1;
+      g += `<circle cx="${x(i)}" cy="${yv(s.values[i])}" r="4.5" fill="${s.color}" stroke="var(--surface)" stroke-width="2"></circle>`;
+    }
+  });
+  g += `<line class="xhair" x1="0" x2="0" y1="${T}" y2="${H - B}" style="display:none"></line>`;
+  g += `<rect class="hit" x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent" data-chart="${id}"></rect>`;
+  Charts.hover[id] = { W, L, R, n, x, cfg, yv };
+  return `<svg class="chart line" id="${id}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(cfg.label || 'Line chart')}">${g}</svg>`;
+}
+
+/* Horizontal bars for category totals */
+function hBars(items, color) {
+  const max = Math.max(1, ...items.map(i => i.value));
+  return `<div class="hbars">${items.map(i => `<div class="hb-row" data-tip="${esc(i.label)}|${money(i.value, true)}/mo · ${money(i.value * 12)}/yr">
+    <span class="hb-l">${esc(i.label)}</span>
+    <span class="hb-track"><span class="hb-fill" style="width:${(i.value / max * 100).toFixed(1)}%;background:${i.color || color}"></span></span>
+    <span class="hb-v">${money(i.value)}</span></div>`).join('')}</div>`;
+}
+
+/* Ring gauge (single value) */
+function ring(frac, label, color) {
+  const r = 42, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, frac));
+  return `<svg class="ring" viewBox="0 0 100 100" role="img" aria-label="${esc(label)}">
+    <circle cx="50" cy="50" r="${r}" class="ring-track"></circle>
+    <circle cx="50" cy="50" r="${r}" fill="none" stroke="${color}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${(c * f).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 50 50)"></circle>
+    <text x="50" y="50" text-anchor="middle" dominant-baseline="central" class="ring-t">${pct(f)}</text></svg>`;
+}
+
+/* ---- global tooltip wiring ---- */
+function initTooltips() {
+  const tip = document.createElement('div');
+  tip.className = 'tooltip'; tip.setAttribute('role', 'status');
+  document.body.appendChild(tip);
+  const show = (html, ev) => {
+    tip.innerHTML = html; tip.style.display = 'block';
+    const pad = 12, w = tip.offsetWidth, h = tip.offsetHeight;
+    let lx = ev.clientX + pad, ly = ev.clientY - h - pad;
+    if (lx + w > window.innerWidth - 8) lx = ev.clientX - w - pad;
+    if (ly < 8) ly = ev.clientY + pad;
+    tip.style.left = lx + 'px'; tip.style.top = ly + 'px';
+  };
+  const hide = () => { tip.style.display = 'none'; document.querySelectorAll('.xhair').forEach(l => l.style.display = 'none'); };
+  const handle = ev => {
+    const t = ev.target.closest('[data-tip]');
+    if (t) { const [a, b] = t.dataset.tip.split('|'); show(`<b>${a}</b>${b ? '<br>' + b : ''}`, ev); return; }
+    const hit = ev.target.closest('rect.hit');
+    if (hit) {
+      const h = Charts.hover[hit.dataset.chart]; if (!h) return;
+      const svg = hit.ownerSVGElement, box = svg.getBoundingClientRect();
+      const sx = (ev.clientX - box.left) * h.W / box.width;
+      const i = Math.max(0, Math.min(h.n - 1, Math.round((sx - h.L) / ((h.W - h.L - h.R) / Math.max(1, h.n - 1)))));
+      const line = svg.querySelector('.xhair'); line.style.display = ''; line.setAttribute('x1', h.x(i)); line.setAttribute('x2', h.x(i));
+      let html = `<b>${esc(h.cfg.xLabels[i])}${h.cfg.xSuffix ? esc(h.cfg.xSuffix[i] || '') : ''}</b>`;
+      h.cfg.series.forEach(s => { html += `<br><span class="sw" style="background:${s.color}"></span>${esc(s.name)}: ${money(s.values[i])}`; });
+      if (h.cfg.band) html += `<br><span class="muted">Range: ${moneyShort(h.cfg.band.low[i])} – ${moneyShort(h.cfg.band.high[i])}</span>`;
+      show(html, ev); return;
+    }
+    hide();
+  };
+  document.addEventListener('mousemove', handle);
+  document.addEventListener('click', ev => { if (ev.target.closest('[data-tip], rect.hit')) handle(ev); });
+  document.addEventListener('scroll', hide, true);
+}
+
+/* ===== Our Nest — app shell, views, forms ===== */
+'use strict';
+
+const STORE_KEY = 'ournest:data';
+let D = null;      // data
+let S = null;      // summary
+let route = 'home';
+let ui = { billFilter: 'all', todays: true, extra: 0, step: 0, draft: null, more: false, explore: {} };
+function explorePerson(p) {
+  const o = ui.explore[p.id]; if (!o) return p;
+  const q = JSON.parse(JSON.stringify(p)); q.diffs.forEach((df, i) => { if (o.diffs[i] != null) df.hours = o.diffs[i]; }); if (o.ot != null) q.otHours = o.ot; return q;
+}
+
+const COLORS = () => {
+  const cs = getComputedStyle(document.documentElement);
+  const g = k => cs.getPropertyValue(k).trim();
+  return { s1: g('--s1'), s2: g('--s2'), s3: g('--s3'), s4: g('--s4'), s5: g('--s5'), neutral: g('--neutral'), brand: g('--brand'), p1: g('--p1'), p2: g('--p2') };
+};
+
+const EYE_SVG = on => on
+  ? '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><line x1="3" y1="3" x2="21" y2="21"/></svg>'
+  : '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+const eyeBtn = cls => `<button class="eye-btn ${cls || ''} ${HIDDEN.on ? 'on' : ''}" data-act="toggleHide" aria-pressed="${HIDDEN.on}" aria-label="${HIDDEN.on ? 'Show dollar amounts' : 'Hide dollar amounts'}" title="${HIDDEN.on ? 'Show amounts' : 'Hide amounts'}">${EYE_SVG(HIDDEN.on)}</button>`;
+function setHidden(on) {
+  HIDDEN.on = on; document.documentElement.classList.toggle('hide-money', on);
+  try { localStorage.setItem('ournest:hide', on ? '1' : '0'); } catch (e) {}
+}
+
+/* ---------- persistence ---------- */
+function load() {
+  try { const raw = localStorage.getItem(STORE_KEY); if (raw) return normalize(JSON.parse(raw)); } catch (e) { console.warn(e); }
+  return null;
+}
+let saveTimer = null;
+function save() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => { try { localStorage.setItem(STORE_KEY, JSON.stringify(D)); } catch (e) { toast('Could not save on this device: ' + e.message, 'bad'); } }, 120);
+}
+function commit() { if (!D) return render(); S = summarize(D); save(); render(); }
+
+/* ---------- small helpers ---------- */
+const $ = (sel, root = document) => root.querySelector(sel);
+const opt = (v, label, cur) => `<option value="${esc(v)}" ${String(v) === String(cur) ? 'selected' : ''}>${esc(label)}</option>`;
+const peopleOpts = (withJoint, jointLabel = 'Joint') => [...D.people.map(p => [p.id, p.name]), ...(withJoint ? [[withJoint, jointLabel]] : [])];
+const acctOpts = (filter) => [['', '— none —'], ...D.accounts.filter(a => !filter || filter(a)).map(a => [a.id, a.name + (a.last4 ? ' ••' + a.last4 : '')])];
+const acctName = id => { const a = D.accounts.find(x => x.id === id); return a ? a.name + (a.last4 ? ' ••' + a.last4 : '') : ''; };
+const names = () => D.people.map(p => p.name).join(' & ');
+const monthLabel = k => { const [y, m] = k.split('-'); return new Date(+y, +m - 1, 1).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }); };
+const durLabel = m => { if (m == null) return '—'; if (m <= 0) return 'Done!'; const y = Math.floor(m / 12), mm = Math.round(m % 12); return ((y ? y + ' yr' + (y > 1 ? 's' : '') + ' ' : '') + (mm ? mm + ' mo' : '')).trim(); };
+const dateIn = m => { const d = new Date(); d.setMonth(d.getMonth() + m); return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }); };
+function greeting() { const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening'; }
+
+function toast(msg, kind) {
+  const t = document.createElement('div'); t.className = 'toast ' + (kind || ''); t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.classList.add('show'), 10);
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 3200);
+}
+
+/* ---------- confetti ---------- */
+function confetti() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c = document.createElement('canvas'); c.className = 'confetti'; document.body.appendChild(c);
+  const ctx = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight;
+  const col = Object.values(COLORS());
+  const P = Array.from({ length: 140 }, () => ({ x: innerWidth / 2 + (Math.random() - .5) * 200, y: innerHeight / 3, vx: (Math.random() - .5) * 12, vy: -Math.random() * 12 - 4, r: Math.random() * 6 + 3, c: col[Math.floor(Math.random() * col.length)], a: Math.random() * 6 }));
+  let f = 0;
+  (function tick() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    P.forEach(p => { p.vy += .35; p.x += p.vx; p.y += p.vy; p.a += .2; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.fillStyle = p.c; ctx.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2); ctx.restore(); });
+    if (++f < 150) requestAnimationFrame(tick); else c.remove();
+  })();
+}
+
+/* =====================================================================
+   FORMS — one modal builder for every editor in the app
+   ===================================================================== */
+let form = null;
+function openForm(cfg) {
+  form = Object.assign({}, cfg, { v: JSON.parse(JSON.stringify(cfg.value || {})) });
+  renderForm();
+}
+function closeForm() { form = null; $('#modal').innerHTML = ''; $('#modal').classList.remove('open'); }
+
+function fieldHTML(f, v) {
+  if (f.show && !f.show(v)) return '';
+  const val = v[f.k];
+  const id = 'f_' + f.k;
+  const help = f.help ? `<small class="help">${f.help}</small>` : '';
+  const cls = 'field' + (f.half ? ' half' : '');
+  switch (f.type) {
+    case 'select':
+      return `<label class="${cls}"><span>${esc(f.label)}</span><select id="${id}" data-k="${f.k}" ${f.live ? 'data-live' : ''}>${(typeof f.options === 'function' ? f.options(v) : f.options).map(o => opt(o[0], o[1], val)).join('')}</select>${help}</label>`;
+    case 'check':
+      return `<label class="${cls} check"><input type="checkbox" id="${id}" data-k="${f.k}" ${val ? 'checked' : ''} ${f.live ? 'data-live' : ''}><span>${esc(f.label)}</span>${help}</label>`;
+    case 'checks':
+      return `<fieldset class="${cls}"><legend>${esc(f.label)}</legend>${f.options.map(o => `<label class="check inline"><input type="checkbox" data-k="${f.k}" data-multi="${esc(o[0])}" ${(val || []).includes(o[0]) ? 'checked' : ''}><span>${esc(o[1])}</span></label>`).join('')}${help}</fieldset>`;
+    case 'textarea':
+      return `<label class="${cls}"><span>${esc(f.label)}</span><textarea id="${id}" data-k="${f.k}" rows="${f.rows || 4}" placeholder="${esc(f.placeholder || '')}">${esc(val || '')}</textarea>${help}</label>`;
+    case 'list': {
+      const rows = (val || []).map((row, i) => `<div class="lrow">${f.cols.map(c => c.type === 'select'
+        ? `<label><span>${esc(c.label)}</span><select data-list="${f.k}" data-i="${i}" data-c="${c.k}">${c.options.map(o => opt(o[0], o[1], row[c.k])).join('')}</select></label>`
+        : `<label><span>${esc(c.label)}</span><input type="${c.type === 'text' ? 'text' : 'number'}" step="any" inputmode="${c.type === 'text' ? 'text' : 'decimal'}" value="${esc(row[c.k] ?? '')}" data-list="${f.k}" data-i="${i}" data-c="${c.k}" data-num="${c.type !== 'text' ? 1 : ''}"></label>`).join('')}
+        <button type="button" class="icon-btn" data-fact="rm" data-list="${f.k}" data-i="${i}" aria-label="Remove">✕</button></div>`).join('');
+      return `<div class="field list"><span class="lbl">${esc(f.label)}</span>${help}${rows || '<p class="muted small">None yet.</p>'}<button type="button" class="btn ghost sm" data-fact="add" data-list="${f.k}">+ ${esc(f.addLabel || 'Add')}</button></div>`;
+    }
+    default: {
+      const isNum = ['number', 'money', 'percent'].includes(f.type);
+      const pre = f.type === 'money' ? '<i>$</i>' : '', post = f.type === 'percent' ? '<i>%</i>' : (f.suffix ? `<i>${f.suffix}</i>` : '');
+      return `<label class="${cls}"><span>${esc(f.label)}</span><div class="inp ${pre ? 'pre' : ''} ${post ? 'post' : ''}">${pre}<input id="${id}" data-k="${f.k}" type="${f.type === 'date' ? 'date' : f.type === 'password' ? 'password' : isNum ? 'number' : 'text'}" ${isNum ? 'step="any" inputmode="decimal"' : ''} ${f.max ? `maxlength="${f.max}"` : ''} value="${esc(val ?? '')}" placeholder="${esc(f.placeholder || '')}" ${f.live ? 'data-live' : ''} ${isNum ? 'data-num="1"' : ''}>${post}</div>${help}</label>`;
+    }
+  }
+}
+
+function renderForm() {
+  if (!form) return;
+  const m = $('#modal');
+  const preview = form.preview ? `<div class="form-preview">${form.preview(form.v)}</div>` : '';
+  m.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(form.title)}">
+    <header><h2>${esc(form.title)}</h2><button class="icon-btn" data-fact="close" aria-label="Close">✕</button></header>
+    ${form.intro ? `<p class="muted">${form.intro}</p>` : ''}
+    <div class="form-body">${form.fields.map(f => fieldHTML(f, form.v)).join('')}</div>
+    ${preview}
+    <footer>${form.onDelete ? `<button class="btn danger ghost" data-fact="delete">${esc(form.deleteLabel || 'Delete')}</button>` : '<span></span>'}
+    <div><button class="btn ghost" data-fact="close">Cancel</button> <button class="btn primary" data-fact="save">${esc(form.saveLabel || 'Save')}</button></div></footer></div>`;
+  m.classList.add('open');
+}
+
+function readFormInput(el) {
+  if (!form) return;
+  if (el.dataset.list) {
+    const arr = form.v[el.dataset.list]; const row = arr[+el.dataset.i];
+    row[el.dataset.c] = el.dataset.num ? (el.value === '' ? '' : parseFloat(el.value)) : el.value;
+    return;
+  }
+  const k = el.dataset.k; if (!k) return;
+  if (el.dataset.multi !== undefined) {
+    const arr = new Set(form.v[k] || []); el.checked ? arr.add(el.dataset.multi) : arr.delete(el.dataset.multi); form.v[k] = [...arr];
+  } else if (el.type === 'checkbox') form.v[k] = el.checked;
+  else if (el.dataset.num) form.v[k] = el.value === '' ? '' : parseFloat(el.value);
+  else form.v[k] = el.value;
+}
+
+function wireModal() {
+  const m = $('#modal');
+  m.addEventListener('input', e => {
+    readFormInput(e.target);
+    if (form && form.preview) { const pv = $('.form-preview', m); if (pv) pv.innerHTML = form.preview(form.v); }
+  });
+  m.addEventListener('change', e => {
+    readFormInput(e.target);
+    if (e.target.hasAttribute('data-live') || e.target.tagName === 'SELECT' || e.target.type === 'checkbox') {
+      const scroll = $('.sheet', m) ? $('.sheet', m).scrollTop : 0;
+      renderForm(); const sh = $('.sheet', m); if (sh) sh.scrollTop = scroll;
+    }
+  });
+  m.addEventListener('click', e => {
+    if (e.target === m) return closeForm();
+    const b = e.target.closest('[data-fact]'); if (!b || !form) return;
+    const a = b.dataset.fact;
+    if (a === 'close') closeForm();
+    if (a === 'save') {
+      if (form.validate) { const err = form.validate(form.v); if (err) return toast(err, 'bad'); }
+      const f = form; closeForm(); f.onSave(f.v); commit();
+    }
+    if (a === 'delete') {
+      if (b.dataset.sure) { const f = form; closeForm(); f.onDelete(); commit(); }
+      else { b.dataset.sure = 1; b.textContent = 'Tap again to confirm'; }
+    }
+    if (a === 'add') { const f = form.fields.find(x => x.k === b.dataset.list); form.v[f.k] = form.v[f.k] || []; form.v[f.k].push(f.newItem()); renderForm(); }
+    if (a === 'rm') { form.v[b.dataset.list].splice(+b.dataset.i, 1); renderForm(); }
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && form) closeForm(); });
+}
+
+const upsert = (arr, item) => { const i = arr.findIndex(x => x.id === item.id); if (i >= 0) arr[i] = item; else arr.push(item); };
+const remove = (arr, id) => { const i = arr.findIndex(x => x.id === id); if (i >= 0) arr.splice(i, 1); };
+
+/* ---------- Editors ---------- */
+function editPerson(id) {
+  const p = id ? D.people.find(x => x.id === id) : newPerson('');
+  openForm({
+    title: id ? 'Edit ' + p.name : 'Add a person', value: p,
+    fields: [
+      { k: 'name', label: 'Name', type: 'text' },
+      { k: 'payType', label: 'How are they paid?', type: 'select', options: [['salary', 'Salary'], ['hourly', 'Hourly']], half: true },
+      { k: 'frequency', label: 'Paid', type: 'select', options: [['weekly', 'Weekly'], ['biweekly', 'Every 2 weeks'], ['semimonthly', 'Twice a month'], ['monthly', 'Monthly']], half: true },
+      { k: 'salary', label: 'Yearly salary', type: 'money', show: v => v.payType === 'salary' },
+      { k: 'rate', label: 'Base hourly rate', type: 'money', show: v => v.payType === 'hourly', half: true },
+      { k: 'hours', label: 'Regular hours per paycheck', type: 'number', show: v => v.payType === 'hourly', half: true },
+      { k: 'diffs', label: 'Shift differentials & premium pay', type: 'list', show: v => v.payType === 'hourly', addLabel: 'Add differential',
+        help: 'Extra pay on top of the base rate. Enter the typical hours per paycheck that earn it. Example: weekend +$4/hr × 24 hrs.',
+        cols: [{ k: 'name', label: 'Name', type: 'text' }, { k: 'mode', label: 'Type', type: 'select', options: [['perHour', '+$ per hour'], ['percent', '+% of base']] }, { k: 'amount', label: 'Amount' }, { k: 'hours', label: 'Hrs/check' }],
+        newItem: () => ({ id: uid(), name: '', mode: 'perHour', amount: '', hours: '' }) },
+      { k: 'otHours', label: 'Typical overtime hours per paycheck', type: 'number', show: v => v.payType === 'hourly', half: true },
+      { k: 'otMult', label: 'Overtime multiplier', type: 'number', show: v => v.payType === 'hourly', half: true, suffix: '×' },
+      { k: 'budgetOn', label: 'Budget with', type: 'select', show: v => v.payType === 'hourly', options: [['floor', 'Base pay only (the guaranteed floor)'], ['expected', 'Expected pay (with differentials & OT)']],
+        help: 'Using the floor keeps the budget safe; the extra shows up as "upside" on the dashboard.' },
+      { k: 'retirePct', label: 'Retirement from each check', type: 'percent', half: true },
+      { k: 'matchPct', label: 'Employer match', type: 'percent', half: true, help: 'Free money your employer adds, as a % of pay.' },
+      { k: 'retireAccountId', label: 'Retirement goes into', type: 'select', options: () => acctOpts(a => isRetireType(a.type)) },
+      { k: 'deductions', label: 'Other paycheck deductions', type: 'list', addLabel: 'Add deduction', help: 'Health, dental, vision, etc. — dollars per paycheck.',
+        cols: [{ k: 'name', label: 'Name', type: 'text' }, { k: 'amount', label: '$ per check' }], newItem: () => ({ id: uid(), name: '', amount: '' }) },
+      { k: 'taxMode', label: 'Taxes', type: 'select', options: [['fixed', 'Exact amount from pay stub'], ['percent', 'Estimate as a percentage']] },
+      { k: 'taxFixed', label: 'Taxes per paycheck', type: 'money', show: v => v.taxMode === 'fixed' },
+      { k: 'taxPct', label: 'Estimated tax rate', type: 'percent', show: v => v.taxMode === 'percent', help: 'Applied to pay after retirement & deductions. Check a recent stub: total taxes ÷ taxable pay.' },
+      { k: 'age', label: 'Current age', type: 'number', half: true },
+      { k: 'retireAge', label: 'Retire at', type: 'number', half: true },
+      { k: 'lastPayday', label: 'A recent payday', type: 'date', help: 'Used to spot months with an extra paycheck.' }
+    ],
+    preview: v => { const pc = paycheck(normalize({ people: [v] }).people[0], 'budget'); return `Take-home per paycheck: <b>${money(pc.net, true)}</b>`; },
+    validate: v => !String(v.name || '').trim() ? 'Give them a name' : null,
+    onSave: v => upsert(D.people, v),
+    onDelete: id ? () => { remove(D.people, id); D.giving.personIds = D.giving.personIds.filter(x => x !== id); } : null
+  });
+}
+
+function editBill(id) {
+  const b = id ? D.bills.find(x => x.id === id) : { id: uid(), name: '', amount: '', frequency: 'monthly', category: 'Other', accountId: '', owner: 'shared', dueDay: '', autopay: true, isSub: ui.billFilter === 'subs', notes: '' };
+  openForm({
+    title: id ? 'Edit bill' : (b.isSub ? 'Add a subscription' : 'Add a bill'), value: b,
+    fields: [
+      { k: 'name', label: 'Name', type: 'text', placeholder: 'e.g. Netflix' },
+      { k: 'amount', label: 'Amount', type: 'money', half: true },
+      { k: 'frequency', label: 'How often', type: 'select', half: true, options: Object.keys(PERIOD_LABEL).map(k => [k, PERIOD_LABEL[k]]) },
+      { k: 'category', label: 'Category', type: 'select', options: BILL_CATEGORIES.map(c => [c, c]), half: true },
+      { k: 'owner', label: 'Whose', type: 'select', options: () => peopleOpts('shared', 'Shared'), half: true },
+      { k: 'accountId', label: 'Paid from', type: 'select', options: () => acctOpts() },
+      { k: 'dueDay', label: 'Due day of month', type: 'number', half: true },
+      { k: 'autopay', label: 'On autopay', type: 'check', half: true },
+      { k: 'isSub', label: 'This is a subscription', type: 'check', live: true },
+      { k: 'renewal', label: 'Renews / free trial ends', type: 'date', show: v => v.isSub },
+      { k: 'notes', label: 'Notes', type: 'text' }
+    ],
+    preview: v => `= <b>${money(toMonthly(v.amount, v.frequency), true)}</b>/month · <b>${money(toMonthly(v.amount, v.frequency) * 12, true)}</b>/year`,
+    validate: v => !String(v.name).trim() ? 'Name the bill' : null,
+    onSave: v => upsert(D.bills, v), onDelete: id ? () => remove(D.bills, id) : null
+  });
+}
+
+function editAccount(id) {
+  const a = id ? D.accounts.find(x => x.id === id) : { id: uid(), name: '', institution: '', last4: '', type: 'checking', owner: 'joint', balance: '', purpose: '' };
+  openForm({
+    title: id ? 'Edit account' : 'Add an account', value: a,
+    fields: [
+      { k: 'name', label: 'Nickname', type: 'text', placeholder: 'e.g. Bills checking' },
+      { k: 'institution', label: 'Bank / provider', type: 'text', half: true },
+      { k: 'last4', label: 'Last 4 digits', type: 'text', max: 4, half: true, help: 'Only the last 4. Never store full account numbers here.' },
+      { k: 'type', label: 'Type', type: 'select', options: Object.keys(ACCOUNT_TYPES).map(k => [k, ACCOUNT_TYPES[k].label]), half: true, live: true },
+      { k: 'owner', label: 'Owner', type: 'select', options: () => peopleOpts('joint'), half: true },
+      { k: 'balance', label: 'Current balance', type: 'money', help: 'For cards and loans, enter what you owe as a positive number.' },
+      { k: 'purpose', label: 'What it\'s for', type: 'text', placeholder: 'Shows up in the binder' }
+    ],
+    validate: v => !String(v.name).trim() ? 'Give it a nickname' : (v.last4 && !/^\d{1,4}$/.test(v.last4) ? 'Last 4 should be digits only' : null),
+    onSave: v => upsert(D.accounts, v),
+    onDelete: id ? () => {
+      remove(D.accounts, id);
+      D.bills.forEach(b => { if (b.accountId === id) b.accountId = ''; });
+      D.goals.forEach(g => { if (g.accountId === id) g.accountId = ''; });
+      D.people.forEach(p => { if (p.retireAccountId === id) p.retireAccountId = ''; });
+    } : null
+  });
+}
+
+function editGoal(id) {
+  const g = id ? D.goals.find(x => x.id === id) : { id: uid(), name: '', icon: '⭐', kind: 'target', amount: '', per: 'monthly', targetSource: 'manual', target: '', homePrice: '', downPct: 20, emMonths: 6, targetDate: '', saved: 0, apy: 0, accountId: '', celebrated: [] };
+  const isRet = v => { const a = D.accounts.find(x => x.id === v.accountId); return !!(a && isRetireType(a.type)); };
+  openForm({
+    title: id ? 'Edit goal' : 'New goal', value: g,
+    fields: [
+      { k: 'icon', label: 'Emoji', type: 'text', max: 4, half: true },
+      { k: 'name', label: 'Goal name', type: 'text', half: true, placeholder: 'e.g. Anniversary trip' },
+      { k: 'accountId', label: 'Money lives in', type: 'select', options: () => acctOpts(), live: true, help: 'Pick an IRA/401(k) here and this becomes a retirement contribution.' },
+      { k: 'kind', label: 'How do you want to save?', type: 'select', live: true, options: [['fixed', 'Put in a set amount'], ['target', 'Reach a target by a date']] },
+      { k: 'amount', label: 'Amount', type: 'money', half: true, show: v => v.kind === 'fixed' },
+      { k: 'per', label: 'Per', type: 'select', half: true, options: [['monthly', 'Month'], ['yearly', 'Year']], show: v => v.kind === 'fixed' },
+      { k: 'targetSource', label: 'Target amount', type: 'select', live: true, show: v => !isRet(v),
+        options: v => [...(v.kind === 'fixed' ? [['none', 'No target — ongoing']] : []), ['manual', 'A set amount'], ['home', 'Home down payment (price × %)'], ['emergency', 'Emergency fund (months of bills)']] },
+      { k: 'target', label: 'Target', type: 'money', show: v => v.targetSource === 'manual' && !isRet(v) },
+      { k: 'homePrice', label: 'Home price', type: 'money', half: true, show: v => v.targetSource === 'home' },
+      { k: 'downPct', label: 'Down payment', type: 'percent', half: true, show: v => v.targetSource === 'home' },
+      { k: 'emMonths', label: 'Months of bills + giving to cover', type: 'number', show: v => v.targetSource === 'emergency' },
+      { k: 'targetDate', label: 'Target date', type: 'date', show: v => v.kind === 'target' },
+      { k: 'saved', label: 'Saved so far', type: 'money', half: true, show: v => !isRet(v) },
+      { k: 'apy', label: 'Interest it earns (APY)', type: 'percent', half: true, show: v => !isRet(v), help: 'High-yield savings pays ~4%. Leave 0 if unsure.' }
+    ],
+    preview: v => {
+      const vv = Object.assign({}, v); if (vv.kind === 'target' && (vv.targetSource === 'none' || !vv.targetSource)) vv.targetSource = 'manual';
+      const t = goalTarget(D, vv, { essentialM: S.essentialM }), m = goalMonthly(D, vv, { essentialM: S.essentialM });
+      return `${t ? 'Target <b>' + money(t) + '</b> · ' : ''}Needs <b>${money(m, true)}</b>/month`;
+    },
+    validate: v => !String(v.name).trim() ? 'Name your goal' : (v.kind === 'target' && !v.targetDate ? 'Pick a target date' : null),
+    onSave: v => { if (v.kind === 'target' && (v.targetSource === 'none' || !v.targetSource)) v.targetSource = 'manual'; if (isRet(v)) v.targetSource = 'none'; upsert(D.goals, v); },
+    onDelete: id ? () => remove(D.goals, id) : null
+  });
+}
+
+function editPayLog(id, personId, date) {
+  const e = id ? D.paylog.find(x => x.id === id) : { id: uid(), personId: personId || (D.people.find(p => p.payType === 'hourly') || D.people[0] || {}).id, date: date || todayISO(), gross: '', net: '', paid: false, paidOn: '' };
+  const pctg = num(D.giving.percent);
+  openForm({
+    title: id ? 'Edit paycheck' : 'Log a paycheck', value: e,
+    intro: 'Copy these from the pay stub. Gross is the big number before anything comes out.',
+    fields: [
+      { k: 'personId', label: 'Whose paycheck', type: 'select', options: () => D.people.map(p => [p.id, p.name]), half: true },
+      { k: 'date', label: 'Pay date', type: 'date', half: true },
+      { k: 'gross', label: 'Gross pay', type: 'money', half: true },
+      { k: 'net', label: 'Take-home (net)', type: 'money', half: true, help: 'Optional. Shows what she really averages.' },
+      { k: 'paid', label: `${D.giving.label || 'Giving'} already given for this check`, type: 'check' }
+    ],
+    preview: v => `${esc(D.giving.label || 'Giving')} (${pctg}% of ${D.giving.basis === 'net' ? 'take-home' : 'gross'}): <b>${money(num(D.giving.basis === 'net' ? v.net : v.gross) * pctg / 100, true)}</b>`,
+    validate: v => !(num(v.gross) > 0 || num(v.net) > 0) ? 'Enter the gross pay from the stub' : null,
+    onSave: v => { if (v.paid && !v.paidOn) v.paidOn = todayISO(); if (!v.paid) v.paidOn = ''; upsert(D.paylog, v); },
+    onDelete: id ? () => remove(D.paylog, id) : null
+  });
+}
+
+function calendarReminder(pid) {
+  const p = D.people.find(x => x.id === pid); const nx = p && nextPayday(p);
+  if (!nx) return toast('Add a recent payday for ' + (p ? p.name : 'them') + ' first (Money In → Edit)', 'bad');
+  const ymd = dt => localISO(dt).replace(/-/g, '');
+  const end = new Date(nx); end.setDate(end.getDate() + 1);
+  const interval = p.frequency === 'weekly' ? 1 : 2;
+  const label = D.giving.label || 'Giving';
+  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Our Nest//EN', 'BEGIN:VEVENT',
+    'UID:' + uid() + '@ournest', 'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z',
+    'DTSTART;VALUE=DATE:' + ymd(nx), 'DTEND;VALUE=DATE:' + ymd(end),
+    `RRULE:FREQ=WEEKLY;INTERVAL=${interval}`,
+    `SUMMARY:${p.name} payday — log stub & give ${label.toLowerCase()} 🙏`,
+    `DESCRIPTION:Open Our Nest → ${label} → Log a paycheck. Enter the gross from the stub and it calculates the ${label.toLowerCase()}.`,
+    'BEGIN:VALARM', 'TRIGGER:PT18H', 'ACTION:DISPLAY', 'DESCRIPTION:Log the paystub & give', 'END:VALARM',
+    'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+  const blob = new Blob([ics], { type: 'text/calendar' });
+  const name = `${p.name.toLowerCase()}-payday-reminder.ics`;
+  const file = typeof File === 'function' ? new File([blob], name, { type: 'text/calendar' }) : null;
+  if (file && navigator.canShare && navigator.canShare({ files: [file] }) && /Android|iPhone|iPad/i.test(navigator.userAgent)) navigator.share({ files: [file], title: name }).catch(() => plainDownload(blob, name));
+  else plainDownload(blob, name);
+  toast('Open the downloaded file to add the reminder to your calendar');
+}
+
+function editContact(id) {
+  const c = id ? D.binder.contacts.find(x => x.id === id) : { id: uid(), name: '', role: '', phone: '', notes: '' };
+  openForm({ title: id ? 'Edit contact' : 'Add a contact', value: c,
+    fields: [{ k: 'name', label: 'Name', type: 'text' }, { k: 'role', label: 'Who they are', type: 'text', placeholder: 'e.g. Life insurance agent' }, { k: 'phone', label: 'Phone / email', type: 'text' }, { k: 'notes', label: 'Notes', type: 'textarea', rows: 2 }],
+    onSave: v => upsert(D.binder.contacts, v), onDelete: id ? () => remove(D.binder.contacts, id) : null });
+}
+function editNote(id) {
+  const n = id ? D.binder.notes.find(x => x.id === id) : { id: uid(), title: '', body: '' };
+  openForm({ title: id ? n.title : 'Add a section', value: n, intro: n.hint ? esc(n.hint) : '',
+    fields: [{ k: 'title', label: 'Title', type: 'text' }, { k: 'body', label: 'What she needs to know', type: 'textarea', rows: 8 }],
+    onSave: v => upsert(D.binder.notes, v), onDelete: id ? () => remove(D.binder.notes, id) : null });
+}
+function editLetter() {
+  const cur = D.binder.letter != null ? D.binder.letter : $('.letter .pre').textContent;
+  openForm({ title: 'A note at the top of the binder', value: { text: cur }, fields: [{ k: 'text', label: 'Your words', type: 'textarea', rows: 8 }], onSave: v => { D.binder.letter = v.text; } });
+}
+function editChecklist() {
+  openForm({ title: 'First 30 days checklist', value: { text: D.binder.checklist.join('\n') }, intro: 'One step per line.',
+    fields: [{ k: 'text', label: 'Steps', type: 'textarea', rows: 12 }],
+    onSave: v => { D.binder.checklist = String(v.text).split('\n').map(s => s.trim()).filter(Boolean); } });
+}
+
+/* =====================================================================
+   VIEWS
+   ===================================================================== */
+const NAV = [
+  ['home', 'Home', '◉'], ['income', 'Money In', '↘'], ['bills', 'Bills & Subs', '▤'], ['goals', 'Goals', '★'],
+  ['retire', 'Retirement', '⌂'], ['accounts', 'Accounts', '▣'], ['giving', 'Giving', '♡'],
+  ['checkin', 'Money Date', '✓'], ['binder', 'Our Binder', '❏'], ['settings', 'Settings', '⚙']
+];
+const MOBILE_NAV = ['home', 'income', 'bills', 'goals'];
+
+function stat(label, value, sub, cls) {
+  return `<div class="stat ${cls || ''}"><span class="stat-l">${label}</span><span class="stat-v">${value}</span>${sub ? `<span class="stat-s">${sub}</span>` : ''}</div>`;
+}
+function card(title, body, opts = {}) {
+  return `<section class="card ${opts.cls || ''}">${title ? `<header class="card-h"><h3>${title}</h3>${opts.action || ''}</header>` : ''}${body}</section>`;
+}
+function emptyState(msg, btn) { return `<div class="empty"><p>${msg}</p>${btn || ''}</div>`; }
+
+/* ---------- HOME ---------- */
+function viewHome() {
+  const C = COLORS();
+  const home = S.goals.find(x => x.g.targetSource === 'home');
+  const lastBackup = D.settings.lastBackup;
+  const backupDays = lastBackup ? Math.floor((Date.now() - new Date(lastBackup)) / 864e5) : null;
+  let html = '';
+
+  if (backupDays === null || backupDays > 30) {
+    html += `<div class="banner"><span>💾 ${backupDays === null ? 'You haven\'t saved a backup yet.' : `Last backup was ${backupDays} days ago.`} Your data lives only on this device.</span><button class="btn sm primary" data-act="backup">Back up now</button></div>`;
+  }
+
+  // giving to-do
+  const pendAll = D.giving.enabled ? D.people.filter(p => D.giving.personIds.includes(p.id) && p.payType === 'hourly').map(p => ({ p, n: pendingPaydays(D, p).length })).filter(x => x.n) : [];
+  if (S.owed.count || pendAll.length) {
+    const bits = [];
+    if (S.owed.count) bits.push(`${money(S.owed.amount, true)} ready to give`);
+    pendAll.forEach(x => bits.push(`${x.n} ${esc(x.p.name)} paystub${x.n > 1 ? 's' : ''} to log`));
+    html += `<div class="banner good-banner"><span>🙏 ${esc(D.giving.label || 'Giving')}: ${bits.join(' · ')}</span><a class="btn sm primary" href="#/giving">Take care of it</a></div>`;
+  }
+
+  // hero
+  let heroGoal = '';
+  if (home) {
+    const left = home.g.targetDate ? Math.max(0, monthsBetween(todayISO(), home.g.targetDate)) : null;
+    heroGoal = `<div class="hero-goal"><span class="hg-emoji">${esc(home.g.icon || '🏡')}</span><div><b>${esc(home.g.name)}</b><span>${left != null ? durLabel(Math.round(left)) + ' to go' : ''} · ${pct(home.pct || 0)} of ${money(home.target)}</span>
+      <div class="bar"><span style="width:${((home.pct || 0) * 100).toFixed(1)}%"></span></div></div></div>`;
+  }
+  html += `<section class="hero"><div><p class="eyebrow">${greeting()}${D.people.length ? ', ' + esc(names()) : ''}</p>
+    <h1>We're putting <em>${money(S.savedM)}</em> a month toward our future.</h1>
+    <p class="hero-sub">That's ${pct(S.savingsRate)} of everything we earn${S.matchM > 0 ? `, plus ${money(S.matchM)} in employer match` : ''}.</p></div>${heroGoal}</section>`;
+
+  html += `<div class="stats">
+    ${stat('Take-home', money(S.netM), 'per month')}
+    ${stat('Bills & subscriptions', money(S.billsM), money(S.subsM) + ' is subscriptions')}
+    ${stat(esc(D.giving.label || 'Giving'), money(S.givingM), 'per month')}
+    ${stat('Saving & investing', money(S.savedM), 'goals + paycheck retirement', 'good')}
+    ${stat('Left over', money(S.leftoverM), money(S.leftoverM * 12 / 52) + ' per week', S.leftoverM < 0 ? 'bad' : 'accent')}
+  </div>`;
+
+  // flow
+  const src = S.people.map((r, i) => ({ label: r.p.name, value: r.grossM, color: [C.p1, C.p2][i % 2] }));
+  const leftover = Math.max(0, S.leftoverM);
+  const goalsNonRet = S.goalsM - S.goalsRetireM;
+  const tg = [
+    { label: 'Taxes & benefits', value: S.taxM + S.dedM, color: C.neutral },
+    { label: 'Retirement', value: S.retireM + S.goalsRetireM, color: C.s3 },
+    { label: 'Savings goals', value: goalsNonRet, color: C.s5 },
+    { label: 'Bills', value: S.billsM, color: C.s1 },
+    { label: D.giving.label || 'Giving', value: S.givingM, color: C.s2 },
+    { label: 'Left over', value: leftover, color: C.s4 }
+  ];
+  const flowTable = `<details class="tbl-toggle"><summary>Show as a table</summary><div class="tbl-scroll"><table class="tbl"><tbody>${tg.map(t => `<tr><td>${esc(t.label)}</td><td class="r">${money(t.value)}</td><td class="r muted">${pct(t.value / Math.max(1, S.grossM), 1)}</td></tr>`).join('')}<tr class="tot"><td>Gross income</td><td class="r">${money(S.grossM)}</td><td></td></tr></tbody></table></div></details>`;
+  const shortfall = S.leftoverM < 0 ? `<p class="warn-text">⚠ The plan spends ${money(-S.leftoverM)} more than comes in each month.</p>` : '';
+  html += card('Where every dollar goes', `<p class="muted small">Monthly, from gross pay. Hover or tap any band.</p>${flowChart(src, tg, innerWidth < 600 ? { compact: true, height: 340 } : { height: 330 })}${shortfall}${flowTable}`, { cls: 'wide' });
+
+  // donut spent/saved/given
+  const seg = [
+    { label: 'Spent on bills', value: S.billsM, color: C.s1 },
+    { label: 'Given', value: S.givingM, color: C.s2 },
+    { label: 'Retirement', value: S.retireM + S.goalsRetireM, color: C.s3 },
+    { label: 'Left over', value: leftover, color: C.s4 },
+    { label: 'Savings goals', value: S.goalsM - S.goalsRetireM, color: C.s5 },
+    { label: 'Taxes & benefits', value: S.taxM + S.dedM, color: C.neutral }
+  ];
+  const tot = seg.reduce((a, b) => a + b.value, 0) || 1;
+  html += `<div class="grid2">` + card('Spent vs saved vs given', `<div class="donut-wrap">${donutChart(seg, { center: pct(S.savingsRate), sub: 'saved', label: 'Share of gross income' })}${legend(seg.map(s => ({ label: s.label, color: s.color, value: pct(s.value / tot) })))}</div>`);
+
+  // goals mini
+  const gl = S.goals.filter(x => !x.retire);
+  html += card('Our goals', gl.length ? `<div class="mini-goals">${gl.map(x => `<div class="mg" data-go="goals"><span class="mg-i">${esc(x.g.icon || '⭐')}</span><div class="mg-b"><div class="mg-t"><b>${esc(x.g.name)}</b><span>${x.target ? money(x.saved) + ' / ' + money(x.target) : money(x.monthly) + '/mo'}</span></div>${x.target ? `<div class="bar"><span style="width:${((x.pct || 0) * 100).toFixed(1)}%"></span></div>` : ''}</div></div>`).join('')}</div>` : emptyState('No goals yet.', '<button class="btn primary sm" data-act="addGoal">Add a goal</button>'),
+    { action: '<a href="#/goals" class="link">All goals →</a>' }) + `</div>`;
+
+  // upside + extra paychecks
+  let side = '';
+  S.people.filter(r => r.p.payType === 'hourly').forEach(r => {
+    const upM = r.expectedNetM - r.netM;
+    const act = actualPayStats(D, r.p.id);
+    let body = '';
+    if (r.p.budgetOn === 'floor') {
+      body += upM > 0.5
+        ? `<p class="big-num good">+${money(upM)}<small>/mo expected above the budget</small></p><p class="muted small">The budget counts ${esc(r.p.name)}'s base pay only (${money(r.fl.net, true)} take-home per check). Differentials & OT should add about ${money(r.ex.net - r.fl.net, true)} per check.</p>`
+        : `<p class="muted">The budget counts ${esc(r.p.name)}'s base pay only — the safe floor. Add her weekend/shift differentials to see the expected extra.</p><button class="btn sm ghost" data-act="editPerson" data-id="${r.p.id}">Add differentials</button>`;
+    } else body += `<p class="muted small">Budgeting with expected pay including differentials (${money(r.ex.net, true)}/check).</p>`;
+    if (act) {
+      const diff = act.avg - r.fl.net;
+      body += `<div class="reality"><span>Real paychecks (last ${act.count})</span><b>${money(act.avg, true)}</b><span class="${diff >= 0 ? 'good' : 'bad'}">${diff >= 0 ? '+' : ''}${money(diff, true)} vs floor</span></div>`;
+    }
+    side += card(`${esc(r.p.name)}'s shift upside`, body);
+  });
+  const extraMonths = [];
+  S.people.forEach(r => extraPaycheckMonths(r.p, 12).forEach(m => extraMonths.push({ who: r.p.name, net: r.b.net, ...m })));
+  side += card('Extra-paycheck months', extraMonths.length
+    ? `<ul class="xp">${extraMonths.sort((a, b) => a.month.localeCompare(b.month)).map(m => `<li><b>${monthLabel(m.month)}</b><span>${esc(m.who)} gets ${m.extra + (m.extra === 1 ? ' extra check' : ' extra checks')}</span><span class="good">+${money(m.net * m.extra)}</span></li>`).join('')}</ul><p class="muted small">${D.settings.budgetBasis === 'two' ? 'Your budget assumes 2 checks a month, so these are true bonus money. Decide now where they go!' : 'Your budget averages these across the year. Switch to "2 paychecks a month" in Settings to treat them as bonus money.'}</p>`
+    : `<p class="muted">Add a recent payday for each person (Money In → Edit) and we'll show which months bring a 3rd paycheck.</p>`);
+  html += `<div class="grid2">${side}</div>`;
+
+  // net worth
+  const snaps = D.snapshots.slice().sort((a, b) => a.date.localeCompare(b.date));
+  if (snaps.length >= 2) {
+    const vals = snaps.map(sn => snapshotNetWorth(D, sn));
+    html += card('Our net worth over time', lineChart('nw', { series: [{ name: 'Net worth', values: vals, color: C.s3, endLabel: true }], xLabels: snaps.map(s => new Date(s.date + 'T00:00').toLocaleDateString('en-US', { month: 'short', year: '2-digit' })), minZero: false, label: 'Net worth by Money Date' }) + `<p class="muted small">Built from your monthly Money Dates. Now: <b>${money(vals[vals.length - 1])}</b> (${vals[vals.length - 1] - vals[0] >= 0 ? '+' : ''}${money(vals[vals.length - 1] - vals[0])} since ${new Date(snaps[0].date + 'T00:00').toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}).</p>`, { cls: 'wide' });
+  } else {
+    html += card('Our net worth over time', emptyState(`Each monthly <b>Money Date</b> adds a point here. ${snaps.length ? 'One more and the line appears!' : 'Do your first one to start the chart.'}`, '<a class="btn primary sm" href="#/checkin">Start a Money Date</a>'), { cls: 'wide' });
+  }
+  return html;
+}
+
+/* ---------- INCOME ---------- */
+function payRows(r) {
+  const hourly = r.p.payType === 'hourly';
+  const cols = hourly ? [['Floor (base only)', r.fl], ['Expected', r.ex]] : [['Per paycheck', r.b]];
+  const line = (label, f, neg) => `<tr><td>${label}</td>${cols.map(c => `<td class="r">${neg ? '−' : ''}${money(f(c[1]), true)}</td>`).join('')}</tr>`;
+  return `<div class="tbl-scroll"><table class="tbl pay"><thead><tr><th></th>${cols.map(c => `<th class="r">${c[0]}</th>`).join('')}</tr></thead><tbody>
+    ${hourly ? line('Base pay', x => x.floor) + line('Differentials & OT', x => x.gross - x.floor) : ''}
+    ${line('<b>Gross</b>', x => x.gross)}
+    ${line('Retirement (' + r.p.retirePct + '%)', x => x.retire, true)}
+    ${r.p.deductions.map(dd => `<tr><td>${esc(dd.name || 'Deduction')}</td>${cols.map(() => `<td class="r">−${money(num(dd.amount), true)}</td>`).join('')}</tr>`).join('')}
+    ${line('Taxes' + (r.p.taxMode === 'percent' ? ' (~' + r.p.taxPct + '%)' : ''), x => x.tax, true)}
+    <tr class="tot"><td>Take-home</td>${cols.map(c => `<td class="r">${money(c[1].net, true)}</td>`).join('')}</tr>
+    <tr class="muted"><td>Per month</td>${cols.map(c => `<td class="r">${money(c[1].net * r.cpm)}</td>`).join('')}</tr>
+  </tbody></table></div>`;
+}
+
+function explorer(r) {
+  const p = explorePerson(r.p);
+  const ex0 = paycheck(p, 'expected'), fl0 = paycheck(p, 'floor');
+  const sliders = p.diffs.map((df, i) => `<label class="slider"><span>${esc(df.name || 'Differential')} <small>(${df.mode === 'percent' ? '+' + num(df.amount) + '%' : '+' + money(num(df.amount), true) + '/hr'})</small></span>
+      <input type="range" min="0" max="${Math.max(48, num(p.hours))}" step="1" value="${num(df.hours)}" data-x="diff" data-i="${i}"><output>${num(df.hours)} hrs</output></label>`).join('') +
+    `<label class="slider"><span>Overtime <small>(${num(p.otMult)}×)</small></span><input type="range" min="0" max="40" step="1" value="${num(p.otHours)}" data-x="ot"><output>${num(p.otHours)} hrs</output></label>`;
+  return `<div class="explorer" data-pid="${p.id}"><h4>Paycheck explorer</h4><p class="muted small">Slide to see what a heavier weekend stretch brings home. Nothing is saved unless you tap "Keep as typical".</p>
+    ${p.diffs.some(df => num(df.amount) > 0) ? '' : `<p class="callout small">Tap <b>Edit</b> above and enter her differential rates (e.g. weekend +$4/hr) — then these sliders come alive.</p>`}
+    ${sliders}<div class="ex-out"><span>Take-home this check</span><b data-o="net">${money(ex0.net, true)}</b><span data-o="diff" class="good">+${money(ex0.net - fl0.net, true)} over floor</span></div>
+    <button class="btn sm ghost" data-act="keepExplorer" data-id="${p.id}">Keep as typical</button></div>`;
+}
+
+function viewIncome() {
+  let html = `<div class="page-h"><div><h1>Money In</h1><p class="muted">What actually lands in our accounts.</p></div><button class="btn primary" data-act="addPerson">+ Add person</button></div>`;
+  html += `<div class="stats">${stat('Gross / month', money(S.grossM))}${stat('Take-home / month', money(S.netM), D.settings.budgetBasis === 'two' ? 'counting 2 checks/month' : 'averaged over the year', 'good')}${stat('Retirement from pay', money(S.retireM), S.matchM ? '+ ' + money(S.matchM) + ' match' : 'per month')}${S.upsideM > 0.5 ? stat('Expected upside', '+' + money(S.upsideM), 'not in the budget', 'accent') : ''}</div>`;
+  if (!D.people.length) html += card('', emptyState('Add each person who brings home a paycheck.', '<button class="btn primary" data-act="addPerson">Add person</button>'));
+  S.people.forEach(r => {
+    const act = actualPayStats(D, r.p.id);
+    const extra = r.p.payType === 'hourly' ? explorer(r) : '';
+    const sub = r.p.payType === 'hourly' ? `${money(num(r.p.rate), true)}/hr base · ${num(r.p.hours)} hrs per check · ${PERIOD_LABEL[r.p.frequency]}` : `${money(num(r.p.salary))}/yr salary · ${PERIOD_LABEL[r.p.frequency]}`;
+    const actual = act ? `<p class="reality-line">Real take-home over the last ${act.count} checks: <b>${money(act.avg, true)}</b> average (${money(act.avg - r.fl.net, true)} vs floor).</p>` : (r.p.payType === 'hourly' ? `<p class="muted small">Log real paychecks during each Money Date and we'll show what she actually averages.</p>` : '');
+    const budgetNote = r.p.payType === 'hourly' ? `<p class="pill-note">Budget uses <b>${r.p.budgetOn === 'floor' ? 'the floor (base pay only)' : 'expected pay'}</b></p>` : '';
+    html += card(`${esc(r.p.name)}`, `<p class="muted">${sub}</p>${budgetNote}<div class="inc-grid"><div>${payRows(r)}${actual}</div>${extra}</div>`,
+      { action: `<button class="btn sm ghost" data-act="editPerson" data-id="${r.p.id}">Edit</button>`, cls: 'wide' });
+  });
+  return html;
+}
+
+/* ---------- BILLS ---------- */
+function viewBills() {
+  const C = COLORS();
+  const f = ui.billFilter;
+  let list = D.bills.slice();
+  if (f === 'subs') list = list.filter(b => b.isSub);
+  else if (f !== 'all') list = list.filter(b => b.accountId === f);
+  const total = list.reduce((t, b) => t + billMonthly(b), 0);
+  const cats = {};
+  D.bills.forEach(b => { cats[b.category] = (cats[b.category] || 0) + billMonthly(b); });
+  const catItems = Object.keys(cats).map(k => ({ label: k, value: cats[k] })).sort((a, b) => b.value - a.value);
+  const usedAccts = [...new Set(D.bills.map(b => b.accountId).filter(Boolean))];
+
+  let html = `<div class="page-h"><div><h1>Bills & Subscriptions</h1><p class="muted">Everything that leaves on a schedule.</p></div><button class="btn primary" data-act="addBill">+ Add</button></div>`;
+  html += `<div class="stats">${stat('All bills', money(S.billsM, true), 'per month')}${stat('Subscriptions', money(S.subsM, true), money(S.subsM * 12) + ' per year', 'accent')}${stat('Count', D.bills.length, D.bills.filter(b => b.isSub).length + ' subscriptions')}</div>`;
+  html += `<div class="grid2">` + card('By category', hBars(catItems, C.s1)) + card('By account', hBars(Object.entries(D.bills.reduce((m, b) => { const k = b.accountId || ''; m[k] = (m[k] || 0) + billMonthly(b); return m; }, {})).map(([k, v]) => ({ label: acctName(k) || 'No account', value: v })).sort((a, b) => b.value - a.value), C.s1)) + `</div>`;
+  html += `<div class="chips" role="tablist">${[['all', 'All'], ['subs', 'Subscriptions'], ...usedAccts.map(a => [a, acctName(a)])].map(([k, l]) => `<button class="chip ${f === k ? 'on' : ''}" data-act="billFilter" data-id="${esc(k)}">${esc(l)}</button>`).join('')}</div>`;
+
+  if (f === 'subs') {
+    list.sort((a, b) => billMonthly(b) - billMonthly(a));
+    html += card(`Subscriptions · ${money(total * 12)}/yr`, list.length ? `<ul class="rows">${list.map(b => billRow(b, true)).join('')}</ul>` : emptyState('No subscriptions yet.'));
+  } else {
+    const groups = {};
+    html += '<div class="grid2 bills-grid">';
+    list.forEach(b => (groups[b.category] = groups[b.category] || []).push(b));
+    Object.keys(groups).sort((a, b) => BILL_CATEGORIES.indexOf(a) - BILL_CATEGORIES.indexOf(b)).forEach(cat => {
+      const g = groups[cat]; const t = g.reduce((s, b) => s + billMonthly(b), 0);
+      html += card(`${esc(cat)} <span class="h-sub">${money(t, true)}/mo</span>`, `<ul class="rows">${g.map(b => billRow(b)).join('')}</ul>`);
+    });
+    html += '</div>';
+    if (!list.length) html += card('', emptyState('Nothing here yet.', '<button class="btn primary" data-act="addBill">Add a bill</button>'));
+  }
+  return html;
+}
+function billRow(b, yearly) {
+  const m = billMonthly(b);
+  const tags = [b.autopay ? '<span class="tag">autopay</span>' : '<span class="tag warn">manual</span>', b.isSub ? '<span class="tag sub">sub</span>' : '', b.dueDay ? `<span class="tag">due ${b.dueDay}${['th', 'st', 'nd', 'rd'][(b.dueDay % 10 > 3 || [11, 12, 13].includes(+b.dueDay)) ? 0 : b.dueDay % 10]}</span>` : ''].join('');
+  return `<li class="row" data-act="editBill" data-id="${b.id}" tabindex="0"><div class="row-m"><b>${esc(b.name)}</b><span class="muted small">${esc(acctName(b.accountId) || 'No account')} · ${esc(personName(D, b.owner))}${b.frequency !== 'monthly' ? ' · ' + money(num(b.amount), true) + ' ' + PERIOD_LABEL[b.frequency].toLowerCase() : ''}</span><span>${tags}</span></div>
+    <div class="row-v"><b>${money(m, true)}</b><span class="muted small">${yearly ? money(m * 12) + '/yr' : '/mo'}</span></div></li>`;
+}
+
+/* ---------- GOALS ---------- */
+function viewGoals() {
+  const C = COLORS();
+  const goals = S.goals.filter(x => !x.retire), ret = S.goals.filter(x => x.retire);
+  let html = `<div class="page-h"><div><h1>Goals</h1><p class="muted">What we're building, together.</p></div><button class="btn primary" data-act="addGoal">+ New goal</button></div>`;
+  html += `<div class="stats">${stat('Into goals', money(S.goalsM - S.goalsRetireM), 'per month')}${stat('Into IRAs & retirement goals', money(S.goalsRetireM), 'per month')}${stat('Saved so far', money(goals.reduce((t, x) => t + x.saved, 0)), 'across goals', 'good')}</div>`;
+  html += `<div class="goal-grid">${goals.map(x => goalCard(x, C)).join('') || emptyState('No goals yet — dream a little.')}</div>`;
+  if (ret.length) html += `<h2 class="sec">Retirement contributions</h2><div class="goal-grid">${ret.map(x => `<div class="goal" data-act="editGoal" data-id="${x.g.id}" tabindex="0"><div class="goal-h"><span class="g-i">${esc(x.g.icon || '🌱')}</span><div><b>${esc(x.g.name)}</b><span class="muted small">into ${esc(acctName(x.g.accountId))}</span></div></div><p class="big-num">${money(x.monthly)}<small>/mo · ${money(x.monthly * 12)}/yr</small></p><p class="muted small">Balance ${money(x.saved)} — see Retirement for projections.</p></div>`).join('')}</div>`;
+  return html;
+}
+function goalCard(x, C) {
+  const g = x.g;
+  let status = '', proj = '';
+  if (x.target) {
+    if (x.pct >= 1) status = '<span class="tag good">Reached! 🎉</span>';
+    else if (g.kind === 'target' && g.targetDate) status = `<span class="tag">by ${new Date(g.targetDate + 'T00:00').toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</span>`;
+    else if (x.monthly <= 0) status = '<span class="tag warn">Not funded yet</span>';
+    if (x.eta != null && x.eta > 0) {
+      proj = `At this pace: <b>${dateIn(x.eta)}</b> (${durLabel(x.eta)})`;
+      if (num(g.apy) > 0 && x.etaNoGrowth != null && x.etaNoGrowth - x.eta >= 1) proj += ` — interest saves you ${durLabel(x.etaNoGrowth - x.eta)}`;
+      else if (!num(g.apy) && x.monthly > 0) { const e4 = monthsToTarget(x.saved, x.monthly, x.target, 4); if (x.eta - e4 >= 1) proj += `. In a 4% high-yield account: ${durLabel(x.eta - e4)} sooner.`; }
+    }
+  }
+  const ms = [25, 50, 75, 100].map(m => `<span class="ms ${x.pct != null && x.pct * 100 >= m ? 'hit' : ''}" style="left:${m}%"></span>`).join('');
+  return `<div class="goal" data-act="editGoal" data-id="${g.id}" tabindex="0">
+    <div class="goal-h"><span class="g-i">${esc(g.icon || '⭐')}</span><div><b>${esc(g.name)}</b><span class="muted small">${esc(acctName(g.accountId) || '')}</span></div>${status}</div>
+    ${x.target ? `<div class="g-amt"><b>${money(x.saved)}</b><span>of ${money(x.target)}</span><span class="g-pct">${pct(x.pct || 0)}</span></div><div class="bar big"><span style="width:${((x.pct || 0) * 100).toFixed(1)}%"></span>${ms}</div>` : `<div class="g-amt"><b>${money(x.saved)}</b><span>saved · ongoing</span></div>`}
+    <div class="g-f"><span><b>${money(x.monthly)}</b>/mo</span>${g.targetSource === 'emergency' ? `<span class="muted small">${num(g.emMonths)} months of bills + giving</span>` : ''}${g.targetSource === 'home' ? `<span class="muted small">${num(g.downPct)}% of ${money(num(g.homePrice))}</span>` : ''}</div>
+    ${proj ? `<p class="small">${proj}</p>` : ''}</div>`;
+}
+
+/* ---------- RETIREMENT ---------- */
+function viewRetire() {
+  const C = COLORS(); const st = D.settings;
+  const rows = retirementPlan(D, S);
+  let html = `<div class="page-h"><div><h1>Retirement</h1><p class="muted">Where today's contributions could land us.</p></div></div>`;
+  const missingAge = D.people.filter(p => !p.age);
+  if (missingAge.length) html += `<div class="banner"><span>Add ${missingAge.map(p => esc(p.name)).join(' & ')}'s age for accurate projections (using ${st.defaultYears} years until then).</span>${missingAge.map(p => `<label class="inline-age">${esc(p.name)} <input type="number" inputmode="numeric" data-bind="age" data-id="${p.id}" placeholder="age"></label>`).join('')}</div>`;
+  if (!rows.length) return html + card('', emptyState('Add a 401(k), 403(b), or IRA in Accounts to see projections.', '<a class="btn primary" href="#/accounts">Go to Accounts</a>'));
+
+  const horizon = Math.max(...rows.map(r => r.years));
+  const yrNow = new Date().getFullYear();
+  const mid = projectSeries(rows, st.returnMid, horizon, ui.extra, st.inflation, ui.todays);
+  const end = mid[mid.length - 1];
+  const totalMonthly = rows.reduce((t, r) => t + r.monthly, 0);
+  const totalBal = rows.reduce((t, r) => t + num(r.a.balance), 0);
+
+  html += `<div class="stats">${stat('In retirement accounts now', money(totalBal))}${stat('Going in each month', money(totalMonthly + ui.extra), 'paychecks + match + IRAs')}${stat(`Projected in ${horizon} yrs`, moneyShort(end), ui.todays ? "in today's dollars" : 'future dollars', 'good')}${stat('Could pay us', money(end * 0.04 / 12), 'per month (4% rule)', 'accent')}</div>`;
+
+  html += card('Projection', `<div class="controls">
+      <label class="slider wide"><span>What if we add an extra <b id="extraLbl">${money(ui.extra)}</b>/month?</span><input type="range" min="0" max="2000" step="50" value="${ui.extra}" data-x="extra" aria-label="Extra monthly contribution"></label>
+      <label class="check inline"><input type="checkbox" data-x="todays" ${ui.todays ? 'checked' : ''}><span>Show in today's dollars (after ${st.inflation}% inflation)</span></label>
+    </div><div id="projDyn">${projDyn(rows, horizon)}</div>
+    <p class="muted small">A projection, not a promise — markets don't move in straight lines. Change the return assumptions in Settings.</p>`, { cls: 'wide' });
+
+  html += card('By account', `<div class="tbl-scroll"><table class="tbl"><thead><tr><th>Account</th><th class="r">Balance</th><th class="r">From pay</th><th class="r">Match</th><th class="r">IRA / goals</th><th class="r">At retirement</th></tr></thead><tbody>
+    ${rows.map(r => { const v = fv(num(r.a.balance), r.monthly, st.returnMid, r.years * 12) / (ui.todays ? Math.pow(1 + st.inflation / 100, r.years) : 1); return `<tr><td><b>${esc(r.a.name)}</b><br><span class="muted small">${ACCOUNT_TYPES[r.a.type].label} · ${r.years} yrs${r.assumed ? ' (assumed)' : ''}</span></td><td class="r">${money(num(r.a.balance))}</td><td class="r">${money(r.fromPay)}</td><td class="r">${money(r.match)}</td><td class="r">${money(r.fromGoals)}</td><td class="r"><b>${moneyShort(v)}</b></td></tr>`; }).join('')}
+  </tbody></table></div>`, { cls: 'wide' });
+
+  // limits
+  const L = st.limits; const items = [];
+  S.people.forEach(r => {
+    const age = num(r.p.age);
+    const kLim = L.k401 + (age >= 50 ? L.k401catch : 0);
+    if (r.p.retirePct > 0) items.push({ who: r.p.name, what: 'Workplace plan (401k/403b)', amt: r.retireYear, lim: kLim });
+    const iraAmt = S.goals.filter(x => x.acct && isIraType(x.acct.type) && x.acct.owner === r.p.id).reduce((t, x) => t + x.monthly * 12, 0);
+    if (iraAmt > 0 || D.accounts.some(a => isIraType(a.type) && a.owner === r.p.id)) items.push({ who: r.p.name, what: 'IRA', amt: iraAmt, lim: L.ira + (age >= 50 ? L.iraCatch : 0) });
+  });
+  html += card(`${L.year} contribution limits`, `<ul class="limits">${items.map(i => `<li><div><span><b>${esc(i.who)}</b> · ${i.what}</span><div class="bar"><span style="width:${Math.min(100, i.amt / i.lim * 100).toFixed(1)}%;${i.amt > i.lim ? 'background:var(--bad)' : ''}"></span></div></div><span class="${i.amt > i.lim ? 'bad' : ''}">${money(i.amt)} / ${money(i.lim)}${i.amt > i.lim ? ' ⚠ over' : i.amt >= i.lim - 1 ? ' ✓ maxed' : ''}</span></li>`).join('')}</ul><p class="muted small">Limits are editable in Settings — update them each January.</p>`);
+  return html;
+}
+
+function projDyn(rows, horizon) {
+  const C = COLORS(); const st = D.settings; const yrNow = new Date().getFullYear();
+  const low = projectSeries(rows, st.returnLow, horizon, ui.extra, st.inflation, ui.todays);
+  const mid = projectSeries(rows, st.returnMid, horizon, ui.extra, st.inflation, ui.todays);
+  const high = projectSeries(rows, st.returnHigh, horizon, ui.extra, st.inflation, ui.todays);
+  const base = ui.extra ? projectSeries(rows, st.returnMid, horizon, 0, st.inflation, ui.todays) : null;
+  const end = mid[mid.length - 1];
+  const series = [{ name: `Expected (${st.returnMid}%)`, values: mid, color: C.s3, endLabel: true }];
+  if (base) series.push({ name: 'Without the extra', values: base, color: C.neutral, dash: true });
+  return `${ui.extra ? `<p class="callout">An extra ${money(ui.extra)}/mo becomes about <b>${moneyShort(end - base[base.length - 1])}</b> more by ${yrNow + horizon}${ui.todays ? " (today's dollars)" : ''}.</p>` : ''}
+    ${lineChart('proj', { series, band: { low, high, color: C.s3 }, xLabels: mid.map((_, i) => String(yrNow + i)), label: 'Retirement projection' })}
+    ${legend([{ label: `Expected — ${st.returnMid}% a year`, color: C.s3, value: '' }, { label: `Shaded range — ${st.returnLow}% to ${st.returnHigh}%`, color: 'color-mix(in srgb, ' + C.s3 + ' 30%, transparent)', value: '' }, ...(base ? [{ label: 'Without the extra', color: C.neutral, value: '' }] : [])])}`;
+}
+
+/* ---------- ACCOUNTS ---------- */
+function viewAccounts() {
+  const groups = { cash: 'Cash', retire: 'Retirement', invest: 'Investments', debt: 'Owed' };
+  let html = `<div class="page-h"><div><h1>Accounts</h1><p class="muted">Every account we have, and what it's for.</p></div><button class="btn primary" data-act="addAccount">+ Add account</button></div>`;
+  html += `<div class="stats">${stat('What we own', money(S.assets))}${stat('What we owe', money(S.debts), 'cards & loans entered here')}${stat('Net worth', money(S.netWorth), 'from current balances', 'good')}</div>`;
+  Object.keys(groups).forEach(g => {
+    const list = D.accounts.filter(a => (ACCOUNT_TYPES[a.type] || ACCOUNT_TYPES.other).group === g);
+    if (!list.length) return;
+    html += `<h2 class="sec">${groups[g]}</h2><div class="acct-grid">${list.map(a => {
+      const bills = D.bills.filter(b => b.accountId === a.id).reduce((t, b) => t + billMonthly(b), 0);
+      const goals = S.goals.filter(x => x.g.accountId === a.id).reduce((t, x) => t + x.monthly, 0);
+      const give = D.giving.enabled && D.giving.accountId === a.id ? S.givingM : 0;
+      const pay = S.people.filter(r => r.p.retireAccountId === a.id).reduce((t, r) => t + r.retireM + r.matchM, 0);
+      const flows = [bills && `${money(bills)} bills out`, give && `${money(give)} ${esc(D.giving.label || 'giving').toLowerCase()} out`, goals && `${money(goals)} saved in`, pay && `${money(pay)} from paychecks`].filter(Boolean);
+      return `<div class="acct" data-act="editAccount" data-id="${a.id}" tabindex="0"><div class="acct-h"><span class="tag">${ACCOUNT_TYPES[a.type].label}</span><span class="muted small">${esc(personName(D, a.owner))}</span></div>
+        <b class="acct-n">${esc(a.name)}</b><span class="muted small">${esc(a.institution || '')}${a.last4 ? ' ••' + esc(a.last4) : ''}</span>
+        <span class="acct-b ${g === 'debt' ? 'bad' : ''}">${g === 'debt' ? '−' : ''}${money(Math.abs(num(a.balance)))}</span>
+        ${a.purpose ? `<p class="small">${esc(a.purpose)}</p>` : ''}${flows.length ? `<p class="muted small">Monthly: ${flows.join(' · ')}</p>` : ''}</div>`;
+    }).join('')}</div>`;
+  });
+  if (!D.accounts.length) html += card('', emptyState('Add your checking, savings, and retirement accounts.', '<button class="btn primary" data-act="addAccount">Add account</button>'));
+  html += `<p class="muted small center">🔒 Only last-4 digits are stored. Balances update during each Money Date.</p>`;
+  return html;
+}
+
+/* ---------- GIVING ---------- */
+const PLAN_LABEL = { actual: 'her recent real paystubs', expected: 'expected pay with differentials', floor: 'base pay only (lowest it could be)', budget: 'salary' };
+function payLogCard(p) {
+  const gv = D.giving, pctg = num(gv.percent);
+  const log = payLogFor(D, p.id).slice().reverse();
+  const pend = pendingPaydays(D, p);
+  const yr = String(new Date().getFullYear());
+  const ytd = log.filter(e => e.date.startsWith(yr));
+  const ytdOwed = ytd.reduce((t, e) => t + titheFor(D, e), 0), ytdGiven = ytd.filter(e => e.paid).reduce((t, e) => t + titheFor(D, e), 0);
+  const included = gv.personIds.includes(p.id);
+  const fmtD = iso => new Date(iso + 'T00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  let body = '';
+  if (!included) body += `<p class="callout small">${esc(p.name)} isn't included in ${esc(gv.label || 'giving').toLowerCase()} yet. Tick her name under "Whose income counts" above.</p>`;
+  if (pend.length) body += `<div class="pending"><b>Waiting on a stub</b>${pend.map(dt => `<div class="pend-row"><span>📄 Payday ${fmtD(dt)}</span><button class="btn sm primary" data-act="logPay" data-pid="${p.id}" data-date="${dt}">Log stub</button></div>`).join('')}</div>`;
+  else if (!p.lastPayday) body += `<p class="muted small">Tip: add a recent payday for ${esc(p.name)} (Money In → Edit) and each new payday will show up here as a to-do.</p>`;
+  body += log.length ? `<div class="tbl-scroll"><table class="tbl log"><thead><tr><th>Paid</th><th class="r">Gross</th><th class="r">Take-home</th><th class="r">${esc(gv.label || 'Giving')} ${pctg}%</th><th></th></tr></thead><tbody>${log.slice(0, 12).map(e => `<tr>
+      <td><a href="#" data-act="editLog" data-id="${e.id}">${fmtD(e.date)}</a></td><td class="r">${money(num(e.gross), true)}</td><td class="r muted">${num(e.net) ? money(num(e.net), true) : '—'}</td>
+      <td class="r"><b>${money(titheFor(D, e), true)}</b></td>
+      <td class="r"><button class="pay-pill ${e.paid ? 'paid' : ''}" data-act="markPaid" data-id="${e.id}" aria-pressed="${!!e.paid}">${e.paid ? '✓ Given' : 'Mark given'}</button></td></tr>`).join('')}</tbody></table></div>`
+    : `<p class="muted">No paychecks logged yet. When a stub comes in, tap <b>Log a paycheck</b>, type the gross, and the app tells you exactly what to give.</p>`;
+  if (ytd.length) body += `<div class="ytd"><span>${yr} so far: <b>${money(ytdGiven)}</b> given of <b>${money(ytdOwed)}</b></span><div class="bar"><span style="width:${ytdOwed ? (ytdGiven / ytdOwed * 100).toFixed(1) : 0}%"></span></div></div>`;
+  const act = recentAvg(payLogFor(D, p.id), gv.basis === 'net' ? 'net' : 'gross', 6);
+  if (act) body += `<p class="muted small">Last ${act.count} checks averaged ${money(act.avg, true)} ${gv.basis === 'net' ? 'take-home' : 'gross'} → about ${money(act.avg * pctg / 100, true)} ${esc((gv.label || 'giving').toLowerCase())} per check.</p>`;
+  body += `<div class="btn-row"><button class="btn primary sm" data-act="logPay" data-pid="${p.id}">+ Log a paycheck</button><button class="btn ghost sm" data-act="calReminder" data-pid="${p.id}">📅 Payday reminder for my calendar</button></div>`;
+  return card(`${esc(p.name)}'s paycheck log`, body, { cls: 'wide' });
+}
+
+function viewGiving() {
+  const gv = D.giving;
+  let html = `<div class="page-h"><div><h1>${esc(gv.label || 'Giving')}</h1><p class="muted">First fruits, planned ahead and settled from every real paystub.</p></div></div>`;
+  const plans = S.people.filter(r => gv.personIds.includes(r.p.id)).map(r => ({ r, plan: S.givingPlan[r.p.id] }));
+  html += `<div class="stats">${stat('Planned per month', money(S.givingM, true), 'in the budget', 'accent')}${stat('Per year', money(S.givingM * 12))}${S.owed.count ? stat('Ready to give now', money(S.owed.amount, true), `from ${S.owed.count} logged paycheck${S.owed.count > 1 ? 's' : ''}`, 'good') : ''}${plans.map(x => stat(`Per ${esc(x.r.p.name)} paycheck`, (x.r.p.payType === 'hourly' ? '~' : '') + money(x.plan.perCheck, true), x.r.p.payType === 'hourly' ? 'planned from ' + x.plan.source : 'fixed — same every check')).join('')}</div>`;
+  if (S.owed.count) html += `<div class="banner good-banner"><span>🙏 ${money(S.owed.amount, true)} is ready to give from ${S.owed.count} paycheck${S.owed.count > 1 ? 's' : ''}.</span><button class="btn sm primary" data-act="payAllOwed">Mark all as given</button></div>`;
+
+  // how it works
+  const hourlyIn = plans.filter(x => x.r.p.payType === 'hourly');
+  if (hourlyIn.length) html += card('How variable pay is handled', `<ol class="how"><li><b>Plan</b> — the budget sets aside ${hourlyIn.map(x => `~${money(x.plan.perCheck * x.r.cpm)}/mo for ${esc(x.r.p.name)}, based on ${PLAN_LABEL[x.plan.source]}`).join('; ')}.</li><li><b>Settle</b> — when a stub arrives, log the gross. The app works out the exact amount, so you never guess.</li><li><b>Give</b> — tap "Mark given" once it's sent. Anything logged but not given shows on the dashboard until you do.</li></ol>`);
+
+  html += card('How we calculate it', `<div class="form-inline">
+    <label class="field half"><span>Name it</span><input type="text" data-bind="giving.label" value="${esc(gv.label)}"></label>
+    <label class="field half"><span>Percent</span><div class="inp post"><input type="number" step="0.5" inputmode="decimal" data-bind="giving.percent" data-num="1" value="${esc(gv.percent)}"><i>%</i></div></label>
+    <label class="field half"><span>Of</span><select data-bind="giving.basis">${opt('gross', 'Gross pay (before taxes)', gv.basis)}${opt('net', 'Take-home pay', gv.basis)}</select></label>
+    <label class="field half"><span>Paid from</span><select data-bind="giving.accountId">${acctOpts().map(o => opt(o[0], o[1], gv.accountId)).join('')}</select></label>
+    <fieldset class="field"><legend>Whose income counts</legend>${D.people.map(p => `<label class="check inline"><input type="checkbox" data-bind="giving.personIds" data-multi="${p.id}" ${gv.personIds.includes(p.id) ? 'checked' : ''}><span>${esc(p.name)}</span></label>`).join('')}</fieldset>
+    ${D.people.some(p => p.payType === 'hourly') ? `<label class="field"><span>Plan hourly pay's ${esc((gv.label || 'giving').toLowerCase())} on</span><select data-bind="giving.hourlyPlan">${opt('auto', 'Smart: recent real stubs → expected pay → base pay', gv.hourlyPlan)}${opt('actual', 'Recent real paystubs (last 6)', gv.hourlyPlan)}${opt('expected', 'Expected pay with differentials', gv.hourlyPlan)}${opt('floor', 'Base pay only', gv.hourlyPlan)}</select><small class="help">This only sets how much the budget plans for. What you actually give always comes from the logged stub.</small></label>` : ''}
+    <label class="field half"><span>Extra giving each month</span><div class="inp pre"><i>$</i><input type="number" step="any" inputmode="decimal" data-bind="giving.extraMonthly" data-num="1" value="${esc(gv.extraMonthly)}"></div><small class="help">Offerings, missions, sponsorships.</small></label>
+    <label class="check field half"><input type="checkbox" data-bind="giving.enabled" ${gv.enabled ? 'checked' : ''}><span>Include in the budget</span></label>
+  </div>`);
+  D.people.filter(p => p.payType === 'hourly').forEach(p => { html += payLogCard(p); });
+  return html;
+}
+
+/* ---------- MONEY DATE (check-in) ---------- */
+function viewCheckin() {
+  if (!ui.draft) {
+    ui.draft = { date: todayISO(), balances: {}, goals: {}, paychecks: {}, note: '' };
+    D.accounts.forEach(a => ui.draft.balances[a.id] = num(a.balance));
+    D.goals.forEach(g => ui.draft.goals[g.id] = num(g.saved));
+    D.people.filter(p => p.payType === 'hourly').forEach(p => ui.draft.paychecks[p.id] = ['', '', '']);
+    ui.step = 0;
+  }
+  const dr = ui.draft;
+  const steps = ['Balances', 'Paychecks', 'Goals', 'Wrap up'];
+  const hourly = D.people.filter(p => p.payType === 'hourly');
+  let body = '';
+  if (ui.step === 0) {
+    body = `<p class="muted">Open your banking apps and update each balance. For cards & loans, enter what you owe.</p><div class="ci-list">${D.accounts.map(a => `<label class="ci-row"><span><b>${esc(a.name)}</b><small>${ACCOUNT_TYPES[a.type].label}${a.last4 ? ' ••' + esc(a.last4) : ''}</small></span><div class="inp pre"><i>$</i><input type="number" step="any" inputmode="decimal" data-draft="balances" data-id="${a.id}" value="${esc(dr.balances[a.id])}"></div></label>`).join('') || '<p>No accounts yet.</p>'}</div>`;
+  } else if (ui.step === 1) {
+    const since = new Date(); since.setDate(since.getDate() - 35); const sinceISO = since.toISOString().slice(0, 10);
+    body = hourly.length ? hourly.map(p => {
+      const recent = payLogFor(D, p.id).filter(e => e.date >= sinceISO);
+      const pend = pendingPaydays(D, p);
+      return `<h4>${esc(p.name)}'s paystubs</h4>${recent.length ? `<ul class="plain">${recent.map(e => `<li>${new Date(e.date + 'T00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}: ${money(num(e.gross), true)} gross${num(e.net) ? ' · ' + money(num(e.net), true) + ' take-home' : ''} · ${e.paid ? '✓ ' + esc((D.giving.label || 'giving').toLowerCase()) + ' given' : '<b>' + esc((D.giving.label || 'giving').toLowerCase()) + ' not given yet</b>'}</li>`).join('')}</ul>` : '<p class="muted small">Nothing logged in the last month.</p>'}
+        ${pend.length ? `<p class="warn-text small">${pend.length} payday${pend.length > 1 ? 's' : ''} still need${pend.length > 1 ? '' : 's'} a stub.</p>` : ''}
+        <button class="btn sm ghost" data-act="logPay" data-pid="${p.id}">+ Log a paycheck</button>`;
+    }).join('') + '<p class="muted small">These paystubs feed her real-pay average and the giving tracker.</p>' : '<p class="muted">No hourly paychecks to log. Skip ahead!</p>';
+  } else if (ui.step === 2) {
+    const gl = D.goals.filter(g => { const a = D.accounts.find(x => x.id === g.accountId); return !(a && isRetireType(a.type)); });
+    body = `<p class="muted">How much is set aside for each goal now? If a goal has its own account, use that balance.</p><div class="ci-list">${gl.map(g => { const a = D.accounts.find(x => x.id === g.accountId); const solo = a && D.goals.filter(x => x.accountId === a.id).length === 1; return `<label class="ci-row"><span><b>${esc(g.icon || '')} ${esc(g.name)}</b><small>${a ? esc(a.name) + (solo ? ' — ' + money(dr.balances[a.id]) : ' (shared)') : ''}</small></span><div class="inp pre"><i>$</i><input type="number" step="any" inputmode="decimal" data-draft="goals" data-id="${g.id}" value="${esc(dr.goals[g.id])}"></div></label>`; }).join('') || '<p>No goals yet.</p>'}</div>`;
+  } else {
+    const prevSnap = D.snapshots.slice().sort((a, b) => b.date.localeCompare(a.date))[0];
+    const nwNow = snapshotNetWorth(D, { balances: dr.balances });
+    const delta = prevSnap ? nwNow - snapshotNetWorth(D, prevSnap) : null;
+    body = `<div class="wrap-up"><p class="big-num">${money(nwNow)}<small> net worth</small></p>${delta != null ? `<p class="${delta >= 0 ? 'good' : 'bad'}">${delta >= 0 ? '▲' : '▼'} ${money(Math.abs(delta))} since ${new Date(prevSnap.date + 'T00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}</p>` : '<p class="muted">Your first data point. The journey starts here.</p>'}
+      <label class="field"><span>Date</span><input type="date" data-draft="date" value="${dr.date}"></label>
+      <label class="field"><span>A note for future us</span><textarea rows="3" data-draft="note" placeholder="Wins, surprises, what we want to change…">${esc(dr.note)}</textarea></label></div>`;
+  }
+  let html = `<div class="page-h"><div><h1>Money Date</h1><p class="muted">Once a month, 10 minutes, together. Grab a coffee ☕</p></div></div>`;
+  html += card('', `<ol class="stepper">${steps.map((s, i) => `<li class="${i === ui.step ? 'on' : i < ui.step ? 'done' : ''}">${s}</li>`).join('')}</ol>${body}
+    <div class="ci-nav">${ui.step > 0 ? '<button class="btn ghost" data-act="ciBack">Back</button>' : '<span></span>'}${ui.step < 3 ? '<button class="btn primary" data-act="ciNext">Next</button>' : '<button class="btn primary" data-act="ciSave">Save our Money Date 🎉</button>'}</div>`, { cls: 'wide' });
+  const hist = D.snapshots.slice().sort((a, b) => b.date.localeCompare(a.date));
+  if (hist.length) html += card('Past Money Dates', `<ul class="rows">${hist.map(sn => `<li class="row"><div class="row-m"><b>${new Date(sn.date + 'T00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</b><span class="muted small">${esc(sn.note || '')}</span></div><div class="row-v"><b>${money(snapshotNetWorth(D, sn))}</b><button class="icon-btn" data-act="delSnap" data-id="${sn.id}" aria-label="Delete">✕</button></div></li>`).join('')}</ul>`);
+  return html;
+}
+
+function saveCheckin() {
+  const dr = ui.draft;
+  const before = summarize(D).goals.map(x => ({ id: x.g.id, pct: x.pct }));
+  D.accounts.forEach(a => { if (dr.balances[a.id] !== '' && dr.balances[a.id] != null) a.balance = num(dr.balances[a.id]); });
+  D.goals.forEach(g => { if (dr.goals[g.id] !== undefined && dr.goals[g.id] !== '') g.saved = num(dr.goals[g.id]); });
+  const pc = {}; Object.keys(dr.paychecks).forEach(k => { const v = dr.paychecks[k].map(num).filter(x => x > 0); if (v.length) pc[k] = v; });
+  D.snapshots.push({ id: uid(), date: dr.date, balances: Object.assign({}, dr.balances), goals: Object.assign({}, dr.goals), paychecks: pc, note: dr.note });
+  ui.draft = null; ui.step = 0;
+  S = summarize(D);
+  const wins = [];
+  S.goals.forEach(x => {
+    if (x.pct == null) return;
+    [25, 50, 75, 100].forEach(m => { if (x.pct * 100 >= m && !x.g.celebrated.includes(m)) { x.g.celebrated.push(m); wins.push(`${x.g.name} hit ${m}%!`); } });
+  });
+  save();
+  location.hash = '#/home';
+  setTimeout(() => { confetti(); toast(wins.length ? '🎉 ' + wins.join(' ') : 'Money Date saved. Proud of you two!', 'good'); }, 150);
+}
+
+/* ---------- BINDER ---------- */
+function viewBinder() {
+  const byAcct = {};
+  D.bills.filter(b => b.autopay).forEach(b => (byAcct[b.accountId || ''] = byAcct[b.accountId || ''] || []).push(b));
+  let html = `<div class="page-h"><div><h1>Our Binder</h1><p class="muted">Everything one of us would need to know if the other couldn't be here to explain it.</p></div><button class="btn ghost" data-act="print">🖨 Print</button></div>`;
+  const letter = D.binder.letter != null ? D.binder.letter : `If you're reading this because something happened to me — I love you. Take a breath. The house, the bills, and our savings are set up to keep running on their own for a while. Go one step at a time. Everything you need is on this page.\n\n— ${D.people[0] ? D.people[0].name : ''}`;
+  html += `<section class="card letter"><p class="pre">${esc(letter)}</p><button class="btn sm ghost no-print" data-act="editLetter">Edit note</button></section>`;
+  html += card('First 30 days', `<ol class="checklist">${D.binder.checklist.map(s => `<li>${esc(s)}</li>`).join('')}</ol>`, { action: '<button class="btn sm ghost no-print" data-act="editChecklist">Edit</button>' });
+  html += card('Who to call', D.binder.contacts.length ? `<ul class="contacts">${D.binder.contacts.map(c => `<li data-act="editContact" data-id="${c.id}" tabindex="0"><b>${esc(c.name)}</b><span>${esc(c.role)}</span><a href="tel:${esc(String(c.phone).replace(/[^\d+]/g, ''))}">${esc(c.phone)}</a>${c.notes ? `<small class="muted">${esc(c.notes)}</small>` : ''}</li>`).join('')}</ul>` : '<p class="muted">Add HR, insurance agents, the attorney, a trusted friend who knows money…</p>', { action: '<button class="btn sm ghost no-print" data-act="addContact">+ Add</button>' });
+  html += card('Our accounts', `<div class="tbl-scroll"><table class="tbl"><thead><tr><th>Account</th><th>Where</th><th>Whose</th><th>What it's for</th></tr></thead><tbody>${D.accounts.map(a => `<tr><td><b>${esc(a.name)}</b><br><span class="muted small">${ACCOUNT_TYPES[a.type].label}</span></td><td>${esc(a.institution)}${a.last4 ? ' ••' + esc(a.last4) : ''}</td><td>${esc(personName(D, a.owner))}</td><td>${esc(a.purpose || '')}</td></tr>`).join('')}</tbody></table></div>`, { cls: 'wide' });
+  html += card('What pays itself automatically', Object.keys(byAcct).map(k => `<h4>${esc(acctName(k) || 'No account set')} <span class="h-sub">keep at least ${money(byAcct[k].reduce((t, b) => t + billMonthly(b), 0) + (D.giving.accountId === k ? S.givingM : 0))}/mo here</span></h4><ul class="plain">${byAcct[k].map(b => `<li>${esc(b.name)} — ${money(num(b.amount), true)} ${PERIOD_LABEL[b.frequency].toLowerCase()}${b.dueDay ? ', around the ' + b.dueDay + 'th' : ''}</li>`).join('')}</ul>`).join('') + (D.bills.some(b => !b.autopay) ? `<h4>Paid by hand</h4><ul class="plain">${D.bills.filter(b => !b.autopay).map(b => `<li>${esc(b.name)} — ${money(num(b.amount), true)}</li>`).join('')}</ul>` : ''), { cls: 'wide' });
+  html += `<div class="grid2">${D.binder.notes.map(n => card(esc(n.title), n.body ? `<p class="pre">${esc(n.body)}</p>` : `<p class="muted small">${esc(n.hint || 'Not filled in yet.')}</p>`, { action: `<button class="btn sm ghost no-print" data-act="editNote" data-id="${n.id}">${n.body ? 'Edit' : 'Fill in'}</button>` })).join('')}</div>`;
+  html += `<p class="center no-print"><button class="btn ghost" data-act="addNote">+ Add a section</button></p>`;
+  return html;
+}
+
+/* ---------- SETTINGS ---------- */
+function viewSettings() {
+  const st = D.settings, L = st.limits;
+  const inp = (path, val, o = {}) => `<label class="field ${o.half ? 'half' : ''}"><span>${o.label}</span><div class="inp ${o.pre ? 'pre' : ''} ${o.post ? 'post' : ''}">${o.pre ? '<i>' + o.pre + '</i>' : ''}<input type="${o.text ? 'text' : 'number'}" step="any" ${o.text ? '' : 'inputmode="decimal" data-num="1"'} data-bind="${path}" value="${esc(val)}">${o.post ? '<i>' + o.post + '</i>' : ''}</div>${o.help ? `<small class="help">${o.help}</small>` : ''}</label>`;
+  let html = `<div class="page-h"><div><h1>Settings</h1></div></div>`;
+  html += card('Backups', `<p>Your data lives <b>only in this browser on this device</b>. Back up after each Money Date and keep the file somewhere safe (Google Drive, a USB stick…).</p>
+    <p class="muted small">Last backup: ${st.lastBackup ? new Date(st.lastBackup).toLocaleString() : 'never'}</p>
+    <div class="btn-row"><button class="btn primary" data-act="backup">💾 Save a backup</button><button class="btn ghost" data-act="restore">📂 Restore from a file</button></div>
+    <p class="muted small">Restoring replaces everything on this device with the file's contents. Use it to move data between your phone and PC.</p>`);
+  html += card('Make it ours', `<div class="form-inline">${inp('appName', D.appName, { label: 'App name', text: 1, half: 1 })}
+    <label class="field half"><span>Theme</span><select data-bind="settings.theme">${opt('auto', 'Match my device', st.theme)}${opt('light', 'Light', st.theme)}${opt('dark', 'Dark', st.theme)}</select></label>
+    <label class="field"><span>Budget paychecks as</span><select data-bind="settings.budgetBasis">${opt('average', 'Yearly average (26 checks ÷ 12)', st.budgetBasis)}${opt('two', '2 paychecks a month — extras are bonus', st.budgetBasis)}</select><small class="help">"Average" matches the old spreadsheet. "2 a month" is more conservative and turns the 3-paycheck months into bonus money.</small></label></div>`);
+  html += card('Projection assumptions', `<div class="form-inline">${inp('settings.returnLow', st.returnLow, { label: 'Cautious return', post: '%', half: 1 })}${inp('settings.returnMid', st.returnMid, { label: 'Expected return', post: '%', half: 1 })}${inp('settings.returnHigh', st.returnHigh, { label: 'Hopeful return', post: '%', half: 1 })}${inp('settings.inflation', st.inflation, { label: 'Inflation', post: '%', half: 1 })}${inp('settings.defaultYears', st.defaultYears, { label: 'Years to retirement if age not set', half: 1 })}</div>`);
+  html += card('Contribution limits', `<div class="form-inline">${inp('settings.limits.year', L.year, { label: 'Tax year', half: 1 })}${inp('settings.limits.k401', L.k401, { label: '401(k)/403(b) limit', pre: '$', half: 1 })}${inp('settings.limits.k401catch', L.k401catch, { label: '401(k) catch-up (50+)', pre: '$', half: 1 })}${inp('settings.limits.ira', L.ira, { label: 'IRA limit', pre: '$', half: 1 })}${inp('settings.limits.iraCatch', L.iraCatch, { label: 'IRA catch-up (50+)', pre: '$', half: 1 })}</div><p class="muted small">2026 figures from the IRS (Notice 2025-67). Update each year.</p>`);
+  const canCrypto = !!(window.crypto && crypto.subtle);
+  html += card('Privacy lock', canCrypto ? `<p class="muted small">A PIN screen that keeps casual eyes out when someone picks up your phone. Your phone's own lock is still the real protection.</p><div class="btn-row">${st.pinHash ? '<button class="btn ghost" data-act="pinOff">Remove PIN</button><button class="btn ghost" data-act="pinSet">Change PIN</button>' : '<button class="btn ghost" data-act="pinSet">Set a PIN</button>'}</div>` : '<p class="muted">Not available when opened this way. Use the installed app to enable it.</p>');
+  html += card('Start over', `<p class="muted small">Erase everything on this device. Make a backup first!</p><button class="btn danger ghost" data-act="wipe">Erase all data on this device</button>`);
+  html += `<p class="muted small center">${esc(D.appName)} · works offline · nothing leaves this device</p>`;
+  return html;
+}
+
+/* ---------- Welcome ---------- */
+function viewWelcome() {
+  return `<div class="welcome"><div class="welcome-card"><div class="logo-big">🪺</div><h1>Welcome to your nest</h1>
+    <p>A private, offline home for our money plan. Nothing you enter ever leaves this device.</p>
+    <button class="btn primary big" data-act="restore">📂 Load our starter / backup file</button>
+    <button class="btn ghost big" data-act="fresh">Start from scratch</button>
+    <p class="muted small">Moving between devices? Save a backup on one, then load it here.</p></div></div>`;
+}
+
+/* =====================================================================
+   SHELL
+   ===================================================================== */
+function applyTheme() {
+  const t = D ? D.settings.theme : 'auto';
+  if (t === 'auto') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', t);
+}
+
+function render() {
+  applyTheme();
+  const app = $('#app');
+  if (!D) { app.innerHTML = viewWelcome(); return; }
+  document.title = D.appName || 'Our Nest';
+  const views = { home: viewHome, income: viewIncome, bills: viewBills, goals: viewGoals, retire: viewRetire, accounts: viewAccounts, giving: viewGiving, checkin: viewCheckin, binder: viewBinder, settings: viewSettings };
+  const view = views[route] || viewHome;
+  const navItem = ([k, l, i]) => `<a href="#/${k}" class="${route === k ? 'on' : ''}" ${route === k ? 'aria-current="page"' : ''}><span class="ni">${i}</span><span>${l}</span></a>`;
+  const scrollY = window.scrollY;
+  app.innerHTML = `<header class="topbar"><span class="logo">🪺</span><b>${esc(D.appName)}</b>${eyeBtn()}</header>
+    <aside class="side"><div class="brand"><span class="logo">🪺</span><b>${esc(D.appName)}</b>${eyeBtn()}</div><nav>${NAV.map(navItem).join('')}</nav>
+      <div class="side-foot"><a href="#/checkin" class="btn primary sm block">☕ Money Date</a></div></aside>
+    <main id="main" class="view-${route}">${view()}</main>
+    <nav class="bottom">${NAV.filter(n => MOBILE_NAV.includes(n[0])).map(navItem).join('')}<button class="${!MOBILE_NAV.includes(route) ? 'on' : ''}" data-act="more"><span class="ni">☰</span><span>More</span></button></nav>
+    <div class="more-sheet ${ui.more ? 'open' : ''}" data-act="moreClose"><div class="more-inner">${NAV.filter(n => !MOBILE_NAV.includes(n[0])).map(navItem).join('')}</div></div>`;
+  if (ui.keepScroll) { window.scrollTo(0, scrollY); ui.keepScroll = false; }
+}
+
+function setPath(obj, path, val) { const ks = path.split('.'); let o = obj; ks.slice(0, -1).forEach(k => o = o[k]); o[ks[ks.length - 1]] = val; }
+function getPath(obj, path) { return path.split('.').reduce((o, k) => o && o[k], obj); }
+
+/* ---------- actions ---------- */
+const ACT = {
+  addPerson: () => editPerson(), editPerson: el => editPerson(el.dataset.id),
+  addBill: () => editBill(), editBill: el => editBill(el.dataset.id),
+  addAccount: () => editAccount(), editAccount: el => editAccount(el.dataset.id),
+  addGoal: () => editGoal(), editGoal: el => editGoal(el.dataset.id),
+  addContact: () => editContact(), editContact: el => editContact(el.dataset.id),
+  addNote: () => editNote(), editNote: el => editNote(el.dataset.id), editChecklist, editLetter,
+  billFilter: el => { ui.billFilter = el.dataset.id; ui.keepScroll = true; render(); },
+  more: () => { ui.more = true; render(); }, moreClose: () => { ui.more = false; render(); },
+  ciNext: () => { ui.step = Math.min(3, ui.step + 1); render(); window.scrollTo(0, 0); },
+  ciBack: () => { ui.step = Math.max(0, ui.step - 1); render(); },
+  ciSave: saveCheckin,
+  delSnap: el => { if (el.dataset.sure) { remove(D.snapshots, el.dataset.id); commit(); } else { el.dataset.sure = 1; el.textContent = '?'; el.classList.add('danger'); toast('Tap ✕ again to delete that Money Date'); } },
+  keepExplorer: el => {
+    const p = D.people.find(x => x.id === el.dataset.id); const q = explorePerson(p);
+    p.diffs = q.diffs; p.otHours = q.otHours; delete ui.explore[p.id]; ui.keepScroll = true; commit(); toast('Saved as the typical paycheck');
+  },
+  print: () => window.print(),
+  toggleHide: () => { setHidden(!HIDDEN.on); ui.keepScroll = true; render(); toast(HIDDEN.on ? 'Amounts hidden' : 'Amounts visible'); },
+  logPay: el => editPayLog(null, el.dataset.pid, el.dataset.date),
+  editLog: el => editPayLog(el.dataset.id),
+  markPaid: el => { const e = D.paylog.find(x => x.id === el.dataset.id); if (e) { e.paid = !e.paid; e.paidOn = e.paid ? todayISO() : ''; ui.keepScroll = true; commit(); if (e.paid) toast('Marked as given 🙏', 'good'); } },
+  payAllOwed: () => { D.paylog.forEach(e => { if (D.giving.personIds.includes(e.personId) && !e.paid && num(D.giving.basis === 'net' ? e.net : e.gross) > 0) { e.paid = true; e.paidOn = todayISO(); } }); ui.keepScroll = true; commit(); toast('All caught up 🙏', 'good'); },
+  calReminder: el => calendarReminder(el.dataset.pid),
+  backup: doBackup, restore: doRestore,
+  fresh: () => { D = defaultData(); D.settings.onboarded = true; D.people = [newPerson('Me')]; D.giving.personIds = []; S = summarize(D); save(); location.hash = '#/income'; render(); toast('Start by adding your income'); },
+  pinSet: () => openForm({ title: 'Set a PIN', value: { pin: '' }, fields: [{ k: 'pin', label: '4–8 digit PIN', type: 'password' }], validate: v => !/^\d{4,8}$/.test(String(v.pin)) ? 'Use 4–8 digits' : null, onSave: async v => { D.settings.pinHash = await sha256('ournest:' + v.pin); save(); toast('PIN set'); } }),
+  pinOff: () => { D.settings.pinHash = null; commit(); toast('PIN removed'); },
+  wipe: el => { if (el.dataset.sure) { localStorage.removeItem(STORE_KEY); D = null; S = null; location.hash = ''; render(); } else { el.dataset.sure = 1; el.textContent = 'Tap again — this cannot be undone'; } }
+};
+
+/* ---------- backup / restore ---------- */
+function download(name, text) {
+  const blob = new Blob([text], { type: 'application/json' });
+  const file = typeof File === 'function' ? new File([blob], name, { type: 'application/json' }) : null;
+  if (file && navigator.canShare && navigator.canShare({ files: [file] }) && /Android|iPhone|iPad/i.test(navigator.userAgent)) {
+    navigator.share({ files: [file], title: name }).catch(() => plainDownload(blob, name));
+  } else plainDownload(blob, name);
+}
+function plainDownload(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000); }
+
+function doBackup() {
+  const canCrypto = !!(window.crypto && crypto.subtle);
+  openForm({
+    title: 'Save a backup', value: { pass: '', pass2: '' }, saveLabel: 'Save backup file',
+    intro: 'Creates one file with everything. Keep it somewhere safe. ' + (canCrypto ? 'Add a password to encrypt it (recommended if you store it in the cloud) — don\'t forget it, it can\'t be recovered.' : ''),
+    fields: canCrypto ? [{ k: 'pass', label: 'Password (optional)', type: 'password' }, { k: 'pass2', label: 'Repeat password', type: 'password' }] : [],
+    validate: v => v.pass && v.pass !== v.pass2 ? 'Passwords don\'t match' : null,
+    onSave: async v => {
+      D.settings.lastBackup = new Date().toISOString(); save();
+      const stamp = todayISO();
+      const payload = v.pass ? await encryptJSON(D, v.pass) : D;
+      download(`our-nest-backup-${stamp}${v.pass ? '-locked' : ''}.json`, JSON.stringify(payload, null, 1));
+      toast('Backup created'); render();
+    }
+  });
+}
+function doRestore() {
+  const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.json,application/json';
+  inp.onchange = () => {
+    const f = inp.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = async () => {
+      let obj;
+      try { obj = JSON.parse(r.result); } catch (e) { return toast('That file isn\'t a valid backup', 'bad'); }
+      const finish = data => {
+        if (!data || !Array.isArray(data.people)) return toast('That file isn\'t an Our Nest backup', 'bad');
+        D = normalize(data); S = summarize(D); save(); location.hash = '#/home'; render(); toast('Loaded! Welcome home 🪺', 'good');
+      };
+      if (obj.ournestEncrypted) {
+        openForm({ title: 'This backup is locked', value: { pass: '' }, fields: [{ k: 'pass', label: 'Password', type: 'password' }], saveLabel: 'Unlock',
+          onSave: async v => { try { finish(await decryptJSON(obj, v.pass)); } catch (e) { toast('Wrong password', 'bad'); } } });
+      } else if (D && D.people.length) {
+        openForm({ title: 'Replace everything?', value: {}, intro: 'This replaces all data on this device with the file you picked.', fields: [], saveLabel: 'Yes, replace', onSave: () => finish(obj) });
+      } else finish(obj);
+    };
+    r.readAsText(f);
+  };
+  inp.click();
+}
+
+/* ---------- PIN lock ---------- */
+function showLock() {
+  const app = $('#app');
+  app.innerHTML = `<div class="welcome"><div class="welcome-card"><div class="logo-big">🔒</div><h1>${esc(D.appName)}</h1><input id="pin" class="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN" aria-label="PIN"><button class="btn primary big" id="unlock">Unlock</button></div></div>`;
+  const go = async () => { if (await sha256('ournest:' + $('#pin').value) === D.settings.pinHash) { unlocked = true; render(); } else { $('#pin').value = ''; toast('Wrong PIN', 'bad'); } };
+  $('#unlock').onclick = go; $('#pin').onkeydown = e => { if (e.key === 'Enter') go(); }; $('#pin').focus();
+}
+let unlocked = false;
+
+/* ---------- boot ---------- */
+function onRoute() {
+  const r = (location.hash.match(/#\/(\w+)/) || [])[1] || 'home';
+  if (r !== route) { route = r; ui.more = false; ui.explore = {}; window.scrollTo(0, 0); }
+  if (D && D.settings.pinHash && !unlocked) return showLock();
+  render();
+}
+
+function wireApp() {
+  document.addEventListener('click', e => {
+    const go = e.target.closest('[data-go]'); if (go) { location.hash = '#/' + go.dataset.go; return; }
+    const el = e.target.closest('[data-act]'); if (!el || el.closest('#modal')) return;
+    if (el.classList.contains('more-sheet') && e.target !== el) return;
+    const fn = ACT[el.dataset.act]; if (fn) { e.preventDefault(); fn(el); }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.target.matches('[data-act][tabindex]')) { const fn = ACT[e.target.dataset.act]; if (fn) fn(e.target); }
+  });
+  // inline-bound inputs (settings, giving, ages)
+  document.addEventListener('change', e => {
+    const el = e.target;
+    if (el.closest('#modal')) return;
+    if (el.dataset.bind === 'age') { const p = D.people.find(x => x.id === el.dataset.id); if (p) { p.age = num(el.value) || null; commit(); } return; }
+    if (el.dataset.bind) {
+      const path = el.dataset.bind;
+      if (el.dataset.multi !== undefined) { const arr = new Set(getPath(D, path) || []); el.checked ? arr.add(el.dataset.multi) : arr.delete(el.dataset.multi); setPath(D, path, [...arr]); }
+      else if (el.type === 'checkbox') setPath(D, path, el.checked);
+      else setPath(D, path, el.dataset.num ? num(el.value) : el.value);
+      ui.keepScroll = true; commit(); return;
+    }
+    if (el.dataset.x === 'extra') { ui.keepScroll = true; render(); return; }
+    if (el.dataset.x === 'todays') { ui.todays = el.checked; ui.keepScroll = true; render(); }
+    if (el.dataset.draft) { draftInput(el); }
+  });
+  document.addEventListener('input', e => {
+    const el = e.target;
+    if (el.dataset.draft) return draftInput(el);
+    if (el.dataset.x === 'extra') {
+      ui.extra = num(el.value);
+      const rows = retirementPlan(D, S); const horizon = Math.max(...rows.map(r => r.years));
+      $('#extraLbl').textContent = money(ui.extra); $('#projDyn').innerHTML = projDyn(rows, horizon);
+      return;
+    }
+    if (el.dataset.x === 'diff' || el.dataset.x === 'ot') {
+      const box = el.closest('.explorer'); const p0 = D.people.find(x => x.id === box.dataset.pid);
+      const o = ui.explore[p0.id] = ui.explore[p0.id] || { diffs: p0.diffs.map(df => num(df.hours)), ot: num(p0.otHours) };
+      if (el.dataset.x === 'diff') o.diffs[+el.dataset.i] = num(el.value); else o.ot = num(el.value);
+      el.nextElementSibling.textContent = el.value + ' hrs';
+      const p = explorePerson(p0); const ex = paycheck(p, 'expected'), fl = paycheck(p, 'floor');
+      box.querySelector('[data-o="net"]').textContent = money(ex.net, true);
+      box.querySelector('[data-o="diff"]').textContent = '+' + money(ex.net - fl.net, true) + ' over floor';
+    }
+  });
+}
+function draftInput(el) {
+  const dr = ui.draft; const k = el.dataset.draft;
+  if (k === 'date' || k === 'note') dr[k] = el.value;
+  else if (k === 'paychecks') dr.paychecks[el.dataset.id][+el.dataset.i] = el.value;
+  else dr[k][el.dataset.id] = el.value === '' ? '' : num(el.value);
+}
+
+function boot() {
+  try { setHidden(localStorage.getItem('ournest:hide') === '1'); } catch (e) {}
+  D = load();
+  if (D) S = summarize(D);
+  wireApp(); wireModal(); initTooltips();
+  window.addEventListener('hashchange', onRoute);
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => D && render());
+  onRoute();
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+document.addEventListener('DOMContentLoaded', boot);
+
+</script>
+</body>
+</html>
