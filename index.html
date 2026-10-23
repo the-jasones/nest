@@ -371,6 +371,81 @@ input:focus, select:focus, textarea:focus { outline: 2px solid color-mix(in srgb
 .how { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
 .card .btn-row { margin-top: 10px; }
 
+/* ---------- goal ranking ---------- */
+.rank { font: 700 11px var(--sans); color: var(--ink-3); background: var(--surface-2); border-radius: 999px; padding: 2px 7px; align-self: flex-start; flex: none; }
+.rank-ctl { display: flex; flex-direction: column; align-items: center; gap: 0; flex: none; }
+.rank-ctl b { font-size: 12px; color: var(--brand); }
+.rank-ctl .icon-btn { padding: 2px 8px; font-size: 12px; }
+.rank-ctl .icon-btn:disabled { opacity: .25; cursor: default; }
+.reordering .goal { cursor: default; border-style: dashed; }
+.reordering .goal:hover { transform: none; }
+
+/* ---------- hero rotator ---------- */
+.hero-rot { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.hero-track { display: grid; }
+.hero-track .hero-goal { grid-area: 1 / 1; opacity: 0; transform: translateY(8px); transition: opacity .45s ease, transform .45s ease; pointer-events: none; cursor: pointer; }
+.hero-track .hero-goal.on { opacity: 1; transform: none; pointer-events: auto; }
+.hg-k { font-size: 11px !important; text-transform: uppercase; letter-spacing: .08em; opacity: .75 !important; font-weight: 600; }
+.hero-goal b { font-size: 17px; }
+.hero-dots { display: flex; gap: 6px; justify-content: center; }
+.hero-dots button { width: 8px; height: 8px; border-radius: 999px; border: 0; padding: 0; background: rgba(255,255,255,.35); cursor: pointer; transition: width .25s, background .25s; }
+.hero-dots button.on { width: 22px; background: #ffd690; }
+.hero-dots button::after { content: ''; display: block; margin: -10px; padding: 14px; }
+
+/* ---------- tab bar picker ---------- */
+.tab-pick { list-style: none; margin: 0 0 12px; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.tab-pick li { display: flex; align-items: center; gap: 8px; background: var(--brand-soft); border-radius: 12px; padding: 8px 10px; }
+.tab-pick b { flex: 1; font-size: 14px; }
+.tp-btns { display: flex; }
+.tp-btns .icon-btn { padding: 4px 6px; font-size: 12px; }
+.icon-btn:disabled, .chip:disabled { opacity: .35; cursor: default; }
+.more-edit { color: var(--ink-2) !important; grid-column: 1 / -1; justify-content: center; border-top: 1px solid var(--line); border-radius: 0 0 12px 12px !important; }
+
+/* ---------- calendar ---------- */
+.cal-title { font-size: 22px; }
+.cal-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--ink-2); margin-bottom: 10px; }
+.cal-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.cal-legend i, .cd-dots i, .ev-dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; flex: none; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.wd { font: 600 11px var(--sans); color: var(--ink-3); text-transform: uppercase; letter-spacing: .05em; text-align: center; padding: 4px 0; }
+.cd { min-height: 96px; background: var(--surface-2); border: 1px solid transparent; border-radius: 10px; padding: 6px; display: flex; flex-direction: column; gap: 3px; text-align: left; font: inherit; color: inherit; cursor: pointer; min-width: 0; overflow: hidden; }
+.cd.empty { background: transparent; cursor: default; }
+.cd:hover { border-color: var(--line); }
+.cd.sel { border-color: var(--brand); box-shadow: 0 0 0 1px var(--brand) inset; }
+.cd.today .cd-n { background: var(--brand); color: var(--brand-ink); }
+.cd-n { font: 600 12px var(--sans); width: 22px; height: 22px; display: grid; place-items: center; border-radius: 999px; }
+.cd-chips { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.chip-ev { font-size: 11px; line-height: 1.3; padding: 1px 6px; border-radius: 5px; background: color-mix(in srgb, var(--c) 16%, transparent); border-left: 3px solid var(--c); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.more-ev { font-size: 11px; color: var(--ink-3); padding-left: 4px; }
+.cd-dots { display: none; gap: 3px; flex-wrap: wrap; }
+.cd-sum { margin-top: auto; display: flex; flex-direction: column; font-size: 11px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+@media (max-width: 860px) {
+  .cal-grid { gap: 3px; }
+  .cd { min-height: 54px; padding: 4px; align-items: center; }
+  .cd-chips, .cd-sum { display: none; }
+  .cd-dots { display: flex; justify-content: center; }
+  .cd-n { font-size: 13px; }
+}
+.evs { list-style: none; margin: 0; padding: 0; }
+.ev { display: flex; align-items: center; gap: 10px; padding: 10px 6px; border-bottom: 1px solid var(--line); cursor: pointer; border-radius: 8px; }
+.ev:last-child { border-bottom: 0; }
+.ev:hover { background: var(--surface-2); }
+.ev-l { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.ev-l small { color: var(--ink-3); font-size: 12px; }
+.ev-l small .warn-text { font-size: 12px; color: var(--warn); }
+.ev-a { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.agenda-d { margin: 14px 0 2px; color: var(--ink-2); font-size: 13px; }
+.agenda-d:first-child { margin-top: 0; }
+.quick-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 8px; }
+.quick { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--surface-2); border-radius: 10px; padding: 6px 6px 6px 12px; font-size: 14px; }
+.quick input[type=number] { width: 76px; flex: none; }
+.quick input[type=date] { width: 160px; flex: none; }
+
+.ev-a { display: flex; flex-direction: column; align-items: flex-end; }
+.est { font: 500 10px var(--sans); color: var(--ink-3); text-transform: uppercase; letter-spacing: .05em; }
+.rank-ctl .icon-btn { padding: 6px 12px; font-size: 14px; min-width: 40px; min-height: 32px; }
+.tp-btns .icon-btn { min-width: 32px; min-height: 32px; }
+
 </style>
 </head>
 <body>
@@ -445,6 +520,7 @@ function defaultData() {
       inflation: 2.5,
       defaultYears: 30,
       limits: { year: 2026, k401: 24500, k401catch: 8000, ira: 7500, iraCatch: 1100 },
+      tabs: ['home', 'income', 'bills', 'goals'],
       lastBackup: null,
       pinHash: null,
       onboarded: false
@@ -749,6 +825,87 @@ function nextPayday(p) {
   return t;
 }
 
+/* ---------- Calendar: when money moves ---------- */
+const dim = (y, m) => new Date(y, m + 1, 0).getDate();
+/* Days (1-based) in month y/m (m 0-based) on which a schedule falls */
+function occurrences(kind, opts, y, m) {
+  const out = [], last = dim(y, m);
+  const clampDay = d => Math.min(Math.max(1, Math.round(num(d))), last);
+  if (kind === 'monthly') { if (num(opts.day) > 0) out.push(clampDay(opts.day)); return out; }
+  if (kind === 'semimonthly') {
+    if (num(opts.day) > 0) { const a = clampDay(opts.day); out.push(a); const b = num(opts.day) + 15 > 28 ? last : clampDay(num(opts.day) + 15); if (b !== a) out.push(b); }
+    else if (opts.anchor) { out.push(15, last); }
+    return out;
+  }
+  if (!opts.anchor) return out;
+  const a = new Date(opts.anchor + 'T00:00:00');
+  const start = new Date(y, m, 1), end = new Date(y, m, last);
+  if (kind === 'weekly' || kind === 'biweekly') {
+    const step = kind === 'weekly' ? 7 : 14;
+    const t = new Date(a);
+    const diff = Math.floor((start - t) / 864e5);
+    if (diff > 0) t.setDate(t.getDate() + Math.ceil(diff / step) * step);
+    else while (t - start > step * 864e5) t.setDate(t.getDate() - step);
+    while (t < start) t.setDate(t.getDate() + step);
+    for (; t <= end; t.setDate(t.getDate() + step)) out.push(t.getDate());
+    return out;
+  }
+  const every = { quarterly: 3, yearly: 12 }[kind];
+  if (every) {
+    const months = (y - a.getFullYear()) * 12 + (m - a.getMonth());
+    if (((months % every) + every) % every === 0) out.push(Math.min(a.getDate(), last));
+  }
+  return out;
+}
+
+/* Every dated money movement in a month. type: in | bill | give | save */
+function monthEvents(d, s, y, m) {
+  const ev = [];
+  const add = (day, e) => ev.push(Object.assign({ day, date: localISO(new Date(y, m, day)) }, e));
+  // paydays + giving on each payday
+  s.people.forEach(r => {
+    const p = r.p;
+    const kind = p.frequency;
+    const days = kind === 'monthly' ? (p.lastPayday ? [Math.min(new Date(p.lastPayday + 'T00:00').getDate(), dim(y, m))] : [])
+      : occurrences(kind, { anchor: p.lastPayday }, y, m);
+    const plan = s.givingPlan && s.givingPlan[p.id];
+    days.forEach(dd => {
+      add(dd, { type: 'in', label: `${p.name} payday`, amount: r.b.net, approx: p.payType === 'hourly', ref: 'income' });
+      if (plan && d.giving.enabled) add(dd, { type: 'give', label: `${d.giving.label || 'Giving'} · ${p.name}`, amount: plan.perCheck, approx: p.payType === 'hourly', ref: 'giving' });
+    });
+  });
+  // bills
+  d.bills.forEach(b => {
+    const kind = b.frequency;
+    const days = occurrences(kind, { day: b.dueDay, anchor: b.dueDate || (b.isSub ? b.renewal : '') }, y, m);
+    days.forEach(dd => add(dd, { type: 'bill', label: b.name, amount: num(b.amount), ref: 'bill', id: b.id, autopay: b.autopay, accountId: b.accountId }));
+  });
+  // extra giving
+  if (d.giving.enabled && num(d.giving.extraMonthly) > 0 && num(d.giving.extraDay) > 0) add(Math.min(num(d.giving.extraDay), dim(y, m)), { type: 'give', label: 'Extra giving', amount: num(d.giving.extraMonthly), ref: 'giving' });
+  // goal / IRA transfers
+  (s.goals || []).forEach(x => {
+    const g = x.g;
+    if (g.contribWhen === 'yearly') {
+      occurrences('yearly', { anchor: g.contribDate }, y, m).forEach(dd => add(dd, { type: 'save', label: g.name, icon: g.icon, amount: x.monthly * 12, ref: 'goal', id: g.id, retire: x.retire }));
+    } else if (num(g.contribDay) > 0 && x.monthly > 0) {
+      add(Math.min(num(g.contribDay), dim(y, m)), { type: 'save', label: g.name, icon: g.icon, amount: x.monthly, ref: 'goal', id: g.id, retire: x.retire });
+    }
+  });
+  const order = { in: 0, give: 1, bill: 2, save: 3 };
+  return ev.sort((a, b) => a.day - b.day || order[a.type] - order[b.type]);
+}
+
+/* Things that move money but have no date yet */
+function undatedItems(d, s) {
+  const bills = d.bills.filter(b => {
+    if (b.frequency === 'monthly' || b.frequency === 'semimonthly') return !(num(b.dueDay) > 0);
+    return !(b.dueDate || (b.isSub && b.renewal));
+  });
+  const goals = (s.goals || []).filter(x => x.monthly > 0 && (x.g.contribWhen === 'yearly' ? !x.g.contribDate : !(num(x.g.contribDay) > 0)));
+  const people = d.people.filter(p => !p.lastPayday);
+  return { bills, goals, people };
+}
+
 /* ---------- Snapshots ---------- */
 function snapshotNetWorth(d, snap) {
   let t = 0;
@@ -793,7 +950,7 @@ async function sha256(s) {
   return b64(h);
 }
 
-if (typeof module !== 'undefined') module.exports = { givingPlanFor, givingOwed, pendingPaydays, PERIODS, normalize, defaultData, newPerson, paycheck, summarize, retirementPlan, projectSeries, fv, monthsToTarget, extraPaycheckMonths, goalTarget };
+if (typeof module !== 'undefined') module.exports = { occurrences, monthEvents, undatedItems, givingPlanFor, givingOwed, pendingPaydays, PERIODS, normalize, defaultData, newPerson, paycheck, summarize, retirementPlan, projectSeries, fv, monthsToTarget, extraPaycheckMonths, goalTarget };
 
 /* ===== Our Nest — tiny SVG chart kit (no libraries, works offline) ===== */
 'use strict';
@@ -1214,11 +1371,12 @@ function editBill(id) {
     fields: [
       { k: 'name', label: 'Name', type: 'text', placeholder: 'e.g. Netflix' },
       { k: 'amount', label: 'Amount', type: 'money', half: true },
-      { k: 'frequency', label: 'How often', type: 'select', half: true, options: Object.keys(PERIOD_LABEL).map(k => [k, PERIOD_LABEL[k]]) },
+      { k: 'frequency', label: 'How often', type: 'select', half: true, live: true, options: Object.keys(PERIOD_LABEL).map(k => [k, PERIOD_LABEL[k]]) },
       { k: 'category', label: 'Category', type: 'select', options: BILL_CATEGORIES.map(c => [c, c]), half: true },
       { k: 'owner', label: 'Whose', type: 'select', options: () => peopleOpts('shared', 'Shared'), half: true },
       { k: 'accountId', label: 'Paid from', type: 'select', options: () => acctOpts() },
-      { k: 'dueDay', label: 'Due day of month', type: 'number', half: true },
+      { k: 'dueDay', label: 'Due day of month', type: 'number', half: true, show: v => v.frequency === 'monthly' || v.frequency === 'semimonthly', help: 'Shows it on the Calendar.' },
+      { k: 'dueDate', label: 'Next due date', type: 'date', half: true, show: v => !(v.frequency === 'monthly' || v.frequency === 'semimonthly'), help: 'Repeats from here on the Calendar.' },
       { k: 'autopay', label: 'On autopay', type: 'check', half: true },
       { k: 'isSub', label: 'This is a subscription', type: 'check', live: true },
       { k: 'renewal', label: 'Renews / free trial ends', type: 'date', show: v => v.isSub },
@@ -1265,7 +1423,7 @@ function editGoal(id) {
       { k: 'accountId', label: 'Money lives in', type: 'select', options: () => acctOpts(), live: true, help: 'Pick an IRA/401(k) here and this becomes a retirement contribution.' },
       { k: 'kind', label: 'How do you want to save?', type: 'select', live: true, options: [['fixed', 'Put in a set amount'], ['target', 'Reach a target by a date']] },
       { k: 'amount', label: 'Amount', type: 'money', half: true, show: v => v.kind === 'fixed' },
-      { k: 'per', label: 'Per', type: 'select', half: true, options: [['monthly', 'Month'], ['yearly', 'Year']], show: v => v.kind === 'fixed' },
+      { k: 'per', label: 'Per', type: 'select', half: true, live: true, options: [['monthly', 'Month'], ['yearly', 'Year']], show: v => v.kind === 'fixed' },
       { k: 'targetSource', label: 'Target amount', type: 'select', live: true, show: v => !isRet(v),
         options: v => [...(v.kind === 'fixed' ? [['none', 'No target — ongoing']] : []), ['manual', 'A set amount'], ['home', 'Home down payment (price × %)'], ['emergency', 'Emergency fund (months of bills)']] },
       { k: 'target', label: 'Target', type: 'money', show: v => v.targetSource === 'manual' && !isRet(v) },
@@ -1274,7 +1432,10 @@ function editGoal(id) {
       { k: 'emMonths', label: 'Months of bills + giving to cover', type: 'number', show: v => v.targetSource === 'emergency' },
       { k: 'targetDate', label: 'Target date', type: 'date', show: v => v.kind === 'target' },
       { k: 'saved', label: 'Saved so far', type: 'money', half: true, show: v => !isRet(v) },
-      { k: 'apy', label: 'Interest it earns (APY)', type: 'percent', half: true, show: v => !isRet(v), help: 'High-yield savings pays ~4%. Leave 0 if unsure.' }
+      { k: 'apy', label: 'Interest it earns (APY)', type: 'percent', half: true, show: v => !isRet(v), help: 'High-yield savings pays ~4%. Leave 0 if unsure.' },
+      { k: 'contribWhen', label: 'When does the money move?', type: 'select', live: true, options: v => [['monthly', 'Every month'], ...(v.kind === 'fixed' && v.per === 'yearly' ? [['yearly', 'Once a year (lump sum)']] : [])], help: 'Puts the transfer on the Calendar.' },
+      { k: 'contribDay', label: 'Transfer day of month', type: 'number', half: true, show: v => v.contribWhen !== 'yearly', placeholder: 'e.g. 15' },
+      { k: 'contribDate', label: 'Transfer date', type: 'date', half: true, show: v => v.contribWhen === 'yearly', help: 'Repeats every year.' }
     ],
     preview: v => {
       const vv = Object.assign({}, v); if (vv.kind === 'target' && (vv.targetSource === 'none' || !vv.targetSource)) vv.targetSource = 'manual';
@@ -1282,7 +1443,7 @@ function editGoal(id) {
       return `${t ? 'Target <b>' + money(t) + '</b> · ' : ''}Needs <b>${money(m, true)}</b>/month`;
     },
     validate: v => !String(v.name).trim() ? 'Name your goal' : (v.kind === 'target' && !v.targetDate ? 'Pick a target date' : null),
-    onSave: v => { if (v.kind === 'target' && (v.targetSource === 'none' || !v.targetSource)) v.targetSource = 'manual'; if (isRet(v)) v.targetSource = 'none'; upsert(D.goals, v); },
+    onSave: v => { if (!(v.kind === 'fixed' && v.per === 'yearly')) v.contribWhen = 'monthly'; if (v.kind === 'target' && (v.targetSource === 'none' || !v.targetSource)) v.targetSource = 'manual'; if (isRet(v)) v.targetSource = 'none'; upsert(D.goals, v); },
     onDelete: id ? () => remove(D.goals, id) : null
   });
 }
@@ -1356,11 +1517,12 @@ function editChecklist() {
    VIEWS
    ===================================================================== */
 const NAV = [
-  ['home', 'Home', '◉'], ['income', 'Money In', '↘'], ['bills', 'Bills & Subs', '▤'], ['goals', 'Goals', '★'],
+  ['home', 'Home', '◉'], ['income', 'Money In', '↘'], ['bills', 'Bills & Subs', '▤'], ['calendar', 'Calendar', '▦'], ['goals', 'Goals', '★'],
   ['retire', 'Retirement', '⌂'], ['accounts', 'Accounts', '▣'], ['giving', 'Giving', '♡'],
   ['checkin', 'Money Date', '✓'], ['binder', 'Our Binder', '❏'], ['settings', 'Settings', '⚙']
 ];
-const MOBILE_NAV = ['home', 'income', 'bills', 'goals'];
+const DEFAULT_TABS = ['home', 'income', 'bills', 'goals'];
+const mobileTabs = () => { const t = (D && Array.isArray(D.settings.tabs) ? D.settings.tabs : DEFAULT_TABS).filter(k => NAV.some(n => n[0] === k)); return t.length ? t.slice(0, 4) : DEFAULT_TABS; };
 
 function stat(label, value, sub, cls) {
   return `<div class="stat ${cls || ''}"><span class="stat-l">${label}</span><span class="stat-v">${value}</span>${sub ? `<span class="stat-s">${sub}</span>` : ''}</div>`;
@@ -1391,13 +1553,13 @@ function viewHome() {
     html += `<div class="banner good-banner"><span>🙏 ${esc(D.giving.label || 'Giving')}: ${bits.join(' · ')}</span><a class="btn sm primary" href="#/giving">Take care of it</a></div>`;
   }
 
-  // hero
-  let heroGoal = '';
-  if (home) {
-    const left = home.g.targetDate ? Math.max(0, monthsBetween(todayISO(), home.g.targetDate)) : null;
-    heroGoal = `<div class="hero-goal"><span class="hg-emoji">${esc(home.g.icon || '🏡')}</span><div><b>${esc(home.g.name)}</b><span>${left != null ? durLabel(Math.round(left)) + ' to go' : ''} · ${pct(home.pct || 0)} of ${money(home.target)}</span>
-      <div class="bar"><span style="width:${((home.pct || 0) * 100).toFixed(1)}%"></span></div></div></div>`;
-  }
+  // hero — rotates through goals (priority order) + retirement outlook
+  const slides = heroSlides();
+  if (ui.heroIdx == null || ui.heroIdx >= slides.length) ui.heroIdx = 0;
+  const heroGoal = slides.length ? `<div class="hero-rot" aria-roledescription="carousel" aria-label="Our goals">
+      <div class="hero-track">${slides.map((sl, i) => `<div class="hero-goal ${i === ui.heroIdx ? 'on' : ''}" role="group" aria-roledescription="slide" aria-label="${i + 1} of ${slides.length}" ${i === ui.heroIdx ? '' : 'aria-hidden="true"'} ${sl.go ? `data-go="${sl.go}"` : ''}>
+        <span class="hg-emoji">${esc(sl.icon)}</span><div><span class="hg-k">${esc(sl.kicker)}</span><b>${esc(sl.title)}</b><span>${sl.line}</span>${sl.pct != null ? `<div class="bar"><span style="width:${(Math.min(1, sl.pct) * 100).toFixed(1)}%"></span></div>` : ''}</div></div>`).join('')}</div>
+      ${slides.length > 1 ? `<div class="hero-dots">${slides.map((sl, i) => `<button class="${i === ui.heroIdx ? 'on' : ''}" data-act="heroGo" data-i="${i}" aria-label="Show ${esc(sl.title)}"></button>`).join('')}</div>` : ''}</div>` : '';
   html += `<section class="hero"><div><p class="eyebrow">${greeting()}${D.people.length ? ', ' + esc(names()) : ''}</p>
     <h1>We're putting <em>${money(S.savedM)}</em> a month toward our future.</h1>
     <p class="hero-sub">That's ${pct(S.savingsRate)} of everything we earn${S.matchM > 0 ? `, plus ${money(S.matchM)} in employer match` : ''}.</p></div>${heroGoal}</section>`;
@@ -1474,6 +1636,113 @@ function viewHome() {
     html += card('Our net worth over time', lineChart('nw', { series: [{ name: 'Net worth', values: vals, color: C.s3, endLabel: true }], xLabels: snaps.map(s => new Date(s.date + 'T00:00').toLocaleDateString('en-US', { month: 'short', year: '2-digit' })), minZero: false, label: 'Net worth by Money Date' }) + `<p class="muted small">Built from your monthly Money Dates. Now: <b>${money(vals[vals.length - 1])}</b> (${vals[vals.length - 1] - vals[0] >= 0 ? '+' : ''}${money(vals[vals.length - 1] - vals[0])} since ${new Date(snaps[0].date + 'T00:00').toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}).</p>`, { cls: 'wide' });
   } else {
     html += card('Our net worth over time', emptyState(`Each monthly <b>Money Date</b> adds a point here. ${snaps.length ? 'One more and the line appears!' : 'Do your first one to start the chart.'}`, '<a class="btn primary sm" href="#/checkin">Start a Money Date</a>'), { cls: 'wide' });
+  }
+  return html;
+}
+
+function heroSlides() {
+  const out = [];
+  S.goals.filter(x => !x.retire).forEach((x, i) => {
+    const g = x.g; const rank = `Goal #${i + 1}`;
+    if (x.target) {
+      const left = g.kind === 'target' && g.targetDate ? Math.max(0, monthsBetween(todayISO(), g.targetDate)) : x.eta;
+      const when = x.pct >= 1 ? 'Reached! 🎉' : left != null && left > 0 ? durLabel(Math.round(left)) + ' to go' : x.monthly > 0 ? '' : 'Not funded yet';
+      out.push({ icon: g.icon || '⭐', kicker: rank, title: g.name, line: `${when ? when + ' · ' : ''}${pct(x.pct || 0)} of ${money(x.target)}`, pct: x.pct || 0, go: 'goals' });
+    } else if (x.monthly > 0) {
+      out.push({ icon: g.icon || '⭐', kicker: rank, title: g.name, line: `${money(x.monthly)}/mo · ${money(x.saved)} saved so far`, pct: null, go: 'goals' });
+    }
+  });
+  const rows = retirementPlan(D, S);
+  if (rows.length) {
+    const horizon = Math.max(...rows.map(r => r.years));
+    const mid = projectSeries(rows, D.settings.returnMid, horizon, 0, D.settings.inflation, true);
+    const end = mid[mid.length - 1];
+    out.push({ icon: '🌴', kicker: 'Retirement · ' + (new Date().getFullYear() + horizon), title: `Could reach ${moneyShort(end)}`, line: `≈ ${money(end * 0.04 / 12)}/mo to live on · today's dollars`, pct: null, go: 'retire' });
+  }
+  if (S.netWorth && D.snapshots.length) out.push({ icon: '📈', kicker: 'Net worth', title: money(S.netWorth), line: `${D.snapshots.length} Money Date${D.snapshots.length > 1 ? 's' : ''} logged`, pct: null, go: 'home' });
+  return out;
+}
+let heroTimer = null, heroPausedUntil = 0;
+function heroShow(i) {
+  const els = document.querySelectorAll('.hero-goal'), dots = document.querySelectorAll('.hero-dots button');
+  if (!els.length) return;
+  ui.heroIdx = (i + els.length) % els.length;
+  els.forEach((e, k) => { e.classList.toggle('on', k === ui.heroIdx); if (k === ui.heroIdx) e.removeAttribute('aria-hidden'); else e.setAttribute('aria-hidden', 'true'); });
+  dots.forEach((d, k) => d.classList.toggle('on', k === ui.heroIdx));
+}
+function heroPause(ms) { heroPausedUntil = Date.now() + ms; }
+function wireHero() {
+  clearInterval(heroTimer); heroTimer = null;
+  const rot = $('.hero-rot'); if (!rot || document.querySelectorAll('.hero-goal').length < 2) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  rot.addEventListener('mouseenter', () => heroPause(1e9)); rot.addEventListener('mouseleave', () => heroPause(0));
+  rot.addEventListener('focusin', () => heroPause(1e9)); rot.addEventListener('focusout', () => heroPause(0));
+  let sx = null;
+  rot.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+  rot.addEventListener('touchend', e => { if (sx == null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) { heroShow(ui.heroIdx + (dx < 0 ? 1 : -1)); heroPause(6000); } sx = null; });
+  heroTimer = setInterval(() => { if (Date.now() > heroPausedUntil && !document.hidden) heroShow(ui.heroIdx + 1); }, 5500);
+}
+
+/* ---------- CALENDAR ---------- */
+const EV_STYLE = { in: { c: 'var(--good)', lbl: 'Money in', sign: '+' }, bill: { c: 'var(--s1)', lbl: 'Bill', sign: '−' }, give: { c: 'var(--s2)', lbl: 'Giving', sign: '−' }, save: { c: 'var(--s3)', lbl: 'Saving', sign: '→' } };
+function evRow(e) {
+  const st = EV_STYLE[e.type];
+  return `<li class="ev ev-${e.type}" data-act="calOpen" data-ref="${e.ref}" data-id="${e.id || ''}" tabindex="0"><span class="ev-dot" style="background:${st.c}"></span><span class="ev-l"><b>${e.icon ? esc(e.icon) + ' ' : ''}${esc(e.label)}</b><small>${st.lbl}${e.type === 'bill' ? (e.autopay ? ' · autopay' : ' · <span class="warn-text">pay by hand</span>') : ''}${e.retire ? ' · retirement' : ''}${e.accountId ? ' · ' + esc(acctName(e.accountId)) : ''}</small></span><span class="ev-a ${e.type === 'in' ? 'good' : ''}">${st.sign}${money(e.amount, true)}${e.approx ? '<small class="est">est.</small>' : ''}</span></li>`;
+}
+function viewCalendar() {
+  const now = new Date();
+  if (!ui.cal) ui.cal = { y: now.getFullYear(), m: now.getMonth(), day: now.getDate() };
+  const { y, m } = ui.cal;
+  const isThisMonth = y === now.getFullYear() && m === now.getMonth();
+  if (ui.cal.day == null) ui.cal.day = isThisMonth ? now.getDate() : 1;
+  const ev = monthEvents(D, S, y, m);
+  const last = new Date(y, m + 1, 0).getDate(), first = new Date(y, m, 1).getDay();
+  const byDay = {}; ev.forEach(e => (byDay[e.day] = byDay[e.day] || []).push(e));
+  const tot = t => ev.filter(e => e.type === t).reduce((a, e) => a + e.amount, 0);
+  const half = (from, to) => ev.filter(e => e.day >= from && e.day <= to && e.type !== 'in').reduce((a, e) => a + e.amount, 0);
+  const title = new Date(y, m, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+  let html = `<div class="page-h"><div><h1>Calendar</h1><p class="muted">When money moves — paydays, bills, giving, and savings transfers.</p></div></div>`;
+  html += `<div class="stats">${stat('Coming in', money(tot('in')), 'dated paydays this month', 'good')}${stat('Bills', money(tot('bill')), 'with due dates')}${stat(esc(D.giving.label || 'Giving'), money(tot('give')))}${stat('To savings & IRAs', money(tot('save')), '', 'accent')}${stat('1st–15th out', money(half(1, 15)), '16th–end: ' + money(half(16, 31)))}</div>`;
+
+  // grid
+  const wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  let cells = '';
+  for (let i = 0; i < first; i++) cells += '<div class="cd empty"></div>';
+  for (let d = 1; d <= last; d++) {
+    const list = byDay[d] || [];
+    const isToday = isThisMonth && d === now.getDate();
+    const out = list.filter(e => e.type !== 'in').reduce((a, e) => a + e.amount, 0);
+    const inn = list.filter(e => e.type === 'in').reduce((a, e) => a + e.amount, 0);
+    cells += `<button class="cd ${isToday ? 'today' : ''} ${ui.cal.day === d ? 'sel' : ''} ${list.length ? 'has' : ''}" data-act="calDay" data-day="${d}" aria-label="${title.split(' ')[0]} ${d}: ${list.length} item${list.length === 1 ? '' : 's'}">
+      <span class="cd-n">${d}</span>
+      <span class="cd-chips">${list.slice(0, 3).map(e => `<span class="chip-ev" style="--c:${EV_STYLE[e.type].c}">${esc(e.label)}</span>`).join('')}${list.length > 3 ? `<span class="more-ev">+${list.length - 3} more</span>` : ''}</span>
+      <span class="cd-dots">${list.slice(0, 5).map(e => `<i style="background:${EV_STYLE[e.type].c}"></i>`).join('')}</span>
+      ${inn || out ? `<span class="cd-sum">${inn ? `<span class="good">+${moneyShort(inn)}</span>` : ''}${out ? `<span>−${moneyShort(out)}</span>` : ''}</span>` : ''}
+    </button>`;
+  }
+  const legendHtml = Object.keys(EV_STYLE).map(k => `<span><i style="background:${EV_STYLE[k].c}"></i>${EV_STYLE[k].lbl}</span>`).join('');
+  html += card(`<span class="cal-title">${title}</span>`, `<div class="cal-legend">${legendHtml}</div><div class="cal-grid">${wd.map(w => `<div class="wd">${w}</div>`).join('')}${cells}</div>`,
+    { cls: 'wide cal-card', action: `<div class="btn-row"><button class="icon-btn" data-act="calNav" data-dir="-1" aria-label="Previous month">◀</button>${isThisMonth ? '' : '<button class="btn sm ghost" data-act="calToday">Today</button>'}<button class="icon-btn" data-act="calNav" data-dir="1" aria-label="Next month">▶</button></div>` });
+
+  // selected day + rest of month
+  const sel = byDay[ui.cal.day] || [];
+  const selLabel = new Date(y, m, ui.cal.day).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  html += `<div class="grid2">` + `<section class="card" id="dayDetail"><header class="card-h"><h3>${selLabel}</h3></header>${sel.length ? `<ul class="evs">${sel.map(evRow).join('')}</ul>` : '<p class="muted">Nothing scheduled. A quiet day. ☕</p>'}</section>`;
+  const upcoming = ev.filter(e => !isThisMonth || e.day >= now.getDate());
+  const groups = {}; upcoming.forEach(e => (groups[e.day] = groups[e.day] || []).push(e));
+  html += card(isThisMonth ? 'Rest of the month' : 'Whole month', Object.keys(groups).length ? Object.keys(groups).map(d => `<h4 class="agenda-d">${new Date(y, m, +d).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</h4><ul class="evs">${groups[d].map(evRow).join('')}</ul>`).join('') : '<p class="muted">Nothing else dated this month.</p>') + `</div>`;
+
+  // undated
+  const un = undatedItems(D, S);
+  if (un.bills.length || un.goals.length || un.people.length) {
+    let b = `<p class="muted small">These move money but don't have a date yet, so they're missing from the calendar. Type a day and it saves instantly.</p>`;
+    if (un.people.length) b += `<h4>Paydays</h4><div class="quick-list">${un.people.map(p => `<label class="quick"><span>${esc(p.name)} — a recent payday</span><input type="date" data-quick="payday" data-id="${p.id}"></label>`).join('')}</div>`;
+    if (un.bills.length) b += `<h4>Bills</h4><div class="quick-list">${un.bills.map(x => (x.frequency === 'monthly' || x.frequency === 'semimonthly')
+      ? `<label class="quick"><span>${esc(x.name)} <small class="muted">${money(num(x.amount), true)}</small></span><input type="number" min="1" max="31" inputmode="numeric" placeholder="day" data-quick="billDay" data-id="${x.id}"></label>`
+      : `<label class="quick"><span>${esc(x.name)} <small class="muted">${PERIOD_LABEL[x.frequency].toLowerCase()}</small></span><input type="date" data-quick="billDate" data-id="${x.id}"></label>`).join('')}</div>`;
+    if (un.goals.length) b += `<h4>Savings & IRA transfers</h4><div class="quick-list">${un.goals.map(x => `<label class="quick"><span>${esc(x.g.icon || '')} ${esc(x.g.name)} <small class="muted">${money(x.monthly)}/mo</small></span><input type="number" min="1" max="31" inputmode="numeric" placeholder="day" data-quick="goalDay" data-id="${x.g.id}"></label>`).join('')}</div>`;
+    html += card(`Needs a date <span class="h-sub">${un.bills.length + un.goals.length + un.people.length}</span>`, b, { cls: 'wide' });
   }
   return html;
 }
@@ -1567,13 +1836,34 @@ function billRow(b, yearly) {
 function viewGoals() {
   const C = COLORS();
   const goals = S.goals.filter(x => !x.retire), ret = S.goals.filter(x => x.retire);
-  let html = `<div class="page-h"><div><h1>Goals</h1><p class="muted">What we're building, together.</p></div><button class="btn primary" data-act="addGoal">+ New goal</button></div>`;
+  let html = `<div class="page-h"><div><h1>Goals</h1><p class="muted">What we're building, together — in priority order.</p></div><div class="btn-row"><button class="btn ${ui.reorder ? 'primary' : 'ghost'}" data-act="reorder" aria-pressed="${!!ui.reorder}">${ui.reorder ? '✓ Done' : '↕ Reorder'}</button><button class="btn primary" data-act="addGoal">+ New goal</button></div></div>`;
+  if (ui.reorder) html += `<div class="banner good-banner"><span>Use the arrows to rank your goals. #1 leads the home screen and goes first when money is tight.</span></div>`;
   html += `<div class="stats">${stat('Into goals', money(S.goalsM - S.goalsRetireM), 'per month')}${stat('Into IRAs & retirement goals', money(S.goalsRetireM), 'per month')}${stat('Saved so far', money(goals.reduce((t, x) => t + x.saved, 0)), 'across goals', 'good')}</div>`;
-  html += `<div class="goal-grid">${goals.map(x => goalCard(x, C)).join('') || emptyState('No goals yet — dream a little.')}</div>`;
-  if (ret.length) html += `<h2 class="sec">Retirement contributions</h2><div class="goal-grid">${ret.map(x => `<div class="goal" data-act="editGoal" data-id="${x.g.id}" tabindex="0"><div class="goal-h"><span class="g-i">${esc(x.g.icon || '🌱')}</span><div><b>${esc(x.g.name)}</b><span class="muted small">into ${esc(acctName(x.g.accountId))}</span></div></div><p class="big-num">${money(x.monthly)}<small>/mo · ${money(x.monthly * 12)}/yr</small></p><p class="muted small">Balance ${money(x.saved)} — see Retirement for projections.</p></div>`).join('')}</div>`;
+  html += `<div class="goal-grid ${ui.reorder ? 'reordering' : ''}">${goals.map((x, i) => goalCard(x, C, i, goals.length)).join('') || emptyState('No goals yet — dream a little.')}</div>`;
+  if (ret.length) html += `<h2 class="sec">Retirement contributions</h2><div class="goal-grid ${ui.reorder ? 'reordering' : ''}">${ret.map((x, i) => `<div class="goal" ${ui.reorder ? '' : `data-act="editGoal" data-id="${x.g.id}" tabindex="0"`}><div class="goal-h">${rankCtl(x.g.id, i, ret.length)}<span class="g-i">${esc(x.g.icon || '🌱')}</span><div><b>${esc(x.g.name)}</b><span class="muted small">into ${esc(acctName(x.g.accountId))}${transferLabel(x)}</span></div></div><p class="big-num">${money(x.monthly)}<small>/mo · ${money(x.monthly * 12)}/yr</small></p><p class="muted small">Balance ${money(x.saved)} — see Retirement for projections.</p></div>`).join('')}</div>`;
   return html;
 }
-function goalCard(x, C) {
+function rankCtl(id, i, n) {
+  if (!ui.reorder) return `<span class="rank" title="Priority ${i + 1}">#${i + 1}</span>`;
+  return `<span class="rank-ctl"><button class="icon-btn" data-act="goalMove" data-id="${id}" data-dir="-1" ${i === 0 ? 'disabled' : ''} aria-label="Move up">▲</button><b>#${i + 1}</b><button class="icon-btn" data-act="goalMove" data-id="${id}" data-dir="1" ${i === n - 1 ? 'disabled' : ''} aria-label="Move down">▼</button></span>`;
+}
+function transferLabel(x) {
+  const g = x.g;
+  if (g.contribWhen === 'yearly' && g.contribDate) return ' · yearly on ' + new Date(g.contribDate + 'T00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  if (num(g.contribDay) > 0) return ' · moves on the ' + ordinal(num(g.contribDay));
+  return '';
+}
+const ordinal = n => n + (['th', 'st', 'nd', 'rd'][(n % 10 > 3 || [11, 12, 13].includes(n % 100)) ? 0 : n % 10]);
+function moveGoal(id, dir) {
+  const arr = D.goals; const i = arr.findIndex(g => g.id === id); if (i < 0) return;
+  const isRet = g => { const a = D.accounts.find(x => x.id === g.accountId); return !!(a && isRetireType(a.type)); };
+  const group = isRet(arr[i]);
+  let j = i + dir;
+  while (j >= 0 && j < arr.length && isRet(arr[j]) !== group) j += dir;
+  if (j < 0 || j >= arr.length) return;
+  [arr[i], arr[j]] = [arr[j], arr[i]];
+}
+function goalCard(x, C, rank, total) {
   const g = x.g;
   let status = '', proj = '';
   if (x.target) {
@@ -1587,8 +1877,8 @@ function goalCard(x, C) {
     }
   }
   const ms = [25, 50, 75, 100].map(m => `<span class="ms ${x.pct != null && x.pct * 100 >= m ? 'hit' : ''}" style="left:${m}%"></span>`).join('');
-  return `<div class="goal" data-act="editGoal" data-id="${g.id}" tabindex="0">
-    <div class="goal-h"><span class="g-i">${esc(g.icon || '⭐')}</span><div><b>${esc(g.name)}</b><span class="muted small">${esc(acctName(g.accountId) || '')}</span></div>${status}</div>
+  return `<div class="goal" ${ui.reorder ? '' : `data-act="editGoal" data-id="${g.id}" tabindex="0"`}>
+    <div class="goal-h">${rankCtl(g.id, rank, total)}<span class="g-i">${esc(g.icon || '⭐')}</span><div><b>${esc(g.name)}</b><span class="muted small">${esc(acctName(g.accountId) || '')}${transferLabel(x)}</span></div>${status}</div>
     ${x.target ? `<div class="g-amt"><b>${money(x.saved)}</b><span>of ${money(x.target)}</span><span class="g-pct">${pct(x.pct || 0)}</span></div><div class="bar big"><span style="width:${((x.pct || 0) * 100).toFixed(1)}%"></span>${ms}</div>` : `<div class="g-amt"><b>${money(x.saved)}</b><span>saved · ongoing</span></div>`}
     <div class="g-f"><span><b>${money(x.monthly)}</b>/mo</span>${g.targetSource === 'emergency' ? `<span class="muted small">${num(g.emMonths)} months of bills + giving</span>` : ''}${g.targetSource === 'home' ? `<span class="muted small">${num(g.downPct)}% of ${money(num(g.homePrice))}</span>` : ''}</div>
     ${proj ? `<p class="small">${proj}</p>` : ''}</div>`;
@@ -1719,6 +2009,7 @@ function viewGiving() {
     <label class="field half"><span>Paid from</span><select data-bind="giving.accountId">${acctOpts().map(o => opt(o[0], o[1], gv.accountId)).join('')}</select></label>
     <fieldset class="field"><legend>Whose income counts</legend>${D.people.map(p => `<label class="check inline"><input type="checkbox" data-bind="giving.personIds" data-multi="${p.id}" ${gv.personIds.includes(p.id) ? 'checked' : ''}><span>${esc(p.name)}</span></label>`).join('')}</fieldset>
     ${D.people.some(p => p.payType === 'hourly') ? `<label class="field"><span>Plan hourly pay's ${esc((gv.label || 'giving').toLowerCase())} on</span><select data-bind="giving.hourlyPlan">${opt('auto', 'Smart: recent real stubs → expected pay → base pay', gv.hourlyPlan)}${opt('actual', 'Recent real paystubs (last 6)', gv.hourlyPlan)}${opt('expected', 'Expected pay with differentials', gv.hourlyPlan)}${opt('floor', 'Base pay only', gv.hourlyPlan)}</select><small class="help">This only sets how much the budget plans for. What you actually give always comes from the logged stub.</small></label>` : ''}
+    <label class="field half"><span>Extra giving day</span><input type="number" inputmode="numeric" data-bind="giving.extraDay" data-num="1" value="${esc(gv.extraDay || '')}" placeholder="day of month"><small class="help">For the Calendar.</small></label>
     <label class="field half"><span>Extra giving each month</span><div class="inp pre"><i>$</i><input type="number" step="any" inputmode="decimal" data-bind="giving.extraMonthly" data-num="1" value="${esc(gv.extraMonthly)}"></div><small class="help">Offerings, missions, sponsorships.</small></label>
     <label class="check field half"><input type="checkbox" data-bind="giving.enabled" ${gv.enabled ? 'checked' : ''}><span>Include in the budget</span></label>
   </div>`);
@@ -1816,6 +2107,11 @@ function viewSettings() {
   html += card('Make it ours', `<div class="form-inline">${inp('appName', D.appName, { label: 'App name', text: 1, half: 1 })}
     <label class="field half"><span>Theme</span><select data-bind="settings.theme">${opt('auto', 'Match my device', st.theme)}${opt('light', 'Light', st.theme)}${opt('dark', 'Dark', st.theme)}</select></label>
     <label class="field"><span>Budget paychecks as</span><select data-bind="settings.budgetBasis">${opt('average', 'Yearly average (26 checks ÷ 12)', st.budgetBasis)}${opt('two', '2 paychecks a month — extras are bonus', st.budgetBasis)}</select><small class="help">"Average" matches the old spreadsheet. "2 a month" is more conservative and turns the 3-paycheck months into bonus money.</small></label></div>`);
+  const tabs = mobileTabs();
+  html += card('Phone tab bar', `<p class="muted small">Pick the 4 screens you use most. Everything else lives under <b>More</b>.</p>
+    <ol class="tab-pick">${tabs.map((k, i) => { const n = NAV.find(x => x[0] === k); return `<li><span class="ni">${n[2]}</span><b>${n[1]}</b><span class="tp-btns"><button class="icon-btn" data-act="tabMove" data-id="${k}" data-dir="-1" ${i === 0 ? 'disabled' : ''} aria-label="Move ${n[1]} left">◀</button><button class="icon-btn" data-act="tabMove" data-id="${k}" data-dir="1" ${i === tabs.length - 1 ? 'disabled' : ''} aria-label="Move ${n[1]} right">▶</button><button class="icon-btn" data-act="tabUnpin" data-id="${k}" ${tabs.length <= 1 ? 'disabled' : ''} aria-label="Unpin ${n[1]}">✕</button></span></li>`; }).join('')}</ol>
+    <div class="chips">${NAV.filter(n => !tabs.includes(n[0])).map(n => `<button class="chip" data-act="tabPin" data-id="${n[0]}" ${tabs.length >= 4 ? 'disabled' : ''}>+ ${n[2]} ${n[1]}</button>`).join('')}</div>
+    ${tabs.length >= 4 ? '<p class="muted small">Tab bar is full. Unpin one (✕) to swap in another.</p>' : ''}`);
   html += card('Projection assumptions', `<div class="form-inline">${inp('settings.returnLow', st.returnLow, { label: 'Cautious return', post: '%', half: 1 })}${inp('settings.returnMid', st.returnMid, { label: 'Expected return', post: '%', half: 1 })}${inp('settings.returnHigh', st.returnHigh, { label: 'Hopeful return', post: '%', half: 1 })}${inp('settings.inflation', st.inflation, { label: 'Inflation', post: '%', half: 1 })}${inp('settings.defaultYears', st.defaultYears, { label: 'Years to retirement if age not set', half: 1 })}</div>`);
   html += card('Contribution limits', `<div class="form-inline">${inp('settings.limits.year', L.year, { label: 'Tax year', half: 1 })}${inp('settings.limits.k401', L.k401, { label: '401(k)/403(b) limit', pre: '$', half: 1 })}${inp('settings.limits.k401catch', L.k401catch, { label: '401(k) catch-up (50+)', pre: '$', half: 1 })}${inp('settings.limits.ira', L.ira, { label: 'IRA limit', pre: '$', half: 1 })}${inp('settings.limits.iraCatch', L.iraCatch, { label: 'IRA catch-up (50+)', pre: '$', half: 1 })}</div><p class="muted small">2026 figures from the IRS (Notice 2025-67). Update each year.</p>`);
   const canCrypto = !!(window.crypto && crypto.subtle);
@@ -1847,7 +2143,8 @@ function render() {
   const app = $('#app');
   if (!D) { app.innerHTML = viewWelcome(); return; }
   document.title = D.appName || 'Our Nest';
-  const views = { home: viewHome, income: viewIncome, bills: viewBills, goals: viewGoals, retire: viewRetire, accounts: viewAccounts, giving: viewGiving, checkin: viewCheckin, binder: viewBinder, settings: viewSettings };
+  const tabs = mobileTabs();
+  const views = { calendar: viewCalendar, home: viewHome, income: viewIncome, bills: viewBills, goals: viewGoals, retire: viewRetire, accounts: viewAccounts, giving: viewGiving, checkin: viewCheckin, binder: viewBinder, settings: viewSettings };
   const view = views[route] || viewHome;
   const navItem = ([k, l, i]) => `<a href="#/${k}" class="${route === k ? 'on' : ''}" ${route === k ? 'aria-current="page"' : ''}><span class="ni">${i}</span><span>${l}</span></a>`;
   const scrollY = window.scrollY;
@@ -1855,8 +2152,9 @@ function render() {
     <aside class="side"><div class="brand"><span class="logo">🪺</span><b>${esc(D.appName)}</b>${eyeBtn()}</div><nav>${NAV.map(navItem).join('')}</nav>
       <div class="side-foot"><a href="#/checkin" class="btn primary sm block">☕ Money Date</a></div></aside>
     <main id="main" class="view-${route}">${view()}</main>
-    <nav class="bottom">${NAV.filter(n => MOBILE_NAV.includes(n[0])).map(navItem).join('')}<button class="${!MOBILE_NAV.includes(route) ? 'on' : ''}" data-act="more"><span class="ni">☰</span><span>More</span></button></nav>
-    <div class="more-sheet ${ui.more ? 'open' : ''}" data-act="moreClose"><div class="more-inner">${NAV.filter(n => !MOBILE_NAV.includes(n[0])).map(navItem).join('')}</div></div>`;
+    <nav class="bottom">${tabs.map(k => navItem(NAV.find(n => n[0] === k))).join('')}<button class="${!tabs.includes(route) ? 'on' : ''}" data-act="more"><span class="ni">☰</span><span>More</span></button></nav>
+    <div class="more-sheet ${ui.more ? 'open' : ''}" data-act="moreClose"><div class="more-inner">${NAV.filter(n => !tabs.includes(n[0])).map(navItem).join('')}<a href="#/settings" data-tabs-edit class="more-edit"><span class="ni">✎</span><span>Edit tab bar</span></a></div></div>`;
+  wireHero();
   if (ui.keepScroll) { window.scrollTo(0, scrollY); ui.keepScroll = false; }
 }
 
@@ -1882,6 +2180,16 @@ const ACT = {
     p.diffs = q.diffs; p.otHours = q.otHours; delete ui.explore[p.id]; ui.keepScroll = true; commit(); toast('Saved as the typical paycheck');
   },
   print: () => window.print(),
+  reorder: () => { ui.reorder = !ui.reorder; ui.keepScroll = true; render(); },
+  goalMove: el => { moveGoal(el.dataset.id, +el.dataset.dir); ui.keepScroll = true; commit(); const b = $(`[data-act="goalMove"][data-id="${el.dataset.id}"][data-dir="${el.dataset.dir}"]`); if (b && !b.disabled) b.focus(); },
+  tabMove: el => { const t = mobileTabs().slice(); const i = t.indexOf(el.dataset.id), j = i + (+el.dataset.dir); if (j < 0 || j >= t.length) return; [t[i], t[j]] = [t[j], t[i]]; D.settings.tabs = t; ui.keepScroll = true; commit(); },
+  tabUnpin: el => { const t = mobileTabs().filter(k => k !== el.dataset.id); if (!t.length) return; D.settings.tabs = t; ui.keepScroll = true; commit(); },
+  tabPin: el => { const t = mobileTabs().slice(); if (t.length >= 4) return toast('Unpin one first — the bar holds 4 plus More'); t.push(el.dataset.id); D.settings.tabs = t; ui.keepScroll = true; commit(); toast('Pinned to your tab bar'); },
+  heroGo: el => { heroShow(+el.dataset.i); heroPause(4000); },
+  calNav: el => { const c = ui.cal; let m = c.m + (+el.dataset.dir), y = c.y; if (m < 0) { m = 11; y--; } if (m > 11) { m = 0; y++; } ui.cal = { y, m, day: null }; ui.keepScroll = true; render(); },
+  calToday: () => { ui.cal = null; ui.keepScroll = true; render(); },
+  calDay: el => { ui.cal.day = +el.dataset.day; ui.keepScroll = true; render(); const t = $('#dayDetail'); if (t && innerWidth < 860) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); },
+  calOpen: el => { if (el.dataset.ref === 'bill') editBill(el.dataset.id); else if (el.dataset.ref === 'goal') editGoal(el.dataset.id); else location.hash = '#/' + el.dataset.ref; },
   toggleHide: () => { setHidden(!HIDDEN.on); ui.keepScroll = true; render(); toast(HIDDEN.on ? 'Amounts hidden' : 'Amounts visible'); },
   logPay: el => editPayLog(null, el.dataset.pid, el.dataset.date),
   editLog: el => editPayLog(el.dataset.id),
@@ -1976,6 +2284,14 @@ function wireApp() {
   document.addEventListener('change', e => {
     const el = e.target;
     if (el.closest('#modal')) return;
+    if (el.dataset.quick) {
+      const v = el.value; if (!v) return;
+      if (el.dataset.quick === 'payday') { const p = D.people.find(x => x.id === el.dataset.id); if (p) p.lastPayday = v; }
+      if (el.dataset.quick === 'billDay') { const b = D.bills.find(x => x.id === el.dataset.id); const n = Math.round(num(v)); if (b && n >= 1 && n <= 31) b.dueDay = n; else return toast('Use a day from 1 to 31', 'bad'); }
+      if (el.dataset.quick === 'billDate') { const b = D.bills.find(x => x.id === el.dataset.id); if (b) b.dueDate = v; }
+      if (el.dataset.quick === 'goalDay') { const g = D.goals.find(x => x.id === el.dataset.id); const n = Math.round(num(v)); if (g && n >= 1 && n <= 31) { g.contribDay = n; g.contribWhen = g.contribWhen || 'monthly'; } else return toast('Use a day from 1 to 31', 'bad'); }
+      ui.keepScroll = true; commit(); toast('Added to the calendar'); return;
+    }
     if (el.dataset.bind === 'age') { const p = D.people.find(x => x.id === el.dataset.id); if (p) { p.age = num(el.value) || null; commit(); } return; }
     if (el.dataset.bind) {
       const path = el.dataset.bind;
