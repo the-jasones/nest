@@ -472,6 +472,78 @@ input:focus, select:focus, textarea:focus { outline: 2px solid color-mix(in srgb
   .hub-sel { flex-basis: 100% !important; }
 }
 
+/* ---------- color palettes ---------- */
+:root { --bg: #f5efe4; --surface: #fffcf6; --surface-2: #f3ecdf; --line: #e6dccb; --brand: #1f5c45; --brand-ink: #ffffff; --brand-soft: #dcebe1; --accent: #b86a12; --accent-soft: #fbead2; --p1: #1f5c45; --p2: #5d8f72; --hero-a: #1f5c45; --hero-b: #123a2b; --hero-hi: #ffd690; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #121614; --surface: #1a201d; --surface-2: #222a26; --line: #2e3833; --brand: #6cc79a; --brand-ink: #0b1a12; --brand-soft: #1f3529; --accent: #f0b35a; --accent-soft: #3a2a12; --p1: #6cc79a; --p2: #3f8a64; --hero-a: #1d4a37; --hero-b: #10271d; --hero-hi: #ffd690; } }
+:root[data-theme="dark"] { --bg: #121614; --surface: #1a201d; --surface-2: #222a26; --line: #2e3833; --brand: #6cc79a; --brand-ink: #0b1a12; --brand-soft: #1f3529; --accent: #f0b35a; --accent-soft: #3a2a12; --p1: #6cc79a; --p2: #3f8a64; --hero-a: #1d4a37; --hero-b: #10271d; --hero-hi: #ffd690; }
+:root[data-palette="ocean"] { --bg: #edf2f5; --surface: #fbfdfe; --surface-2: #e4edf2; --line: #d2dfe7; --brand: #1c5d87; --brand-ink: #ffffff; --brand-soft: #d8e8f3; --accent: #c0612a; --accent-soft: #fbe4d4; --p1: #1c5d87; --p2: #5f93b8; --hero-a: #1c5d87; --hero-b: #0d324e; --hero-hi: #ffd690; }
+@media (prefers-color-scheme: dark) { :root[data-palette="ocean"]:not([data-theme="light"]) { --bg: #0f151a; --surface: #162029; --surface-2: #1e2a34; --line: #2a3946; --brand: #6ab4e4; --brand-ink: #08141d; --brand-soft: #183246; --accent: #f0a668; --accent-soft: #3a2515; --p1: #6ab4e4; --p2: #3c7aa6; --hero-a: #17466a; --hero-b: #0b2233; --hero-hi: #ffd690; } }
+:root[data-palette="ocean"][data-theme="dark"] { --bg: #0f151a; --surface: #162029; --surface-2: #1e2a34; --line: #2a3946; --brand: #6ab4e4; --brand-ink: #08141d; --brand-soft: #183246; --accent: #f0a668; --accent-soft: #3a2515; --p1: #6ab4e4; --p2: #3c7aa6; --hero-a: #17466a; --hero-b: #0b2233; --hero-hi: #ffd690; }
+:root[data-palette="sunset"] { --bg: #f8eee7; --surface: #fffaf6; --surface-2: #f3e3d8; --line: #ead5c6; --brand: #a1452a; --brand-ink: #ffffff; --brand-soft: #f6dbcd; --accent: #1c7a71; --accent-soft: #d6eeea; --p1: #a1452a; --p2: #cc7b5c; --hero-a: #a1452a; --hero-b: #5a2213; --hero-hi: #ffd9a0; }
+@media (prefers-color-scheme: dark) { :root[data-palette="sunset"]:not([data-theme="light"]) { --bg: #17110f; --surface: #211815; --surface-2: #2b201c; --line: #3b2c26; --brand: #f08d6a; --brand-ink: #1f0d06; --brand-soft: #3d2219; --accent: #5cc8bc; --accent-soft: #153935; --p1: #f08d6a; --p2: #b0573a; --hero-a: #6e2c18; --hero-b: #2e130b; --hero-hi: #ffd9a0; } }
+:root[data-palette="sunset"][data-theme="dark"] { --bg: #17110f; --surface: #211815; --surface-2: #2b201c; --line: #3b2c26; --brand: #f08d6a; --brand-ink: #1f0d06; --brand-soft: #3d2219; --accent: #5cc8bc; --accent-soft: #153935; --p1: #f08d6a; --p2: #b0573a; --hero-a: #6e2c18; --hero-b: #2e130b; --hero-hi: #ffd9a0; }
+:root[data-palette="plum"] { --bg: #f3f0f7; --surface: #fdfcff; --surface-2: #ebe5f2; --line: #dcd3e8; --brand: #5a3e8b; --brand-ink: #ffffff; --brand-soft: #e5dcf5; --accent: #b4506a; --accent-soft: #f8dee5; --p1: #5a3e8b; --p2: #8c73b8; --hero-a: #5a3e8b; --hero-b: #2d1c4e; --hero-hi: #ffd690; }
+@media (prefers-color-scheme: dark) { :root[data-palette="plum"]:not([data-theme="light"]) { --bg: #131118; --surface: #1c1923; --surface-2: #25212e; --line: #34303f; --brand: #b59cf0; --brand-ink: #150d24; --brand-soft: #2d2442; --accent: #f08aa3; --accent-soft: #3d1e27; --p1: #b59cf0; --p2: #7a5fb0; --hero-a: #3f2a66; --hero-b: #1b1230; --hero-hi: #ffd690; } }
+:root[data-palette="plum"][data-theme="dark"] { --bg: #131118; --surface: #1c1923; --surface-2: #25212e; --line: #34303f; --brand: #b59cf0; --brand-ink: #150d24; --brand-soft: #2d2442; --accent: #f08aa3; --accent-soft: #3d1e27; --p1: #b59cf0; --p2: #7a5fb0; --hero-a: #3f2a66; --hero-b: #1b1230; --hero-hi: #ffd690; }
+:root[data-palette="slate"] { --bg: #f1f1ef; --surface: #fdfdfc; --surface-2: #e8e8e5; --line: #dadad5; --brand: #334155; --brand-ink: #ffffff; --brand-soft: #e1e6ec; --accent: #b45309; --accent-soft: #fbe8d0; --p1: #334155; --p2: #64748b; --hero-a: #334155; --hero-b: #111827; --hero-hi: #fbbf24; }
+@media (prefers-color-scheme: dark) { :root[data-palette="slate"]:not([data-theme="light"]) { --bg: #111214; --surface: #1a1b1e; --surface-2: #232428; --line: #313338; --brand: #a5b8cc; --brand-ink: #0f1520; --brand-soft: #263039; --accent: #f5b14a; --accent-soft: #3a2810; --p1: #a5b8cc; --p2: #5d6f84; --hero-a: #273444; --hero-b: #0d1118; --hero-hi: #fbbf24; } }
+:root[data-palette="slate"][data-theme="dark"] { --bg: #111214; --surface: #1a1b1e; --surface-2: #232428; --line: #313338; --brand: #a5b8cc; --brand-ink: #0f1520; --brand-soft: #263039; --accent: #f5b14a; --accent-soft: #3a2810; --p1: #a5b8cc; --p2: #5d6f84; --hero-a: #273444; --hero-b: #0d1118; --hero-hi: #fbbf24; }
+:root[data-palette="honey"] { --bg: #f8f2e3; --surface: #fffbf1; --surface-2: #f1e7d1; --line: #e6dabf; --brand: #7a5410; --brand-ink: #ffffff; --brand-soft: #f3e4c2; --accent: #2d6a4f; --accent-soft: #dcebe1; --p1: #7a5410; --p2: #b08a3e; --hero-a: #7a5410; --hero-b: #3b2805; --hero-hi: #ffe4a8; }
+@media (prefers-color-scheme: dark) { :root[data-palette="honey"]:not([data-theme="light"]) { --bg: #15130e; --surface: #1e1b14; --surface-2: #28241b; --line: #363023; --brand: #e9b65c; --brand-ink: #1e1405; --brand-soft: #3a2f17; --accent: #6cc79a; --accent-soft: #1f3529; --p1: #e9b65c; --p2: #a9813a; --hero-a: #5a3e0c; --hero-b: #261a04; --hero-hi: #ffe4a8; } }
+:root[data-palette="honey"][data-theme="dark"] { --bg: #15130e; --surface: #1e1b14; --surface-2: #28241b; --line: #363023; --brand: #e9b65c; --brand-ink: #1e1405; --brand-soft: #3a2f17; --accent: #6cc79a; --accent-soft: #1f3529; --p1: #e9b65c; --p2: #a9813a; --hero-a: #5a3e0c; --hero-b: #261a04; --hero-hi: #ffe4a8; }
+.hero { background: linear-gradient(135deg, var(--hero-a), var(--hero-b)) !important; }
+.hero em, .hero-goal .bar span { color: var(--hero-hi); }
+.hero-goal .bar span { background: var(--hero-hi); }
+.hero-dots button.on { background: var(--hero-hi); }
+.pal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+.pal { border: 2px solid var(--line); background: var(--surface); border-radius: 14px; padding: 10px; cursor: pointer; display: flex; flex-direction: column; gap: 8px; font: 600 14px var(--sans); color: var(--ink); text-align: left; }
+.pal:hover { border-color: var(--ink-3); }
+.pal.on { border-color: var(--brand); box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 30%, transparent); }
+.pal-sw { display: flex; height: 38px; border-radius: 9px; overflow: hidden; }
+.pal-sw i { flex: 1; }
+.pal-sw i:first-child { flex: 2; }
+.pal small { font-weight: 500; color: var(--ink-3); }
+
+/* ---------- calendar view toggle ---------- */
+.seg { display: inline-flex; background: var(--surface-2); border-radius: 999px; padding: 4px; gap: 4px; justify-self: start; border: 1px solid var(--line); }
+.seg button { border: 0; background: transparent; color: var(--ink-2); font: 600 14px var(--sans); padding: 8px 16px; border-radius: 999px; cursor: pointer; }
+.seg button.on { background: var(--surface); color: var(--brand); box-shadow: var(--shadow); }
+
+/* ---------- 1:1 transfer diagram ---------- */
+.tdiag { display: grid; grid-template-columns: minmax(200px, 260px) 1fr; align-items: center; gap: 0; }
+.td-hub { background: linear-gradient(135deg, var(--hero-a), var(--hero-b)); color: #fff; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 4px; position: relative; z-index: 1; }
+.td-hub b { font-size: 16px; }
+.td-hub span:last-child { opacity: .85; font-size: 13px; }
+.td-ico { font-size: 26px; }
+.td-legs { list-style: none; margin: 0 0 0 28px; padding: 6px 0; border-left: 2px solid var(--line); position: relative; }
+.td-legs::before { content: ''; position: absolute; left: -30px; top: 50%; width: 28px; border-top: 2px solid var(--line); }
+.td-legs li { position: relative; display: grid; grid-template-columns: 120px 1fr; align-items: center; gap: 14px; padding: 8px 0 8px 28px; }
+.td-legs li::before { content: ''; position: absolute; left: 0; top: 50%; width: 22px; border-top: 2px solid var(--line); }
+.td-legs li::after { content: ''; position: absolute; left: 18px; top: calc(50% - 5px); border: 5px solid transparent; border-left: 7px solid var(--ink-3); border-right: 0; }
+.td-amt { font: 600 18px var(--serif); text-align: right; font-variant-numeric: tabular-nums; }
+.td-dest { display: flex; flex-direction: column; background: var(--surface-2); border-radius: 12px; padding: 9px 12px; min-width: 0; }
+.td-dest small { color: var(--ink-2); font-size: 12px; }
+.td-keep .td-dest { background: var(--brand-soft); }
+.td-left .td-dest { background: var(--accent-soft); }
+.td-keep, .td-left { margin-top: 4px; }
+.td-keep::after, .td-left::after { display: none; }
+.td-keep::before, .td-left::before { border-top-style: dashed !important; }
+@media (max-width: 760px) {
+  .tdiag { grid-template-columns: 1fr; }
+  .td-legs { margin: 0 0 0 18px; }
+  .td-legs::before { left: -2px; top: -14px; height: 14px; width: 0; border-top: 0; border-left: 2px solid var(--line); }
+  .td-legs li { grid-template-columns: 1fr; gap: 4px; padding-left: 26px; }
+  .td-amt { text-align: left; font-size: 17px; }
+}
+
+/* ---------- account reorder ---------- */
+.acct-ctl { display: inline-flex; align-items: center; gap: 2px; margin-right: 6px; }
+.acct-ctl b { font-size: 12px; color: var(--brand); min-width: 14px; text-align: center; }
+.acct-ctl .icon-btn { padding: 4px 10px; min-width: 36px; min-height: 32px; font-size: 13px; }
+.acct-ctl .icon-btn:disabled { opacity: .25; }
+.acct-grid.reordering .acct { border-style: dashed; cursor: default; }
+.acct-grid.reordering .acct:hover { border-color: var(--line); }
+
 </style>
 </head>
 <body>
@@ -1591,7 +1663,7 @@ function editChecklist() {
    VIEWS
    ===================================================================== */
 const NAV = [
-  ['home', 'Home', '◉'], ['income', 'Money In', '↘'], ['bills', 'Bills & Subs', '▤'], ['calendar', 'Calendar', '▦'], ['transfers', 'Transfers', '⇄'], ['goals', 'Goals', '★'],
+  ['home', 'Home', '◉'], ['income', 'Money In', '↘'], ['bills', 'Bills & Subs', '▤'], ['calendar', 'Calendar', '▦'], ['goals', 'Goals', '★'],
   ['retire', 'Retirement', '⌂'], ['accounts', 'Accounts', '▣'], ['giving', 'Giving', '♡'],
   ['checkin', 'Money Date', '✓'], ['binder', 'Our Binder', '❏'], ['settings', 'Settings', '⚙']
 ];
@@ -1757,53 +1829,37 @@ function wireHero() {
   heroTimer = setInterval(() => { if (Date.now() > heroPausedUntil && !document.hidden) heroShow(ui.heroIdx + 1); }, 5500);
 }
 
-/* ---------- TRANSFERS ---------- */
-function lastHubPayday() {
-  let best = null;
-  D.people.forEach(p => {
-    if (!p.lastPayday) return;
-    const step = { weekly: 7, biweekly: 14 }[p.frequency];
-    const t = new Date(p.lastPayday + 'T00:00:00'), now = new Date(); now.setHours(0, 0, 0, 0);
-    if (step) { while (t <= now) t.setDate(t.getDate() + step); t.setDate(t.getDate() - step); }
-    if (t <= now && (!best || t > best.date)) best = { date: new Date(t), p };
-  });
-  return best;
-}
-function viewTransfers() {
+/* ---------- TRANSFERS (lives inside the Calendar tab) ---------- */
+function transfersSection() {
   const tp = transferPlan(D, S);
   const hub = tp.hub;
-  let html = `<div class="page-h"><div><h1>Transfers</h1><p class="muted">Paychecks land in one account. This is what to move out, and where, so every account can cover its own bills.</p></div></div>`;
-  if (!hub) return html + card('', emptyState('Add a checking account first.', '<a class="btn primary" href="#/accounts">Go to Accounts</a>'));
-  html += card('Where paychecks land', `<div class="form-inline"><label class="field half hub-sel"><span>Direct deposits go to</span><select data-bind="settings.hubAccountId">${D.accounts.filter(a => !isRetireType(a.type) && !isDebtType(a.type)).map(a => opt(a.id, a.name + (a.last4 ? ' ••' + a.last4 : ''), hub.id)).join('')}</select></label>
-    <div class="field half hub-note hub-sel"><span>Per-paycheck amounts assume</span><b>${tp.cpm} paychecks a month</b><small class="help">That's 2 each, so the months with a 3rd paycheck leave extra in ${esc(hub.name)}.</small></div></div>`);
+  if (!hub) return card('', emptyState('Add a checking account first.', '<a class="btn primary" href="#/accounts">Go to Accounts</a>'));
+  const label = (D.giving.label || 'giving');
+  let html = card('Where paychecks land', `<div class="form-inline"><label class="field half hub-sel"><span>Direct deposits go to</span><select data-bind="settings.hubAccountId">${D.accounts.filter(a => !isRetireType(a.type) && !isDebtType(a.type)).map(a => opt(a.id, a.name + (a.last4 ? ' ••' + a.last4 : ''), hub.id)).join('')}</select></label>
+    <div class="field half hub-note hub-sel"><span>Each month</span><b>${money(tp.inM)} lands · ${money(tp.outM)} moves out</b><small class="help">Set each arrow below up as one automatic monthly transfer from ${esc(hub.name)}.</small></div></div>`);
 
-  html += `<div class="stats">${stat('Lands in ' + esc(hub.name), money(tp.inM), 'take-home per month', 'good')}${stat('Transfer out', money(tp.outM), money(tp.outM / tp.cpm) + ' per paycheck')}${stat('Stays for its own bills', money(tp.hubNeed.total), [tp.hubNeed.billsM && money(tp.hubNeed.billsM) + ' bills', tp.hubNeed.giveM && money(tp.hubNeed.giveM) + ' ' + esc((D.giving.label || 'giving').toLowerCase()), tp.hubNeed.saveM && money(tp.hubNeed.saveM) + ' saved'].filter(Boolean).join(' + ') || 'nothing')}${stat('Left over', money(tp.leftM), 'same as the dashboard', tp.leftM < 0 ? 'bad' : 'accent')}</div>`;
-
-  // payday checklist
-  const lp = lastHubPayday();
-  const key = lp ? localISO(lp.date) : null;
-  const done = (key && D.transferChecks && D.transferChecks[key]) || [];
-  const rows = tp.transfers.map(n => {
-    const why = [n.billsM && `${n.bills.length} bill${n.bills.length > 1 ? 's' : ''} ${money(n.billsM)}`, n.giveM && `${esc(D.giving.label || 'giving')} ${money(n.giveM)}`, n.saveM && n.goals.map(x => `${esc(x.g.icon || '')} ${esc(x.g.name)} ${money(x.monthly)}`).join(', ')].filter(Boolean).join(' · ');
+  // 1:1 diagram
+  const legs = tp.transfers.map(n => {
     const isCard = isDebtType(n.a.type);
-    const checked = done.includes(n.a.id);
-    return `<li class="tr-row ${checked ? 'done' : ''}">
-      ${key ? `<label class="tr-check"><input type="checkbox" data-trcheck="${n.a.id}" data-key="${key}" ${checked ? 'checked' : ''} aria-label="Moved money to ${esc(n.a.name)}"></label>` : ''}
-      <div class="tr-m"><b>${isCard ? 'Pay ' : '→ '}${esc(n.a.name)}${n.a.last4 ? ' ••' + esc(n.a.last4) : ''}</b><small>${why}</small>${n.firstDay ? `<small class="tr-by">Needed by the ${ordinal(n.firstDay)}</small>` : ''}</div>
-      <div class="tr-v"><b>${money(n.perCheck, true)}</b><small>per paycheck</small><small class="muted">${money(n.total, true)}/mo</small></div></li>`;
+    const why = [n.billsM && `${n.bills.length} bill${n.bills.length > 1 ? 's' : ''}`, n.giveM && esc(label), ...n.goals.map(x => `${esc(x.g.icon || '')} ${esc(x.g.name)}`)].filter(Boolean).join(' · ');
+    return `<li><span class="td-amt">${money(n.total, true)}</span><span class="td-dest"><b>${isCard ? 'Pay ' : ''}${esc(n.a.name)}${n.a.last4 ? ' ••' + esc(n.a.last4) : ''}</b><small>${why}${n.firstDay ? ` · <span class="tr-by">needed by the ${ordinal(n.firstDay)}</span>` : ''}</small></span></li>`;
   }).join('');
-  const doneCount = tp.transfers.filter(n => done.includes(n.a.id)).length;
-  const head = key ? `Payday checklist · ${lp.date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} <span class="h-sub">${doneCount}/${tp.transfers.length} done</span>` : 'Each payday, move';
-  html += card(head, (tp.transfers.length ? `<ul class="tr-list">${rows}</ul>` : '<p class="muted">Everything is paid straight from the deposit account. No transfers needed.</p>')
-    + (key ? '' : `<p class="muted small">Add a recent payday in Money In and this becomes a checklist you can tick off each payday.</p>`)
+  const stay = tp.hubNeed;
+  html += card(`Monthly transfers <span class="h-sub">${tp.transfers.length} automatic transfer${tp.transfers.length === 1 ? '' : 's'}</span>`,
+    (tp.transfers.length ? `<div class="tdiag">
+      <div class="td-hub"><span class="td-ico">🏦</span><b>${esc(hub.name)}${hub.last4 ? ' ••' + esc(hub.last4) : ''}</b><span>${money(tp.inM)} lands each month</span></div>
+      <ul class="td-legs">${legs}
+        <li class="td-keep"><span class="td-amt">${money(stay.total, true)}</span><span class="td-dest"><b>Stays in ${esc(hub.name)}</b><small>${[stay.billsM && money(stay.billsM) + ' bills', stay.giveM && money(stay.giveM) + ' ' + esc(label.toLowerCase()), stay.saveM && money(stay.saveM) + ' saved'].filter(Boolean).join(' + ') || 'nothing scheduled'}</small></span></li>
+        <li class="td-left"><span class="td-amt">${money(tp.leftM, true)}</span><span class="td-dest"><b>Left over</b><small>Same as the dashboard. Yours to spend or save.</small></span></li>
+      </ul></div>` : '<p class="muted">Everything is paid straight from the deposit account. No transfers needed.</p>')
     + (tp.unassigned.length ? `<p class="warn-text small">⚠ ${tp.unassigned.length} bill${tp.unassigned.length > 1 ? 's have' : ' has'} no account (${money(tp.unassignedM)}/mo): ${tp.unassigned.map(b => esc(b.name)).join(', ')}. Set "Paid from" so they land in the plan.</p>` : ''), { cls: 'wide' });
 
-  // monthly minimums per account
+  // monthly minimum per account
   const all = accountNeeds(D, S).filter(n => n.total > 0.005);
   html += card('Monthly minimum per account', `<div class="tbl-scroll"><table class="tbl"><thead><tr><th>Account</th><th class="r col-opt">Bills</th><th class="r col-opt">${esc(D.giving.label || 'Giving')}</th><th class="r col-opt">Savings</th><th class="r">Needs / month</th></tr></thead><tbody>
     ${all.map(n => `<tr><td><b>${esc(n.a.name)}</b>${n.a.id === hub.id ? ' <span class="tag good">deposit</span>' : ''}<small class="mob-only">${[n.billsM && 'Bills ' + money(n.billsM), n.giveM && esc(D.giving.label || 'Giving') + ' ' + money(n.giveM), n.saveM && 'Savings ' + money(n.saveM)].filter(Boolean).join(' · ')}</small></td><td class="r col-opt">${n.billsM ? money(n.billsM, true) : '—'}</td><td class="r col-opt">${n.giveM ? money(n.giveM, true) : '—'}</td><td class="r col-opt">${n.saveM ? money(n.saveM, true) : '—'}</td><td class="r"><b>${money(n.total, true)}</b></td></tr>`).join('')}
     <tr class="tot"><td>Total</td><td class="r col-opt">${money(all.reduce((t, n) => t + n.billsM, 0), true)}</td><td class="r col-opt">${money(all.reduce((t, n) => t + n.giveM, 0), true)}</td><td class="r col-opt">${money(all.reduce((t, n) => t + n.saveM, 0), true)}</td><td class="r">${money(all.reduce((t, n) => t + n.total, 0), true)}</td></tr>
-  </tbody></table></div><p class="muted small">401(k)/403(b) money comes out of the paycheck before it lands, so it isn't listed. ${D.giving.label || 'Giving'} on hourly pay is planned; the exact amount comes from each logged stub.</p>`, { cls: 'wide' });
+  </tbody></table></div><p class="muted small">401(k)/403(b) money comes out of the paycheck before it lands, so it isn't listed. ${esc(D.giving.label || 'Giving')} on hourly pay is planned; the exact amount comes from each logged stub.</p>`, { cls: 'wide' });
   return html;
 }
 
@@ -1826,7 +1882,9 @@ function viewCalendar() {
   const half = (from, to) => ev.filter(e => e.day >= from && e.day <= to && e.type !== 'in').reduce((a, e) => a + e.amount, 0);
   const title = new Date(y, m, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
-  let html = `<div class="page-h"><div><h1>Calendar</h1><p class="muted">When money moves — paydays, bills, giving, and savings transfers.</p></div></div>`;
+  let html = `<div class="page-h"><div><h1>Calendar</h1><p class="muted">When money moves, and where it needs to go each month.</p></div></div>`;
+  html += `<div class="seg" role="tablist"><button role="tab" class="${ui.calView !== 'transfers' ? 'on' : ''}" aria-selected="${ui.calView !== 'transfers'}" data-act="calView" data-id="month">▦ Month</button><button role="tab" class="${ui.calView === 'transfers' ? 'on' : ''}" aria-selected="${ui.calView === 'transfers'}" data-act="calView" data-id="transfers">⇄ Monthly transfers</button></div>`;
+  if (ui.calView === 'transfers') return html + transfersSection();
   html += `<div class="stats">${stat('Coming in', money(tot('in')), 'dated paydays this month', 'good')}${stat('Bills', money(tot('bill')), 'with due dates')}${stat(esc(D.giving.label || 'Giving'), money(tot('give')))}${stat('To savings & IRAs', money(tot('save')), '', 'accent')}${stat('1st–15th out', money(half(1, 15)), '16th–end: ' + money(half(16, 31)))}</div>`;
 
   // grid
@@ -2066,19 +2124,22 @@ function projDyn(rows, horizon) {
 /* ---------- ACCOUNTS ---------- */
 function viewAccounts() {
   const groups = { cash: 'Cash', retire: 'Retirement', invest: 'Investments', debt: 'Owed' };
-  let html = `<div class="page-h"><div><h1>Accounts</h1><p class="muted">Every account we have, and what it's for.</p></div><button class="btn primary" data-act="addAccount">+ Add account</button></div>`;
+  let html = `<div class="page-h"><div><h1>Accounts</h1><p class="muted">Every account we have, and what it's for.</p></div><div class="btn-row"><button class="btn ${ui.reorderAcct ? 'primary' : 'ghost'}" data-act="reorderAcct" aria-pressed="${!!ui.reorderAcct}">${ui.reorderAcct ? '✓ Done' : '↕ Reorder'}</button><button class="btn primary" data-act="addAccount">+ Add account</button></div></div>`;
+  if (ui.reorderAcct) html += `<div class="banner good-banner"><span>Use the arrows to order accounts within each group. This order is used everywhere accounts are listed.</span></div>`;
   html += `<div class="stats">${stat('What we own', money(S.assets))}${stat('What we owe', money(S.debts), 'cards & loans entered here')}${stat('Net worth', money(S.netWorth), 'from current balances', 'good')}</div>`;
   Object.keys(groups).forEach(g => {
     const list = D.accounts.filter(a => (ACCOUNT_TYPES[a.type] || ACCOUNT_TYPES.other).group === g);
     if (!list.length) return;
-    html += `<h2 class="sec">${groups[g]}</h2><div class="acct-grid">${list.map(a => {
+    html += `<h2 class="sec">${groups[g]}</h2><div class="acct-grid ${ui.reorderAcct ? 'reordering' : ''}">${list.map((a, ai) => {
       const bills = D.bills.filter(b => b.accountId === a.id).reduce((t, b) => t + billMonthly(b), 0);
       const goals = S.goals.filter(x => x.g.accountId === a.id).reduce((t, x) => t + x.monthly, 0);
       const give = D.giving.enabled && D.giving.accountId === a.id ? S.givingM : 0;
       const pay = S.people.filter(r => r.p.retireAccountId === a.id).reduce((t, r) => t + r.retireM + r.matchM, 0);
       const tpn = (S._tp = S._tp || transferPlan(D, S)).transfers.find(n => n.a.id === a.id);
-      const flows = [tpn && `<b>${money(tpn.perCheck)}/paycheck in from ${esc(S._tp.hub.name)}</b>`, bills && `${money(bills)} bills out`, give && `${money(give)} ${esc(D.giving.label || 'giving').toLowerCase()} out`, goals && `${money(goals)} saved in`, pay && `${money(pay)} from paychecks`].filter(Boolean);
-      return `<div class="acct" data-act="editAccount" data-id="${a.id}" tabindex="0"><div class="acct-h"><span class="tag">${ACCOUNT_TYPES[a.type].label}</span><span class="muted small">${esc(personName(D, a.owner))}</span></div>
+      const isHub = S._tp.hub && S._tp.hub.id === a.id;
+      const flows = [isHub && `<b>paychecks land here</b>`, tpn && `<b>${money(tpn.total)} transferred in from ${esc(S._tp.hub.name)}</b>`, bills && `${money(bills)} bills out`, give && `${money(give)} ${esc(D.giving.label || 'giving').toLowerCase()} out`, goals && `${money(goals)} saved in`, pay && `${money(pay)} from paychecks`].filter(Boolean);
+      const ctl = ui.reorderAcct ? `<span class="acct-ctl"><button class="icon-btn" data-act="acctMove" data-id="${a.id}" data-dir="-1" ${ai === 0 ? 'disabled' : ''} aria-label="Move ${esc(a.name)} up">▲</button><b>${ai + 1}</b><button class="icon-btn" data-act="acctMove" data-id="${a.id}" data-dir="1" ${ai === list.length - 1 ? 'disabled' : ''} aria-label="Move ${esc(a.name)} down">▼</button></span>` : '';
+      return `<div class="acct" ${ui.reorderAcct ? '' : `data-act="editAccount" data-id="${a.id}" tabindex="0"`}><div class="acct-h">${ctl}<span class="tag">${ACCOUNT_TYPES[a.type].label}</span><span class="muted small">${esc(personName(D, a.owner))}</span></div>
         <b class="acct-n">${esc(a.name)}</b><span class="muted small">${esc(a.institution || '')}${a.last4 ? ' ••' + esc(a.last4) : ''}</span>
         <span class="acct-b ${g === 'debt' ? 'bad' : ''}">${g === 'debt' ? '−' : ''}${money(Math.abs(num(a.balance)))}</span>
         ${a.purpose ? `<p class="small">${esc(a.purpose)}</p>` : ''}${flows.length ? `<p class="muted small">Monthly: ${flows.join(' · ')}</p>` : ''}</div>`;
@@ -2239,7 +2300,8 @@ function viewSettings() {
     <p class="muted small">Restoring replaces everything on this device with the file's contents. Use it to move data between your phone and PC.</p>`);
   html += card('Make it ours', `<div class="form-inline">${inp('appName', D.appName, { label: 'App name', text: 1, half: 1 })}
     <label class="field half"><span>Theme</span><select data-bind="settings.theme">${opt('auto', 'Match my device', st.theme)}${opt('light', 'Light', st.theme)}${opt('dark', 'Dark', st.theme)}</select></label>
-    <label class="field"><span>Budget paychecks as</span><select data-bind="settings.budgetBasis">${opt('average', 'Yearly average (26 checks ÷ 12)', st.budgetBasis)}${opt('two', '2 paychecks a month — extras are bonus', st.budgetBasis)}</select><small class="help">"Average" matches the old spreadsheet. "2 a month" is more conservative and turns the 3-paycheck months into bonus money.</small></label></div>`);
+    <label class="field"><span>Budget paychecks as</span><select data-bind="settings.budgetBasis">${opt('average', 'Yearly average (26 checks ÷ 12)', st.budgetBasis)}${opt('two', '2 paychecks a month — extras are bonus', st.budgetBasis)}</select><small class="help">"Average" matches the old spreadsheet. "2 a month" is more conservative and turns the 3-paycheck months into bonus money.</small></label></div>
+    <div class="field"><span class="lbl">Color palette</span><div class="pal-grid">${Object.keys(PALETTES).map(k => { const p = PALETTES[k]; const on = (st.palette || 'forest') === k; const dk = document.documentElement.getAttribute('data-theme') === 'dark' || (!document.documentElement.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches); const c = dk ? p.d : p.l; return `<button class="pal ${on ? 'on' : ''}" data-act="setPalette" data-id="${k}" aria-pressed="${on}"><span class="pal-sw">${c.map(x => `<i style="background:${x}"></i>`).join('')}</span><span>${p.name}${on ? ' ✓' : ''}</span></button>`; }).join('')}</div><small class="help">Works with light and dark mode. Chart colors stay the same so they're always easy to tell apart.</small></div>`);
   const tabs = mobileTabs();
   html += card('Phone tab bar', `<p class="muted small">Pick the 4 screens you use most. Everything else lives under <b>More</b>.</p>
     <ol class="tab-pick">${tabs.map((k, i) => { const n = NAV.find(x => x[0] === k); return `<li><span class="ni">${n[2]}</span><b>${n[1]}</b><span class="tp-btns"><button class="icon-btn" data-act="tabMove" data-id="${k}" data-dir="-1" ${i === 0 ? 'disabled' : ''} aria-label="Move ${n[1]} left">◀</button><button class="icon-btn" data-act="tabMove" data-id="${k}" data-dir="1" ${i === tabs.length - 1 ? 'disabled' : ''} aria-label="Move ${n[1]} right">▶</button><button class="icon-btn" data-act="tabUnpin" data-id="${k}" ${tabs.length <= 1 ? 'disabled' : ''} aria-label="Unpin ${n[1]}">✕</button></span></li>`; }).join('')}</ol>
@@ -2266,9 +2328,13 @@ function viewWelcome() {
 /* =====================================================================
    SHELL
    ===================================================================== */
+const PALETTES = {"forest": {"name": "Forest", "l": ["#1f5c45", "#b86a12", "#f5efe4"], "d": ["#6cc79a", "#f0b35a", "#121614"], "meta": "#1f5c45"}, "ocean": {"name": "Ocean", "l": ["#1c5d87", "#c0612a", "#edf2f5"], "d": ["#6ab4e4", "#f0a668", "#0f151a"], "meta": "#1c5d87"}, "sunset": {"name": "Sunset", "l": ["#a1452a", "#1c7a71", "#f8eee7"], "d": ["#f08d6a", "#5cc8bc", "#17110f"], "meta": "#a1452a"}, "plum": {"name": "Plum", "l": ["#5a3e8b", "#b4506a", "#f3f0f7"], "d": ["#b59cf0", "#f08aa3", "#131118"], "meta": "#5a3e8b"}, "slate": {"name": "Slate", "l": ["#334155", "#b45309", "#f1f1ef"], "d": ["#a5b8cc", "#f5b14a", "#111214"], "meta": "#334155"}, "honey": {"name": "Honey", "l": ["#7a5410", "#2d6a4f", "#f8f2e3"], "d": ["#e9b65c", "#6cc79a", "#15130e"], "meta": "#7a5410"}};
 function applyTheme() {
   const t = D ? D.settings.theme : 'auto';
   if (t === 'auto') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', t);
+  const pk = D && PALETTES[D.settings.palette] ? D.settings.palette : 'forest';
+  if (pk === 'forest') document.documentElement.removeAttribute('data-palette'); else document.documentElement.setAttribute('data-palette', pk);
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', PALETTES[pk].meta);
 }
 
 function render() {
@@ -2277,7 +2343,7 @@ function render() {
   if (!D) { app.innerHTML = viewWelcome(); return; }
   document.title = D.appName || 'Our Nest';
   const tabs = mobileTabs();
-  const views = { transfers: viewTransfers, calendar: viewCalendar, home: viewHome, income: viewIncome, bills: viewBills, goals: viewGoals, retire: viewRetire, accounts: viewAccounts, giving: viewGiving, checkin: viewCheckin, binder: viewBinder, settings: viewSettings };
+  const views = { calendar: viewCalendar, home: viewHome, income: viewIncome, bills: viewBills, goals: viewGoals, retire: viewRetire, accounts: viewAccounts, giving: viewGiving, checkin: viewCheckin, binder: viewBinder, settings: viewSettings };
   const view = views[route] || viewHome;
   const navItem = ([k, l, i]) => `<a href="#/${k}" class="${route === k ? 'on' : ''}" ${route === k ? 'aria-current="page"' : ''}><span class="ni">${i}</span><span>${l}</span></a>`;
   const scrollY = window.scrollY;
@@ -2313,6 +2379,16 @@ const ACT = {
     p.diffs = q.diffs; p.otHours = q.otHours; delete ui.explore[p.id]; ui.keepScroll = true; commit(); toast('Saved as the typical paycheck');
   },
   print: () => window.print(),
+  reorderAcct: () => { ui.reorderAcct = !ui.reorderAcct; ui.keepScroll = true; render(); },
+  acctMove: el => {
+    const arr = D.accounts, i = arr.findIndex(a => a.id === el.dataset.id); if (i < 0) return;
+    const grp = a => (ACCOUNT_TYPES[a.type] || ACCOUNT_TYPES.other).group, gi = grp(arr[i]), dir = +el.dataset.dir;
+    let j = i + dir; while (j >= 0 && j < arr.length && grp(arr[j]) !== gi) j += dir;
+    if (j < 0 || j >= arr.length) return;
+    [arr[i], arr[j]] = [arr[j], arr[i]]; ui.keepScroll = true; commit();
+  },
+  calView: el => { ui.calView = el.dataset.id; ui.keepScroll = true; render(); },
+  setPalette: el => { D.settings.palette = el.dataset.id; ui.keepScroll = true; commit(); },
   reorder: () => { ui.reorder = !ui.reorder; ui.keepScroll = true; render(); },
   goalMove: el => { moveGoal(el.dataset.id, +el.dataset.dir); ui.keepScroll = true; commit(); const b = $(`[data-act="goalMove"][data-id="${el.dataset.id}"][data-dir="${el.dataset.dir}"]`); if (b && !b.disabled) b.focus(); },
   tabMove: el => { const t = mobileTabs().slice(); const i = t.indexOf(el.dataset.id), j = i + (+el.dataset.dir); if (j < 0 || j >= t.length) return; [t[i], t[j]] = [t[j], t[i]]; D.settings.tabs = t; ui.keepScroll = true; commit(); },
@@ -2397,7 +2473,8 @@ let unlocked = false;
 
 /* ---------- boot ---------- */
 function onRoute() {
-  const r = (location.hash.match(/#\/(\w+)/) || [])[1] || 'home';
+  let r = (location.hash.match(/#\/(\w+)/) || [])[1] || 'home';
+  if (r === 'transfers') { ui.calView = 'transfers'; r = 'calendar'; history.replaceState(null, '', '#/calendar'); }
   if (r !== route) { route = r; ui.more = false; ui.explore = {}; window.scrollTo(0, 0); }
   if (D && D.settings.pinHash && !unlocked) return showLock();
   render();
@@ -2417,13 +2494,6 @@ function wireApp() {
   document.addEventListener('change', e => {
     const el = e.target;
     if (el.closest('#modal')) return;
-    if (el.dataset.trcheck) {
-      D.transferChecks = D.transferChecks || {};
-      const k = el.dataset.key; const set = new Set(D.transferChecks[k] || []);
-      el.checked ? set.add(el.dataset.trcheck) : set.delete(el.dataset.trcheck);
-      D.transferChecks = { [k]: [...set] }; // keep only the current payday
-      ui.keepScroll = true; commit(); return;
-    }
     if (el.dataset.quick) {
       const v = el.value; if (!v) return;
       if (el.dataset.quick === 'payday') { const p = D.people.find(x => x.id === el.dataset.id); if (p) p.lastPayday = v; }
