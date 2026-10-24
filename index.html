@@ -446,6 +446,32 @@ input:focus, select:focus, textarea:focus { outline: 2px solid color-mix(in srgb
 .rank-ctl .icon-btn { padding: 6px 12px; font-size: 14px; min-width: 40px; min-height: 32px; }
 .tp-btns .icon-btn { min-width: 32px; min-height: 32px; }
 
+/* ---------- transfers ---------- */
+.hub-note { justify-content: center; }
+.hub-note b { font-size: 16px; }
+.tr-list { list-style: none; margin: 0; padding: 0; }
+.tr-row { display: flex; align-items: center; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--line); }
+.tr-row:last-child { border-bottom: 0; }
+.tr-row.done .tr-m b, .tr-row.done .tr-v b { text-decoration: line-through; color: var(--ink-3); }
+.tr-check input { width: 22px; height: 22px; accent-color: var(--brand); cursor: pointer; }
+.tr-m { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.tr-m small { color: var(--ink-2); font-size: 13px; }
+.tr-by { color: var(--warn) !important; font-weight: 600; }
+.tr-v { display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
+.tr-v b { font: 600 20px var(--serif); }
+.tr-v small { font-size: 12px; color: var(--ink-2); }
+.synced { list-style: none; margin: 0 0 14px; padding: 0; }
+.synced li { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.synced span { display: flex; flex-direction: column; }
+.synced small { color: var(--ink-3); }
+
+.mob-only { display: none; }
+@media (max-width: 600px) {
+  .col-opt { display: none; }
+  .mob-only { display: block; color: var(--ink-2); font-size: 12px; margin-top: 2px; }
+  .hub-sel { flex-basis: 100% !important; }
+}
+
 </style>
 </head>
 <body>
@@ -613,12 +639,18 @@ function goalTarget(d, g, ctx) {
   return 0;
 }
 
+/* A goal is "synced" when it's the only goal living in its account:
+   the account balance IS the goal's saved amount (Accounts is the source of truth). */
+function goalSyncAccount(d, g) {
+  if (!g.accountId) return null;
+  const a = d.accounts.find(x => x.id === g.accountId);
+  if (!a || isDebtType(a.type)) return null;
+  if (isRetireType(a.type)) return a;
+  return d.goals.filter(x => x.accountId === a.id).length === 1 ? a : null;
+}
 function goalSaved(d, g) {
-  if (g.accountId) {
-    const a = d.accounts.find(x => x.id === g.accountId);
-    if (a && isRetireType(a.type)) return num(a.balance);
-  }
-  return num(g.saved);
+  const a = goalSyncAccount(d, g);
+  return a ? num(a.balance) : num(g.saved);
 }
 
 function goalMonthly(d, g, ctx) {
@@ -825,6 +857,44 @@ function nextPayday(p) {
   return t;
 }
 
+/* ---------- Transfer plan ----------
+   Paychecks land in one hub account; from there money is moved to every other
+   account so it can cover its own bills, giving and savings. */
+function hubAccount(d) {
+  const h = d.accounts.find(a => a.id === d.settings.hubAccountId);
+  return h || d.accounts.find(a => a.type === 'checking') || null;
+}
+function hubChecksPerMonth(d) {
+  // conservative: 2 checks/month for biweekly, 4 for weekly → 3-paycheck months leave a cushion
+  return d.people.reduce((t, p) => t + (TWO_CHECK[p.frequency] || (PERIODS[p.frequency] || 26) / 12), 0) || 1;
+}
+function accountNeeds(d, s) {
+  const out = d.accounts.map(a => {
+    const bills = d.bills.filter(b => b.accountId === a.id);
+    const billsM = bills.reduce((t, b) => t + billMonthly(b), 0);
+    const giveM = d.giving.enabled && d.giving.accountId === a.id ? s.givingM : 0;
+    const goals = s.goals.filter(x => x.g.accountId === a.id && x.monthly > 0);
+    const saveM = goals.reduce((t, x) => t + x.monthly, 0);
+    const days = [...bills.map(b => num(b.dueDay)).filter(n => n > 0), ...goals.map(x => num(x.g.contribDay)).filter(n => n > 0)];
+    return { a, bills, billsM, giveM, goals, saveM, total: billsM + giveM + saveM, firstDay: days.length ? Math.min(...days) : null };
+  });
+  return out;
+}
+function transferPlan(d, s) {
+  const hub = hubAccount(d);
+  const needs = accountNeeds(d, s);
+  const cpm = hubChecksPerMonth(d);
+  const unassigned = d.bills.filter(b => !b.accountId || !d.accounts.some(a => a.id === b.accountId));
+  const hubNeed = needs.find(n => hub && n.a.id === hub.id) || { billsM: 0, giveM: 0, saveM: 0, total: 0 };
+  const transfers = needs.filter(n => (!hub || n.a.id !== hub.id) && n.total > 0.005)
+    .map(n => Object.assign(n, { perCheck: n.total / cpm }))
+    .sort((x, y) => (x.firstDay || 99) - (y.firstDay || 99));
+  const outM = transfers.reduce((t, n) => t + n.total, 0);
+  const unassignedM = unassigned.reduce((t, b) => t + billMonthly(b), 0);
+  const leftM = s.netM - outM - hubNeed.total - unassignedM;
+  return { hub, cpm, transfers, hubNeed, outM, unassigned, unassignedM, leftM, inM: s.netM };
+}
+
 /* ---------- Calendar: when money moves ---------- */
 const dim = (y, m) => new Date(y, m + 1, 0).getDate();
 /* Days (1-based) in month y/m (m 0-based) on which a schedule falls */
@@ -950,7 +1020,7 @@ async function sha256(s) {
   return b64(h);
 }
 
-if (typeof module !== 'undefined') module.exports = { occurrences, monthEvents, undatedItems, givingPlanFor, givingOwed, pendingPaydays, PERIODS, normalize, defaultData, newPerson, paycheck, summarize, retirementPlan, projectSeries, fv, monthsToTarget, extraPaycheckMonths, goalTarget };
+if (typeof module !== 'undefined') module.exports = { goalSyncAccount, transferPlan, accountNeeds, occurrences, monthEvents, undatedItems, givingPlanFor, givingOwed, pendingPaydays, PERIODS, normalize, defaultData, newPerson, paycheck, summarize, retirementPlan, projectSeries, fv, monthsToTarget, extraPaycheckMonths, goalTarget };
 
 /* ===== Our Nest — tiny SVG chart kit (no libraries, works offline) ===== */
 'use strict';
@@ -1413,7 +1483,10 @@ function editAccount(id) {
 }
 
 function editGoal(id) {
-  const g = id ? D.goals.find(x => x.id === id) : { id: uid(), name: '', icon: '⭐', kind: 'target', amount: '', per: 'monthly', targetSource: 'manual', target: '', homePrice: '', downPct: 20, emMonths: 6, targetDate: '', saved: 0, apy: 0, accountId: '', celebrated: [] };
+  const syncAcct = v => { const others = D.goals.filter(x => x.accountId === v.accountId && x.id !== v.id).length; const a = D.accounts.find(x => x.id === v.accountId); return a && !isDebtType(a.type) && others === 0 ? a : null; };
+  const g0 = id ? D.goals.find(x => x.id === id) : null;
+  if (g0) { const a = goalSyncAccount(D, g0); g0.acctBal = a ? num(a.balance) : ''; g0._af = a ? a.id : ''; }
+  const g = id ? g0 : { id: uid(), name: '', icon: '⭐', kind: 'target', amount: '', per: 'monthly', targetSource: 'manual', target: '', homePrice: '', downPct: 20, emMonths: 6, targetDate: '', saved: 0, apy: 0, accountId: '', celebrated: [] };
   const isRet = v => { const a = D.accounts.find(x => x.id === v.accountId); return !!(a && isRetireType(a.type)); };
   openForm({
     title: id ? 'Edit goal' : 'New goal', value: g,
@@ -1431,7 +1504,8 @@ function editGoal(id) {
       { k: 'downPct', label: 'Down payment', type: 'percent', half: true, show: v => v.targetSource === 'home' },
       { k: 'emMonths', label: 'Months of bills + giving to cover', type: 'number', show: v => v.targetSource === 'emergency' },
       { k: 'targetDate', label: 'Target date', type: 'date', show: v => v.kind === 'target' },
-      { k: 'saved', label: 'Saved so far', type: 'money', half: true, show: v => !isRet(v) },
+      { k: 'saved', label: 'Saved so far', type: 'money', half: true, show: v => !isRet(v) && !syncAcct(v) },
+      { k: 'acctBal', label: 'Balance (synced with account)', type: 'money', half: true, show: v => { const sa = syncAcct(v); if (sa && v._af !== sa.id) { v.acctBal = num(sa.balance); v._af = sa.id; } return !!sa && !isRet(v); }, help: 'This IS the account balance. Changing it here updates the account too.' },
       { k: 'apy', label: 'Interest it earns (APY)', type: 'percent', half: true, show: v => !isRet(v), help: 'High-yield savings pays ~4%. Leave 0 if unsure.' },
       { k: 'contribWhen', label: 'When does the money move?', type: 'select', live: true, options: v => [['monthly', 'Every month'], ...(v.kind === 'fixed' && v.per === 'yearly' ? [['yearly', 'Once a year (lump sum)']] : [])], help: 'Puts the transfer on the Calendar.' },
       { k: 'contribDay', label: 'Transfer day of month', type: 'number', half: true, show: v => v.contribWhen !== 'yearly', placeholder: 'e.g. 15' },
@@ -1443,7 +1517,7 @@ function editGoal(id) {
       return `${t ? 'Target <b>' + money(t) + '</b> · ' : ''}Needs <b>${money(m, true)}</b>/month`;
     },
     validate: v => !String(v.name).trim() ? 'Name your goal' : (v.kind === 'target' && !v.targetDate ? 'Pick a target date' : null),
-    onSave: v => { if (!(v.kind === 'fixed' && v.per === 'yearly')) v.contribWhen = 'monthly'; if (v.kind === 'target' && (v.targetSource === 'none' || !v.targetSource)) v.targetSource = 'manual'; if (isRet(v)) v.targetSource = 'none'; upsert(D.goals, v); },
+    onSave: v => { const sa = syncAcct(v); if (sa && v.acctBal !== '' && v.acctBal != null) sa.balance = num(v.acctBal); delete v.acctBal; delete v._af; if (!(v.kind === 'fixed' && v.per === 'yearly')) v.contribWhen = 'monthly'; if (v.kind === 'target' && (v.targetSource === 'none' || !v.targetSource)) v.targetSource = 'manual'; if (isRet(v)) v.targetSource = 'none'; upsert(D.goals, v); },
     onDelete: id ? () => remove(D.goals, id) : null
   });
 }
@@ -1517,7 +1591,7 @@ function editChecklist() {
    VIEWS
    ===================================================================== */
 const NAV = [
-  ['home', 'Home', '◉'], ['income', 'Money In', '↘'], ['bills', 'Bills & Subs', '▤'], ['calendar', 'Calendar', '▦'], ['goals', 'Goals', '★'],
+  ['home', 'Home', '◉'], ['income', 'Money In', '↘'], ['bills', 'Bills & Subs', '▤'], ['calendar', 'Calendar', '▦'], ['transfers', 'Transfers', '⇄'], ['goals', 'Goals', '★'],
   ['retire', 'Retirement', '⌂'], ['accounts', 'Accounts', '▣'], ['giving', 'Giving', '♡'],
   ['checkin', 'Money Date', '✓'], ['binder', 'Our Binder', '❏'], ['settings', 'Settings', '⚙']
 ];
@@ -1683,6 +1757,56 @@ function wireHero() {
   heroTimer = setInterval(() => { if (Date.now() > heroPausedUntil && !document.hidden) heroShow(ui.heroIdx + 1); }, 5500);
 }
 
+/* ---------- TRANSFERS ---------- */
+function lastHubPayday() {
+  let best = null;
+  D.people.forEach(p => {
+    if (!p.lastPayday) return;
+    const step = { weekly: 7, biweekly: 14 }[p.frequency];
+    const t = new Date(p.lastPayday + 'T00:00:00'), now = new Date(); now.setHours(0, 0, 0, 0);
+    if (step) { while (t <= now) t.setDate(t.getDate() + step); t.setDate(t.getDate() - step); }
+    if (t <= now && (!best || t > best.date)) best = { date: new Date(t), p };
+  });
+  return best;
+}
+function viewTransfers() {
+  const tp = transferPlan(D, S);
+  const hub = tp.hub;
+  let html = `<div class="page-h"><div><h1>Transfers</h1><p class="muted">Paychecks land in one account. This is what to move out, and where, so every account can cover its own bills.</p></div></div>`;
+  if (!hub) return html + card('', emptyState('Add a checking account first.', '<a class="btn primary" href="#/accounts">Go to Accounts</a>'));
+  html += card('Where paychecks land', `<div class="form-inline"><label class="field half hub-sel"><span>Direct deposits go to</span><select data-bind="settings.hubAccountId">${D.accounts.filter(a => !isRetireType(a.type) && !isDebtType(a.type)).map(a => opt(a.id, a.name + (a.last4 ? ' ••' + a.last4 : ''), hub.id)).join('')}</select></label>
+    <div class="field half hub-note hub-sel"><span>Per-paycheck amounts assume</span><b>${tp.cpm} paychecks a month</b><small class="help">That's 2 each, so the months with a 3rd paycheck leave extra in ${esc(hub.name)}.</small></div></div>`);
+
+  html += `<div class="stats">${stat('Lands in ' + esc(hub.name), money(tp.inM), 'take-home per month', 'good')}${stat('Transfer out', money(tp.outM), money(tp.outM / tp.cpm) + ' per paycheck')}${stat('Stays for its own bills', money(tp.hubNeed.total), [tp.hubNeed.billsM && money(tp.hubNeed.billsM) + ' bills', tp.hubNeed.giveM && money(tp.hubNeed.giveM) + ' ' + esc((D.giving.label || 'giving').toLowerCase()), tp.hubNeed.saveM && money(tp.hubNeed.saveM) + ' saved'].filter(Boolean).join(' + ') || 'nothing')}${stat('Left over', money(tp.leftM), 'same as the dashboard', tp.leftM < 0 ? 'bad' : 'accent')}</div>`;
+
+  // payday checklist
+  const lp = lastHubPayday();
+  const key = lp ? localISO(lp.date) : null;
+  const done = (key && D.transferChecks && D.transferChecks[key]) || [];
+  const rows = tp.transfers.map(n => {
+    const why = [n.billsM && `${n.bills.length} bill${n.bills.length > 1 ? 's' : ''} ${money(n.billsM)}`, n.giveM && `${esc(D.giving.label || 'giving')} ${money(n.giveM)}`, n.saveM && n.goals.map(x => `${esc(x.g.icon || '')} ${esc(x.g.name)} ${money(x.monthly)}`).join(', ')].filter(Boolean).join(' · ');
+    const isCard = isDebtType(n.a.type);
+    const checked = done.includes(n.a.id);
+    return `<li class="tr-row ${checked ? 'done' : ''}">
+      ${key ? `<label class="tr-check"><input type="checkbox" data-trcheck="${n.a.id}" data-key="${key}" ${checked ? 'checked' : ''} aria-label="Moved money to ${esc(n.a.name)}"></label>` : ''}
+      <div class="tr-m"><b>${isCard ? 'Pay ' : '→ '}${esc(n.a.name)}${n.a.last4 ? ' ••' + esc(n.a.last4) : ''}</b><small>${why}</small>${n.firstDay ? `<small class="tr-by">Needed by the ${ordinal(n.firstDay)}</small>` : ''}</div>
+      <div class="tr-v"><b>${money(n.perCheck, true)}</b><small>per paycheck</small><small class="muted">${money(n.total, true)}/mo</small></div></li>`;
+  }).join('');
+  const doneCount = tp.transfers.filter(n => done.includes(n.a.id)).length;
+  const head = key ? `Payday checklist · ${lp.date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} <span class="h-sub">${doneCount}/${tp.transfers.length} done</span>` : 'Each payday, move';
+  html += card(head, (tp.transfers.length ? `<ul class="tr-list">${rows}</ul>` : '<p class="muted">Everything is paid straight from the deposit account. No transfers needed.</p>')
+    + (key ? '' : `<p class="muted small">Add a recent payday in Money In and this becomes a checklist you can tick off each payday.</p>`)
+    + (tp.unassigned.length ? `<p class="warn-text small">⚠ ${tp.unassigned.length} bill${tp.unassigned.length > 1 ? 's have' : ' has'} no account (${money(tp.unassignedM)}/mo): ${tp.unassigned.map(b => esc(b.name)).join(', ')}. Set "Paid from" so they land in the plan.</p>` : ''), { cls: 'wide' });
+
+  // monthly minimums per account
+  const all = accountNeeds(D, S).filter(n => n.total > 0.005);
+  html += card('Monthly minimum per account', `<div class="tbl-scroll"><table class="tbl"><thead><tr><th>Account</th><th class="r col-opt">Bills</th><th class="r col-opt">${esc(D.giving.label || 'Giving')}</th><th class="r col-opt">Savings</th><th class="r">Needs / month</th></tr></thead><tbody>
+    ${all.map(n => `<tr><td><b>${esc(n.a.name)}</b>${n.a.id === hub.id ? ' <span class="tag good">deposit</span>' : ''}<small class="mob-only">${[n.billsM && 'Bills ' + money(n.billsM), n.giveM && esc(D.giving.label || 'Giving') + ' ' + money(n.giveM), n.saveM && 'Savings ' + money(n.saveM)].filter(Boolean).join(' · ')}</small></td><td class="r col-opt">${n.billsM ? money(n.billsM, true) : '—'}</td><td class="r col-opt">${n.giveM ? money(n.giveM, true) : '—'}</td><td class="r col-opt">${n.saveM ? money(n.saveM, true) : '—'}</td><td class="r"><b>${money(n.total, true)}</b></td></tr>`).join('')}
+    <tr class="tot"><td>Total</td><td class="r col-opt">${money(all.reduce((t, n) => t + n.billsM, 0), true)}</td><td class="r col-opt">${money(all.reduce((t, n) => t + n.giveM, 0), true)}</td><td class="r col-opt">${money(all.reduce((t, n) => t + n.saveM, 0), true)}</td><td class="r">${money(all.reduce((t, n) => t + n.total, 0), true)}</td></tr>
+  </tbody></table></div><p class="muted small">401(k)/403(b) money comes out of the paycheck before it lands, so it isn't listed. ${D.giving.label || 'Giving'} on hourly pay is planned; the exact amount comes from each logged stub.</p>`, { cls: 'wide' });
+  return html;
+}
+
 /* ---------- CALENDAR ---------- */
 const EV_STYLE = { in: { c: 'var(--good)', lbl: 'Money in', sign: '+' }, bill: { c: 'var(--s1)', lbl: 'Bill', sign: '−' }, give: { c: 'var(--s2)', lbl: 'Giving', sign: '−' }, save: { c: 'var(--s3)', lbl: 'Saving', sign: '→' } };
 function evRow(e) {
@@ -1806,7 +1930,7 @@ function viewBills() {
 
   let html = `<div class="page-h"><div><h1>Bills & Subscriptions</h1><p class="muted">Everything that leaves on a schedule.</p></div><button class="btn primary" data-act="addBill">+ Add</button></div>`;
   html += `<div class="stats">${stat('All bills', money(S.billsM, true), 'per month')}${stat('Subscriptions', money(S.subsM, true), money(S.subsM * 12) + ' per year', 'accent')}${stat('Count', D.bills.length, D.bills.filter(b => b.isSub).length + ' subscriptions')}</div>`;
-  html += `<div class="grid2">` + card('By category', hBars(catItems, C.s1)) + card('By account', hBars(Object.entries(D.bills.reduce((m, b) => { const k = b.accountId || ''; m[k] = (m[k] || 0) + billMonthly(b); return m; }, {})).map(([k, v]) => ({ label: acctName(k) || 'No account', value: v })).sort((a, b) => b.value - a.value), C.s1)) + `</div>`;
+  html += `<div class="grid2">` + card('By category', hBars(catItems, C.s1)) + card('Bills by account <span class="h-sub">bills only</span>', `<p class="muted small">${esc(D.giving.label || 'Giving')} and savings transfers aren't counted here. See Accounts or Our Binder for everything an account covers.</p>` + hBars(Object.entries(D.bills.reduce((m, b) => { const k = b.accountId || ''; m[k] = (m[k] || 0) + billMonthly(b); return m; }, {})).map(([k, v]) => ({ label: acctName(k) || 'No account', value: v })).sort((a, b) => b.value - a.value), C.s1)) + `</div>`;
   html += `<div class="chips" role="tablist">${[['all', 'All'], ['subs', 'Subscriptions'], ...usedAccts.map(a => [a, acctName(a)])].map(([k, l]) => `<button class="chip ${f === k ? 'on' : ''}" data-act="billFilter" data-id="${esc(k)}">${esc(l)}</button>`).join('')}</div>`;
 
   if (f === 'subs') {
@@ -1878,7 +2002,7 @@ function goalCard(x, C, rank, total) {
   }
   const ms = [25, 50, 75, 100].map(m => `<span class="ms ${x.pct != null && x.pct * 100 >= m ? 'hit' : ''}" style="left:${m}%"></span>`).join('');
   return `<div class="goal" ${ui.reorder ? '' : `data-act="editGoal" data-id="${g.id}" tabindex="0"`}>
-    <div class="goal-h">${rankCtl(g.id, rank, total)}<span class="g-i">${esc(g.icon || '⭐')}</span><div><b>${esc(g.name)}</b><span class="muted small">${esc(acctName(g.accountId) || '')}${transferLabel(x)}</span></div>${status}</div>
+    <div class="goal-h">${rankCtl(g.id, rank, total)}<span class="g-i">${esc(g.icon || '⭐')}</span><div><b>${esc(g.name)}</b><span class="muted small">${goalSyncAccount(D, g) ? '🔗 ' : ''}${esc(acctName(g.accountId) || 'No account linked')}${transferLabel(x)}</span></div>${status}</div>
     ${x.target ? `<div class="g-amt"><b>${money(x.saved)}</b><span>of ${money(x.target)}</span><span class="g-pct">${pct(x.pct || 0)}</span></div><div class="bar big"><span style="width:${((x.pct || 0) * 100).toFixed(1)}%"></span>${ms}</div>` : `<div class="g-amt"><b>${money(x.saved)}</b><span>saved · ongoing</span></div>`}
     <div class="g-f"><span><b>${money(x.monthly)}</b>/mo</span>${g.targetSource === 'emergency' ? `<span class="muted small">${num(g.emMonths)} months of bills + giving</span>` : ''}${g.targetSource === 'home' ? `<span class="muted small">${num(g.downPct)}% of ${money(num(g.homePrice))}</span>` : ''}</div>
     ${proj ? `<p class="small">${proj}</p>` : ''}</div>`;
@@ -1952,7 +2076,8 @@ function viewAccounts() {
       const goals = S.goals.filter(x => x.g.accountId === a.id).reduce((t, x) => t + x.monthly, 0);
       const give = D.giving.enabled && D.giving.accountId === a.id ? S.givingM : 0;
       const pay = S.people.filter(r => r.p.retireAccountId === a.id).reduce((t, r) => t + r.retireM + r.matchM, 0);
-      const flows = [bills && `${money(bills)} bills out`, give && `${money(give)} ${esc(D.giving.label || 'giving').toLowerCase()} out`, goals && `${money(goals)} saved in`, pay && `${money(pay)} from paychecks`].filter(Boolean);
+      const tpn = (S._tp = S._tp || transferPlan(D, S)).transfers.find(n => n.a.id === a.id);
+      const flows = [tpn && `<b>${money(tpn.perCheck)}/paycheck in from ${esc(S._tp.hub.name)}</b>`, bills && `${money(bills)} bills out`, give && `${money(give)} ${esc(D.giving.label || 'giving').toLowerCase()} out`, goals && `${money(goals)} saved in`, pay && `${money(pay)} from paychecks`].filter(Boolean);
       return `<div class="acct" data-act="editAccount" data-id="${a.id}" tabindex="0"><div class="acct-h"><span class="tag">${ACCOUNT_TYPES[a.type].label}</span><span class="muted small">${esc(personName(D, a.owner))}</span></div>
         <b class="acct-n">${esc(a.name)}</b><span class="muted small">${esc(a.institution || '')}${a.last4 ? ' ••' + esc(a.last4) : ''}</span>
         <span class="acct-b ${g === 'debt' ? 'bad' : ''}">${g === 'debt' ? '−' : ''}${money(Math.abs(num(a.balance)))}</span>
@@ -2043,7 +2168,10 @@ function viewCheckin() {
     }).join('') + '<p class="muted small">These paystubs feed her real-pay average and the giving tracker.</p>' : '<p class="muted">No hourly paychecks to log. Skip ahead!</p>';
   } else if (ui.step === 2) {
     const gl = D.goals.filter(g => { const a = D.accounts.find(x => x.id === g.accountId); return !(a && isRetireType(a.type)); });
-    body = `<p class="muted">How much is set aside for each goal now? If a goal has its own account, use that balance.</p><div class="ci-list">${gl.map(g => { const a = D.accounts.find(x => x.id === g.accountId); const solo = a && D.goals.filter(x => x.accountId === a.id).length === 1; return `<label class="ci-row"><span><b>${esc(g.icon || '')} ${esc(g.name)}</b><small>${a ? esc(a.name) + (solo ? ' — ' + money(dr.balances[a.id]) : ' (shared)') : ''}</small></span><div class="inp pre"><i>$</i><input type="number" step="any" inputmode="decimal" data-draft="goals" data-id="${g.id}" value="${esc(dr.goals[g.id])}"></div></label>`; }).join('') || '<p>No goals yet.</p>'}</div>`;
+    const synced = gl.filter(g => goalSyncAccount(D, g)), manual = gl.filter(g => !goalSyncAccount(D, g));
+    body = (synced.length ? `<p class="muted">These goals have their own account, so they already match the balances you just entered:</p><ul class="synced">${synced.map(g => { const a = goalSyncAccount(D, g); return `<li><span>🔗 <b>${esc(g.icon || '')} ${esc(g.name)}</b><small>${esc(a.name)}</small></span><b>${money(num(dr.balances[a.id]))}</b></li>`; }).join('')}</ul>` : '')
+      + (manual.length ? `<p class="muted">${synced.length ? 'These share an account or have none, so enter them by hand:' : 'How much is set aside for each goal now?'}</p><div class="ci-list">${manual.map(g => { const a = D.accounts.find(x => x.id === g.accountId); return `<label class="ci-row"><span><b>${esc(g.icon || '')} ${esc(g.name)}</b><small>${a ? esc(a.name) + ' (shared · ' + money(num(dr.balances[a.id])) + ' total)' : 'No account linked'}</small></span><div class="inp pre"><i>$</i><input type="number" step="any" inputmode="decimal" data-draft="goals" data-id="${g.id}" value="${esc(dr.goals[g.id])}"></div></label>`; }).join('')}</div>` : '')
+      + (!gl.length ? '<p>No goals yet.</p>' : !manual.length ? '<p class="good small">✓ Every goal is synced with its account. Nothing to type here.</p>' : '');
   } else {
     const prevSnap = D.snapshots.slice().sort((a, b) => b.date.localeCompare(a.date))[0];
     const nwNow = snapshotNetWorth(D, { balances: dr.balances });
@@ -2064,7 +2192,7 @@ function saveCheckin() {
   const dr = ui.draft;
   const before = summarize(D).goals.map(x => ({ id: x.g.id, pct: x.pct }));
   D.accounts.forEach(a => { if (dr.balances[a.id] !== '' && dr.balances[a.id] != null) a.balance = num(dr.balances[a.id]); });
-  D.goals.forEach(g => { if (dr.goals[g.id] !== undefined && dr.goals[g.id] !== '') g.saved = num(dr.goals[g.id]); });
+  D.goals.forEach(g => { if (goalSyncAccount(D, g)) return; if (dr.goals[g.id] !== undefined && dr.goals[g.id] !== '') g.saved = num(dr.goals[g.id]); });
   const pc = {}; Object.keys(dr.paychecks).forEach(k => { const v = dr.paychecks[k].map(num).filter(x => x > 0); if (v.length) pc[k] = v; });
   D.snapshots.push({ id: uid(), date: dr.date, balances: Object.assign({}, dr.balances), goals: Object.assign({}, dr.goals), paychecks: pc, note: dr.note });
   ui.draft = null; ui.step = 0;
@@ -2089,7 +2217,12 @@ function viewBinder() {
   html += card('First 30 days', `<ol class="checklist">${D.binder.checklist.map(s => `<li>${esc(s)}</li>`).join('')}</ol>`, { action: '<button class="btn sm ghost no-print" data-act="editChecklist">Edit</button>' });
   html += card('Who to call', D.binder.contacts.length ? `<ul class="contacts">${D.binder.contacts.map(c => `<li data-act="editContact" data-id="${c.id}" tabindex="0"><b>${esc(c.name)}</b><span>${esc(c.role)}</span><a href="tel:${esc(String(c.phone).replace(/[^\d+]/g, ''))}">${esc(c.phone)}</a>${c.notes ? `<small class="muted">${esc(c.notes)}</small>` : ''}</li>`).join('')}</ul>` : '<p class="muted">Add HR, insurance agents, the attorney, a trusted friend who knows money…</p>', { action: '<button class="btn sm ghost no-print" data-act="addContact">+ Add</button>' });
   html += card('Our accounts', `<div class="tbl-scroll"><table class="tbl"><thead><tr><th>Account</th><th>Where</th><th>Whose</th><th>What it's for</th></tr></thead><tbody>${D.accounts.map(a => `<tr><td><b>${esc(a.name)}</b><br><span class="muted small">${ACCOUNT_TYPES[a.type].label}</span></td><td>${esc(a.institution)}${a.last4 ? ' ••' + esc(a.last4) : ''}</td><td>${esc(personName(D, a.owner))}</td><td>${esc(a.purpose || '')}</td></tr>`).join('')}</tbody></table></div>`, { cls: 'wide' });
-  html += card('What pays itself automatically', Object.keys(byAcct).map(k => `<h4>${esc(acctName(k) || 'No account set')} <span class="h-sub">keep at least ${money(byAcct[k].reduce((t, b) => t + billMonthly(b), 0) + (D.giving.accountId === k ? S.givingM : 0))}/mo here</span></h4><ul class="plain">${byAcct[k].map(b => `<li>${esc(b.name)} — ${money(num(b.amount), true)} ${PERIOD_LABEL[b.frequency].toLowerCase()}${b.dueDay ? ', around the ' + b.dueDay + 'th' : ''}</li>`).join('')}</ul>`).join('') + (D.bills.some(b => !b.autopay) ? `<h4>Paid by hand</h4><ul class="plain">${D.bills.filter(b => !b.autopay).map(b => `<li>${esc(b.name)} — ${money(num(b.amount), true)}</li>`).join('')}</ul>` : ''), { cls: 'wide' });
+  html += card('What pays itself automatically', Object.keys(byAcct).map(k => {
+      const billsT = byAcct[k].reduce((t, b) => t + billMonthly(b), 0);
+      const giveT = D.giving.enabled && D.giving.accountId === k ? S.givingM : 0;
+      const need = billsT + giveT;
+      return `<h4>${esc(acctName(k) || 'No account set')} <span class="h-sub">keep at least ${money(need)}/mo here${giveT ? ` (${money(billsT)} bills + ${money(giveT)} ${esc((D.giving.label || 'giving').toLowerCase())})` : ''}</span></h4><ul class="plain">${byAcct[k].map(b => `<li>${esc(b.name)} — ${money(num(b.amount), true)} ${PERIOD_LABEL[b.frequency].toLowerCase()}${num(b.dueDay) > 0 ? ', around the ' + ordinal(num(b.dueDay)) : ''}</li>`).join('')}${giveT ? `<li>${esc(D.giving.label || 'Giving')} — about ${money(giveT, true)} a month, given each payday</li>` : ''}</ul>`;
+    }).join('') + (D.bills.some(b => !b.autopay) ? `<h4>Paid by hand</h4><ul class="plain">${D.bills.filter(b => !b.autopay).map(b => `<li>${esc(b.name)} — ${money(num(b.amount), true)}</li>`).join('')}</ul>` : ''), { cls: 'wide' });
   html += `<div class="grid2">${D.binder.notes.map(n => card(esc(n.title), n.body ? `<p class="pre">${esc(n.body)}</p>` : `<p class="muted small">${esc(n.hint || 'Not filled in yet.')}</p>`, { action: `<button class="btn sm ghost no-print" data-act="editNote" data-id="${n.id}">${n.body ? 'Edit' : 'Fill in'}</button>` })).join('')}</div>`;
   html += `<p class="center no-print"><button class="btn ghost" data-act="addNote">+ Add a section</button></p>`;
   return html;
@@ -2144,7 +2277,7 @@ function render() {
   if (!D) { app.innerHTML = viewWelcome(); return; }
   document.title = D.appName || 'Our Nest';
   const tabs = mobileTabs();
-  const views = { calendar: viewCalendar, home: viewHome, income: viewIncome, bills: viewBills, goals: viewGoals, retire: viewRetire, accounts: viewAccounts, giving: viewGiving, checkin: viewCheckin, binder: viewBinder, settings: viewSettings };
+  const views = { transfers: viewTransfers, calendar: viewCalendar, home: viewHome, income: viewIncome, bills: viewBills, goals: viewGoals, retire: viewRetire, accounts: viewAccounts, giving: viewGiving, checkin: viewCheckin, binder: viewBinder, settings: viewSettings };
   const view = views[route] || viewHome;
   const navItem = ([k, l, i]) => `<a href="#/${k}" class="${route === k ? 'on' : ''}" ${route === k ? 'aria-current="page"' : ''}><span class="ni">${i}</span><span>${l}</span></a>`;
   const scrollY = window.scrollY;
@@ -2284,6 +2417,13 @@ function wireApp() {
   document.addEventListener('change', e => {
     const el = e.target;
     if (el.closest('#modal')) return;
+    if (el.dataset.trcheck) {
+      D.transferChecks = D.transferChecks || {};
+      const k = el.dataset.key; const set = new Set(D.transferChecks[k] || []);
+      el.checked ? set.add(el.dataset.trcheck) : set.delete(el.dataset.trcheck);
+      D.transferChecks = { [k]: [...set] }; // keep only the current payday
+      ui.keepScroll = true; commit(); return;
+    }
     if (el.dataset.quick) {
       const v = el.value; if (!v) return;
       if (el.dataset.quick === 'payday') { const p = D.people.find(x => x.id === el.dataset.id); if (p) p.lastPayday = v; }
